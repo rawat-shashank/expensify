@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Modal,
   StyleSheet,
-  Text,
-  TextInput,
   TouchableOpacity,
   Animated,
   Easing,
@@ -13,15 +11,15 @@ import {
 interface CustomBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
-  label: string;
   animationDuration?: number;
+  children?: React.ReactNode;
 }
 
 export const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
   isVisible,
   onClose,
-  label,
   animationDuration = 200,
+  children,
 }) => {
   const slideAnim = useState(new Animated.Value(0))[0];
 
@@ -42,20 +40,7 @@ export const CustomBottomSheet: React.FC<CustomBottomSheetProps> = ({
           onPress={onClose}
           activeOpacity={1}
         />
-        <Animated.View style={styles.bottomSheet}>
-          <View>
-            {label && <Text style={styles.label}>{label}</Text>}
-            <>
-              <TextInput
-                style={styles.input}
-                placeholder={`Enter ${label.toLowerCase()}`}
-              />
-              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text>Close</Text>
-              </TouchableOpacity>
-            </>
-          </View>
-        </Animated.View>
+        <Animated.View style={styles.bottomSheet}>{children}</Animated.View>
       </View>
     </Modal>
   );

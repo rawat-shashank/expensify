@@ -1,9 +1,18 @@
 import { CustomBottomSheet } from "@/components/bottomSheet";
 import Header from "@/components/header";
+import useProfile from "@/hooks/useProfile";
 import { Entypo } from "@expo/vector-icons";
 import { Tabs, usePathname } from "expo-router";
-import { Fragment, useState } from "react";
-import { SafeAreaView } from "react-native";
+import { useSQLiteContext } from "expo-sqlite";
+import { Fragment, useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+} from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface TabProps {
@@ -13,6 +22,15 @@ interface TabProps {
 }
 
 export default function TabLayout() {
+  const db = useSQLiteContext();
+  const { profileData, saveProfile } = useProfile(db);
+  const [profileName, setProfileName] = useState("");
+
+  useEffect(() => {
+    if (profileData) {
+      setProfileName(profileData.name);
+    }
+  }, [profileData]);
   const tabs: TabProps[] = [
     { name: "home", title: "Home", icon: "home" },
     { name: "account", title: "Account", icon: "credit-card" },
@@ -29,7 +47,12 @@ export default function TabLayout() {
   const handleProfileTabPress = () => {
     setBottomSheetVisible(true);
   };
+
   const closeBottomSheet = () => {
+    setBottomSheetVisible(false);
+  };
+  const handleProfileSubmit = () => {
+    saveProfile(profileName, profileData?.currency || "GBP");
     setBottomSheetVisible(false);
   };
   const insets = useSafeAreaInsets();
@@ -75,10 +98,46 @@ export default function TabLayout() {
         <CustomBottomSheet
           isVisible={isBottomSheetVisible}
           onClose={closeBottomSheet}
-          label="Profile"
-        />
+        >
+          <View>
+            {<Text style={styles.label}>Profile</Text>}
+            <>
+              <TextInput
+                value={profileName}
+                style={styles.input}
+                placeholder={`Enter Profile Name`}
+                onChangeText={setProfileName}
+              />
+              <TouchableOpacity
+                onPress={handleProfileSubmit}
+                style={styles.closeButton}
+              >
+                <Text>Submit</Text>
+              </TouchableOpacity>
+            </>
+          </View>
+        </CustomBottomSheet>
       </SafeAreaView>
     </Fragment>
-    //</View>
   );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+  },
+  closeButton: {
+    padding: 10,
+    alignItems: "center",
+    backgroundColor: "#eee",
+    borderRadius: 5,
+  },
+});
