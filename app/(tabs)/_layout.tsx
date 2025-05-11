@@ -1,8 +1,9 @@
-import { CustomBottomSheet } from "@/components/bottomSheet";
-import Header from "@/components/header";
+import { CustomBottomSheet } from "@/components/BottomSheet";
+import FloatingActionButton from "@/components/FloatingActionButton";
+import Header from "@/components/Header";
 import useProfile from "@/hooks/useProfile";
 import { Entypo } from "@expo/vector-icons";
-import { Tabs, usePathname } from "expo-router";
+import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { Fragment, useEffect, useState } from "react";
 import {
@@ -22,15 +23,11 @@ interface TabProps {
 }
 
 export default function TabLayout() {
+  const router = useRouter();
   const db = useSQLiteContext();
   const { profileData, saveProfile } = useProfile(db);
   const [profileName, setProfileName] = useState("");
 
-  useEffect(() => {
-    if (profileData) {
-      setProfileName(profileData.name);
-    }
-  }, [profileData]);
   const tabs: TabProps[] = [
     { name: "home", title: "Home", icon: "home" },
     { name: "account", title: "Account", icon: "credit-card" },
@@ -44,6 +41,12 @@ export default function TabLayout() {
   const [activeTabIndex, setActiveIndex] = useState(index === -1 ? 0 : index);
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
 
+  useEffect(() => {
+    if (profileData) {
+      setProfileName(profileData.name);
+    }
+  }, [profileData]);
+
   const handleProfileTabPress = () => {
     setBottomSheetVisible(true);
   };
@@ -55,46 +58,59 @@ export default function TabLayout() {
     saveProfile(profileName, profileData?.currency || "GBP");
     setBottomSheetVisible(false);
   };
+
+  const handleFabClick = () => {
+    /* @TODO: navigate to add transaction/account/category*/
+    if (activeTabIndex == 1) {
+      router.push("/account/createAccount");
+    }
+  };
   const insets = useSafeAreaInsets();
 
   return (
     //<View style={{ flex: 1, paddingTop: insets.top }}>
     <Fragment>
       <SafeAreaView
+        // @TODO: update backgroundColor with primary color
         style={{ flex: 1, backgroundColor: "#f8f8f8", paddingTop: insets.top }}
       >
         <Header
           title={tabs[activeTabIndex].title}
           onProfilePress={handleProfileTabPress}
         />
-        <Tabs
-          screenOptions={{
-            headerShown: false,
-          }}
-          screenListeners={{
-            tabPress: (e) => {
-              const name = e.target?.split("-")[0];
-              const index = tabs.findIndex((tab) => tab.name == name);
-              //set current active index for header title update
-              setActiveIndex(index === -1 ? 0 : index);
-            },
-          }}
-        >
-          {tabs.map((tab) => {
-            return (
-              <Tabs.Screen
-                key={tab.name}
-                name={tab.name}
-                options={{
-                  title: tab.title,
-                  tabBarIcon: ({}) => (
-                    <Entypo name={tab.icon} size={28} color="#000" />
-                  ),
-                }}
-              />
-            );
-          })}
-        </Tabs>
+        <View style={{ flex: 1, position: "relative" }}>
+          <Tabs
+            screenOptions={{
+              headerShown: false,
+            }}
+            screenListeners={{
+              tabPress: (e) => {
+                const name = e.target?.split("-")[0];
+                const index = tabs.findIndex((tab) => tab.name == name);
+                //set current active index for header title update
+                setActiveIndex(index === -1 ? 0 : index);
+              },
+            }}
+          >
+            {tabs.map((tab) => {
+              return (
+                <Tabs.Screen
+                  key={tab.name}
+                  name={tab.name}
+                  options={{
+                    title: tab.title,
+                    tabBarIcon: ({}) => (
+                      <Entypo name={tab.icon} size={28} color="#000" />
+                    ),
+                  }}
+                />
+              );
+            })}
+          </Tabs>
+          <View style={styles.fabContainer}>
+            <FloatingActionButton onPress={handleFabClick} />
+          </View>
+        </View>
         <CustomBottomSheet
           isVisible={isBottomSheetVisible}
           onClose={closeBottomSheet}
@@ -139,5 +155,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#eee",
     borderRadius: 5,
+  },
+  fabContainer: {
+    position: "absolute",
+    right: 20,
+    bottom: 90,
   },
 });

@@ -10,18 +10,19 @@ interface Account {
   type: "cash" | "wallet" | "bank";
 }
 
-// Import your database functions
 import {
-  createAccountsTable,
   insertAccount as dbInsertAccount,
   getAllAccounts as dbGetAllAccounts,
+  getAccountById as dbGetAccountById,
+  deleteAccount as dbDeleteAccount,
+  updateAccount as dbUpdateAccount,
 } from "@/database/accounts";
 
 interface UseAccountsResult {
   accounts: Account[];
   loading: boolean;
   error: Error | null;
-  createTable: () => Promise<void>;
+  fetchAccounts: () => Promise<void>;
   addAccount: (
     title: string,
     accountName: string,
@@ -29,39 +30,21 @@ interface UseAccountsResult {
     defaultAccount: boolean,
     type: "cash" | "wallet" | "bank",
   ) => Promise<number | undefined>;
-  fetchAccounts: () => Promise<void>;
+  getAccountById: (id: number) => Promise<Account | null>;
+  deleteAccount: (id: number) => Promise<boolean | null>;
+  updateAccount: (account: Account) => Promise<boolean | null>;
 }
 
-const useAccounts = (db: SQLiteDatabase | null): UseAccountsResult => {
+const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const createTable = useCallback(async () => {
-    if (!db) {
-      console.warn("Database not initialized.");
-      return;
-    }
-    try {
-      setLoading(true);
-      await createAccountsTable(db);
-    } catch (err: any) {
-      setError(err);
-      console.error("Error creating accounts table:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, [db]);
-
   const fetchAccounts = useCallback(async () => {
-    if (!db) {
-      console.warn("Database not initialized.");
-      return;
-    }
     try {
       setLoading(true);
       const fetchedAccounts = await dbGetAllAccounts(db);
-      // Here you can perform data conversion or handling if needed
+      // @FIX: data is not updating on page load
       setAccounts(fetchedAccounts);
       setError(null);
     } catch (err: any) {
@@ -71,7 +54,7 @@ const useAccounts = (db: SQLiteDatabase | null): UseAccountsResult => {
     } finally {
       setLoading(false);
     }
-  }, [db]);
+  }, []);
 
   const addAccount = useCallback(
     async (
@@ -81,10 +64,6 @@ const useAccounts = (db: SQLiteDatabase | null): UseAccountsResult => {
       defaultAccount: boolean,
       type: "cash" | "wallet" | "bank",
     ): Promise<number | undefined> => {
-      if (!db) {
-        console.warn("Database not initialized.");
-        return undefined;
-      }
       try {
         setLoading(true);
         const newAccountId = await dbInsertAccount(
@@ -95,7 +74,6 @@ const useAccounts = (db: SQLiteDatabase | null): UseAccountsResult => {
           type,
           db,
         );
-        // Optionally, you can fetch accounts again to update the state
         await fetchAccounts();
         return newAccountId;
       } catch (err: any) {
@@ -106,23 +84,87 @@ const useAccounts = (db: SQLiteDatabase | null): UseAccountsResult => {
         setLoading(false);
       }
     },
-    [db, fetchAccounts],
+    [fetchAccounts],
   );
 
-  // Optionally, you can fetch accounts when the component using this hook mounts
+  const getAccountById = useCallback(
+    async (id: number): Promise<Account | null> => {
+      try {
+        setLoading(true);
+        const account = await dbGetAccountById(id, db);
+        return account;
+      } catch (err: any) {
+        setError(err);
+        console.error(`Error fetching account with ID ${id}:`, err);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [db],
+  );
+
+  const updateAccount = useCallback(
+    async (account: Account): Promise<boolean> => {
+      try {
+        setLoading(true);
+        const success = await dbUpdateAccount(account, db);
+        if (success) {
+          await fetchAccounts(); // Refresh the list after update
+          return true;
+        }
+        return false;
+      } catch (err: any) {
+        setError(err);
+        console.error(`Error updating account with ID ${account.id}:`, err);
+        return false;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [db, fetchAccounts],
+  );
+  const deleteAccount = useCallback(
+    async (id: number): Promise<boolean | null> => {
+      try {
+        setLoading(true);
+        const res = await dbDeleteAccount(id, db);
+        return res;
+      } catch (err: any) {
+        setError(err);
+        console.error(`Error deleting account with ID ${id}:`, err);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [db],
+  );
+
   useEffect(() => {
-    if (db) {
-      fetchAccounts();
-    }
-  }, [db, fetchAccounts]);
+    const initialize = async () => {
+      try {
+        setLoading(true);
+        await fetchAccounts();
+      } catch (err: any) {
+        setError(err);
+        console.error("Error fetching accounts data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    initialize();
+  }, [fetchAccounts]);
 
   return {
     accounts,
     loading,
     error,
-    createTable,
-    addAccount,
     fetchAccounts,
+    addAccount,
+    getAccountById,
+    deleteAccount,
+    updateAccount,
   };
 };
 

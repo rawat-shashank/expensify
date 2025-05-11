@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Or any other icon library you prefer
+import { Ionicons } from "@expo/vector-icons";
 
 interface HeaderProps {
   title: string;
   onProfilePress: () => void;
-  menuIconName?: string; // Optional, with default value
-  profileIconName?: string; // Optional, with default value
+  menuIconName?: string;
+  profileIconName?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ title, onProfilePress }) => {

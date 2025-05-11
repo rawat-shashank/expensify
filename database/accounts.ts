@@ -43,33 +43,43 @@ const getAllAccounts = async (db: SQLiteDatabase): Promise<Account[]> => {
   return result as Account[];
 };
 
-//const getAccountById = async (id: number): Promise<Account | null> => {
-//  const result = await db.runAsync("SELECT * FROM accounts WHERE id = ?;", [
-//    id,
-//  ]);
-//  return result
-//    ? (result[0].rows._array[0] as Account)
-//    : null;
-//};
-//
-//const updateAccount = async (
-//  id: number,
-//  title: string,
-//  accountName: string,
-//  amount: number,
-//  defaultAccount: boolean,
-//  type: "cash" | "wallet" | "bank",
-//): Promise<boolean> => {
-//  const result = await db.execAsync(
-//    "UPDATE accounts SET title = ?, accountName = ?, amount = ?, defaultAccount = ?, type = ? WHERE id = ?;",
-//    [title, accountName, amount, defaultAccount ? 1 : 0, type, id],
-//  );
-//  return result[0].rowsAffected > 0;
-//};
-//
-//const deleteAccount = async (id: number): Promise<boolean> => {
-//  const result = await db.execAsync("DELETE FROM accounts WHERE id = ?;", [id]);
-//  return result[0].rowsAffected > 0;
-//};
+const getAccountById = async (
+  id: number,
+  db: SQLiteDatabase,
+): Promise<Account | null> => {
+  const result = await db.getFirstAsync(
+    "SELECT * FROM accounts WHERE id = ?;",
+    [id],
+  );
+  return result ? (result as Account) : null;
+};
 
-export { createAccountsTable, insertAccount, getAllAccounts, Account };
+const updateAccount = async (
+  account: Account,
+  db: SQLiteDatabase,
+): Promise<boolean> => {
+  const { title, accountName, amount, defaultAccount, type, id } = account;
+  const result = await db.runAsync(
+    "UPDATE accounts SET title = ?, accountName = ?, amount = ?, defaultAccount = ?, type = ? WHERE id = ?;",
+    [title, accountName, amount, defaultAccount ? 1 : 0, type, id],
+  );
+  return result.changes > 0;
+};
+
+const deleteAccount = async (
+  id: number,
+  db: SQLiteDatabase,
+): Promise<boolean> => {
+  const result = await db.runAsync("DELETE FROM accounts WHERE id = ?;", [id]);
+  return result.changes > 0;
+};
+
+export {
+  createAccountsTable,
+  insertAccount,
+  getAllAccounts,
+  getAccountById,
+  deleteAccount,
+  updateAccount,
+  Account,
+};
