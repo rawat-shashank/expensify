@@ -20,9 +20,24 @@ interface Account {
   type: "cash" | "wallet" | "bank";
 }
 
-const CreateAccountForm = ({}: {}) => {
+const CreateAccount = ({}: {}) => {
   const db = useSQLiteContext();
   const { addAccount } = useAccounts(db);
+
+  return <CreateAccountForm addAccount={addAccount} />;
+};
+
+const CreateAccountForm = ({
+  addAccount,
+}: {
+  addAccount: (
+    title: string,
+    accountName: string,
+    amount: number,
+    defaultAccount: boolean,
+    type: "cash" | "wallet" | "bank",
+  ) => Promise<number | undefined>;
+}) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [accountName, setAccountName] = useState("");
@@ -236,4 +251,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateAccountForm;
+export default CreateAccount;
