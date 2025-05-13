@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import useAccounts from "@/hooks/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 
 interface Account {
   id: number;
@@ -22,13 +23,24 @@ interface Account {
 
 const AccountList = () => {
   const db = useSQLiteContext();
-  const { accounts } = useAccounts(db);
+  if (!db) {
+    return <Text>Database not ready.</Text>;
+  }
+  const { accounts, loading, fetchAccounts } = useAccounts(db);
   const router = useRouter();
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchAccounts();
+      return () => {};
+    }, [fetchAccounts]),
+  );
 
   const handleCardPress = (accountId: number) => {
     router.push(`/account/${accountId}`);
   };
 
+  //FIX: UI need to be updated later
   const renderItem = ({ item }: { item: Account }) => (
     <TouchableOpacity onPress={() => handleCardPress(item.id)}>
       <View style={styles.card}>
@@ -46,6 +58,10 @@ const AccountList = () => {
       </View>
     </TouchableOpacity>
   );
+
+  if (loading) {
+    return <ActivityIndicator size={"large"} />;
+  }
 
   return (
     <View style={styles.container}>

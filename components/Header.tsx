@@ -12,7 +12,6 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ title, onProfilePress }) => {
   return (
     <View style={styles.header}>
-      {/* Left Section */}
       <View style={styles.leftSection}>
         <TouchableOpacity onPress={() => console.log("Menu Pressed")}>
           <Ionicons name="menu" size={28} color="#000" />
@@ -20,7 +19,6 @@ const Header: React.FC<HeaderProps> = ({ title, onProfilePress }) => {
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      {/* Right Section */}
       <TouchableOpacity style={styles.rightSection} onPress={onProfilePress}>
         <Ionicons name="person-circle-outline" size={28} color="#000" />
       </TouchableOpacity>

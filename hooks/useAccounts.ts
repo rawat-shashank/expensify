@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
 import { SQLiteDatabase } from "expo-sqlite";
+import { useCallback, useEffect, useState } from "react";
 
 interface Account {
   id: number;
@@ -11,10 +11,10 @@ interface Account {
 }
 
 import {
-  insertAccount as dbInsertAccount,
-  getAllAccounts as dbGetAllAccounts,
-  getAccountById as dbGetAccountById,
   deleteAccount as dbDeleteAccount,
+  getAccountById as dbGetAccountById,
+  getAllAccounts as dbGetAllAccounts,
+  insertAccount as dbInsertAccount,
   updateAccount as dbUpdateAccount,
 } from "@/database/accounts";
 
@@ -36,6 +36,7 @@ interface UseAccountsResult {
 }
 
 const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
+  // TODO:check it once more to refactor this
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -44,7 +45,6 @@ const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
     try {
       setLoading(true);
       const fetchedAccounts = await dbGetAllAccounts(db);
-      // @FIX: data is not updating on page load
       setAccounts(fetchedAccounts);
       setError(null);
     } catch (err: any) {
@@ -101,7 +101,7 @@ const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
         setLoading(false);
       }
     },
-    [db],
+    [fetchAccounts],
   );
 
   const updateAccount = useCallback(
@@ -110,7 +110,7 @@ const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
         setLoading(true);
         const success = await dbUpdateAccount(account, db);
         if (success) {
-          await fetchAccounts(); // Refresh the list after update
+          await fetchAccounts();
           return true;
         }
         return false;
@@ -122,13 +122,17 @@ const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
         setLoading(false);
       }
     },
-    [db, fetchAccounts],
+    [fetchAccounts],
   );
+
   const deleteAccount = useCallback(
     async (id: number): Promise<boolean | null> => {
       try {
         setLoading(true);
         const res = await dbDeleteAccount(id, db);
+        if (res) {
+          await fetchAccounts();
+        }
         return res;
       } catch (err: any) {
         setError(err);
@@ -138,7 +142,7 @@ const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
         setLoading(false);
       }
     },
-    [db],
+    [fetchAccounts],
   );
 
   useEffect(() => {
