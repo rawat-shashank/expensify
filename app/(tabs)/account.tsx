@@ -10,16 +10,7 @@ import {
 import useAccounts from "@/hooks/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useFocusEffect, useRouter } from "expo-router";
-
-interface Account {
-  id: number;
-  title: string;
-  accountName: string;
-  amount: number;
-  defaultAccount: boolean;
-  type: "cash" | "wallet" | "bank";
-  createdAt?: string;
-}
+import { AccountType } from "@/database/accountsSchema";
 
 const AccountList = () => {
   const db = useSQLiteContext();
@@ -41,7 +32,7 @@ const AccountList = () => {
   };
 
   //FIX: UI need to be updated later
-  const renderItem = ({ item }: { item: Account }) => (
+  const renderItem = ({ item }: { item: AccountType }) => (
     <TouchableOpacity onPress={() => handleCardPress(item.id)}>
       <View style={styles.card}>
         <View style={styles.cardHeader}>
@@ -52,9 +43,6 @@ const AccountList = () => {
         </View>
         <Text style={styles.accountName}>{item.accountName}</Text>
         <Text style={styles.amount}>£{item.amount.toFixed(2)}</Text>
-        {item.createdAt && (
-          <Text style={styles.dateCreated}>{item.createdAt}</Text>
-        )}
       </View>
     </TouchableOpacity>
   );

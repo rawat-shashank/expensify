@@ -1,3 +1,4 @@
+import { AccountType } from "@/database/accountsSchema";
 import useAccounts from "@/hooks/useAccounts";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
@@ -10,15 +11,6 @@ import {
   TouchableOpacity,
   Switch,
 } from "react-native";
-
-interface Account {
-  id: number;
-  title: string;
-  accountName: string;
-  amount: number;
-  defaultAccount: boolean;
-  type: "cash" | "wallet" | "bank";
-}
 
 const CreateAccount = ({}: {}) => {
   const db = useSQLiteContext();
@@ -58,7 +50,7 @@ const CreateAccountForm = ({
       return;
     }
 
-    const newAccount: Omit<Account, "id"> = {
+    const newAccount: Omit<AccountType, "id"> = {
       title,
       accountName,
       amount: parsedAmount,

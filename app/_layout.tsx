@@ -12,13 +12,7 @@ export default function RootLayout() {
         //assetSource={{ assetId: require("../assets/expensify.db") }}
         onInit={initializeDatabase}
       >
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#000",
-            },
-          }}
-        >
+        <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />;
         </Stack>
       </SQLiteProvider>

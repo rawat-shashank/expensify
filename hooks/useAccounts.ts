@@ -1,25 +1,17 @@
 import { SQLiteDatabase } from "expo-sqlite";
 import { useCallback, useEffect, useState } from "react";
 
-interface Account {
-  id: number;
-  title: string;
-  accountName: string;
-  amount: number;
-  defaultAccount: boolean;
-  type: "cash" | "wallet" | "bank";
-}
-
 import {
+  AccountType,
   deleteAccount as dbDeleteAccount,
   getAccountById as dbGetAccountById,
   getAllAccounts as dbGetAllAccounts,
   insertAccount as dbInsertAccount,
   updateAccount as dbUpdateAccount,
-} from "@/database/accounts";
+} from "@/database/accountsSchema";
 
 interface UseAccountsResult {
-  accounts: Account[];
+  accounts: AccountType[];
   loading: boolean;
   error: Error | null;
   fetchAccounts: () => Promise<void>;
@@ -30,14 +22,14 @@ interface UseAccountsResult {
     defaultAccount: boolean,
     type: "cash" | "wallet" | "bank",
   ) => Promise<number | undefined>;
-  getAccountById: (id: number) => Promise<Account | null>;
+  getAccountById: (id: number) => Promise<AccountType | null>;
   deleteAccount: (id: number) => Promise<boolean | null>;
-  updateAccount: (account: Account) => Promise<boolean | null>;
+  updateAccount: (account: AccountType) => Promise<boolean | null>;
 }
 
 const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
   // TODO:check it once more to refactor this
-  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [accounts, setAccounts] = useState<AccountType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -88,7 +80,7 @@ const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
   );
 
   const getAccountById = useCallback(
-    async (id: number): Promise<Account | null> => {
+    async (id: number): Promise<AccountType | null> => {
       try {
         setLoading(true);
         const account = await dbGetAccountById(id, db);
@@ -105,7 +97,7 @@ const useAccounts = (db: SQLiteDatabase): UseAccountsResult => {
   );
 
   const updateAccount = useCallback(
-    async (account: Account): Promise<boolean> => {
+    async (account: AccountType): Promise<boolean> => {
       try {
         setLoading(true);
         const success = await dbUpdateAccount(account, db);
