@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import colors from "@/constants/colors";
+import { Icons } from "./Icons";
 
 interface HeaderProps {
   title: string;
@@ -14,13 +15,19 @@ const Header: React.FC<HeaderProps> = ({ title, onProfilePress }) => {
     <View style={styles.header}>
       <View style={styles.leftSection}>
         <TouchableOpacity onPress={() => console.log("Menu Pressed")}>
-          <Ionicons name="menu" size={28} color="#000" />
+          <Icons name="menu" size={28} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      <TouchableOpacity style={styles.rightSection} onPress={onProfilePress}>
-        <Ionicons name="person-circle-outline" size={28} color="#000" />
+      <TouchableOpacity onPress={onProfilePress}>
+        <Icons
+          name="person-circle-outline"
+          size={28}
+          color={colors.textPrimary}
+          variant="circularBackground"
+          backgroundColor={colors.accrentBg}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -31,11 +38,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 15,
-    paddingHorizontal: 16,
-    backgroundColor: "#f8f8f8", // Example background color
+    paddingVertical: 0,
+    paddingHorizontal: 8,
+    backgroundColor: colors.bg,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
   },
   leftSection: {
     flexDirection: "row",
@@ -45,9 +51,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 16,
-  },
-  rightSection: {
-    // No specific styles needed for the container in this case
+    color: colors.textPrimary,
   },
 });
 

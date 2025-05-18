@@ -1,20 +1,15 @@
 import { CustomBottomSheet } from "@/components/BottomSheet";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import Header from "@/components/Header";
+import { Icons } from "@/components/Icons";
+import colors from "@/constants/colors";
 import useProfile from "@/hooks/useProfile";
 import { Entypo } from "@expo/vector-icons";
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { Fragment, useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  TouchableOpacity,
-  View,
-  Text,
-  StyleSheet,
-} from "react-native";
+import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface TabProps {
   name: string;
@@ -61,82 +56,109 @@ export default function TabLayout() {
 
   const handleFabClick = () => {
     /* @TODO: navigate to add transaction/account/category*/
-    if (activeTabIndex == 1) {
-      router.push("/account/createAccount");
-    }
-    if (activeTabIndex == 2) {
-      router.push("/category/createCategory");
+    switch (activeTabIndex) {
+      case 0:
+        router.push("/transaction/createTransaction");
+        break;
+      case 1:
+        router.push("/account/createAccount");
+        break;
+      case 2:
+        router.push("/category/createCategory");
+        break;
+      default:
+        break;
     }
   };
-  const insets = useSafeAreaInsets();
 
   return (
-    //<View style={{ flex: 1, paddingTop: insets.top }}>
     <Fragment>
-      <SafeAreaView
-        // @TODO: update backgroundColor with primary color
-        style={{ flex: 1, backgroundColor: "#f8f8f8", paddingTop: insets.top }}
+      <Header
+        title={tabs[activeTabIndex].title}
+        onProfilePress={handleProfileTabPress}
+      />
+      <View
+        style={{ flex: 1, position: "relative", backgroundColor: colors.bg }}
       >
-        <Header
-          title={tabs[activeTabIndex].title}
-          onProfilePress={handleProfileTabPress}
-        />
-        <View style={{ flex: 1, position: "relative" }}>
-          <Tabs
-            screenOptions={{
-              headerShown: false,
-            }}
-            screenListeners={{
-              tabPress: (e) => {
-                const name = e.target?.split("-")[0];
-                const index = tabs.findIndex((tab) => tab.name == name);
-                //set current active index for header title update
-                setActiveIndex(index === -1 ? 0 : index);
-              },
-            }}
-          >
-            {tabs.map((tab) => {
-              return (
-                <Tabs.Screen
-                  key={tab.name}
-                  name={tab.name}
-                  options={{
-                    title: tab.title,
-                    tabBarIcon: ({}) => (
-                      <Entypo name={tab.icon} size={28} color="#000" />
-                    ),
-                  }}
-                />
-              );
-            })}
-          </Tabs>
-          <View style={styles.fabContainer}>
-            <FloatingActionButton onPress={handleFabClick} />
-          </View>
-        </View>
-        <CustomBottomSheet
-          isVisible={isBottomSheetVisible}
-          onClose={closeBottomSheet}
+        <Tabs
+          screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: colors.bg,
+              borderColor: "#000",
+            },
+          }}
+          screenListeners={{
+            tabPress: (e) => {
+              const name = e.target?.split("-")[0];
+              const index = tabs.findIndex((tab) => tab.name == name);
+              setActiveIndex(index === -1 ? 0 : index);
+            },
+          }}
         >
-          <View>
-            {<Text style={styles.label}>Profile</Text>}
-            <>
-              <TextInput
-                value={profileName}
-                style={styles.input}
-                placeholder={`Enter Profile Name`}
-                onChangeText={setProfileName}
+          {tabs.map((tab, index) => {
+            return (
+              <Tabs.Screen
+                key={tab.name}
+                name={tab.name}
+                options={{
+                  title: tab.title,
+                  tabBarActiveTintColor: colors.textPrimary,
+                  tabBarLabelStyle: {
+                    fontSize: 14,
+                  },
+                  tabBarIconStyle: {
+                    marginBottom: 4,
+                  },
+                  tabBarIcon: ({}) => (
+                    <Icons
+                      name={tab.icon}
+                      size={28}
+                      color={colors.accent}
+                      variant={
+                        activeTabIndex == index ? "pillBackground" : "default"
+                      }
+                      backgroundColor={
+                        activeTabIndex == index
+                          ? colors.accrentBg
+                          : "transparent"
+                      }
+                    />
+                  ),
+                  sceneStyle: {
+                    backgroundColor: colors.bg,
+                  },
+                }}
               />
-              <TouchableOpacity
-                onPress={handleProfileSubmit}
-                style={styles.closeButton}
-              >
-                <Text>Submit</Text>
-              </TouchableOpacity>
-            </>
-          </View>
-        </CustomBottomSheet>
-      </SafeAreaView>
+            );
+          })}
+        </Tabs>
+        <View style={styles.fabContainer}>
+          <FloatingActionButton onPress={handleFabClick} />
+        </View>
+      </View>
+      <CustomBottomSheet
+        isVisible={isBottomSheetVisible}
+        onClose={closeBottomSheet}
+      >
+        <View>
+          {<Text style={styles.label}>Profile</Text>}
+          <>
+            <TextInput
+              value={profileName}
+              style={styles.input}
+              placeholder={`Enter Profile Name`}
+              onChangeText={setProfileName}
+            />
+            <TouchableOpacity
+              onPress={handleProfileSubmit}
+              style={styles.closeButton}
+            >
+              <Text>Submit</Text>
+            </TouchableOpacity>
+          </>
+        </View>
+      </CustomBottomSheet>
     </Fragment>
   );
 }
