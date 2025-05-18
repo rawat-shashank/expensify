@@ -64,6 +64,9 @@ export default function TabLayout() {
     if (activeTabIndex == 1) {
       router.push("/account/createAccount");
     }
+    if (activeTabIndex == 2) {
+      router.push("/category/createCategory");
+    }
   };
   const insets = useSafeAreaInsets();
 

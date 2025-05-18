@@ -1,6 +1,6 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
-interface Account {
+interface AccountType {
   id: number;
   title: string;
   accountName: string;
@@ -38,24 +38,24 @@ const insertAccount = async (
   return result.lastInsertRowId;
 };
 
-const getAllAccounts = async (db: SQLiteDatabase): Promise<Account[]> => {
+const getAllAccounts = async (db: SQLiteDatabase): Promise<AccountType[]> => {
   const result = await db.getAllAsync("SELECT * FROM accounts;");
-  return result as Account[];
+  return result as AccountType[];
 };
 
 const getAccountById = async (
   id: number,
   db: SQLiteDatabase,
-): Promise<Account | null> => {
+): Promise<AccountType | null> => {
   const result = await db.getFirstAsync(
     "SELECT * FROM accounts WHERE id = ?;",
     [id],
   );
-  return result ? (result as Account) : null;
+  return result ? (result as AccountType) : null;
 };
 
 const updateAccount = async (
-  account: Account,
+  account: AccountType,
   db: SQLiteDatabase,
 ): Promise<boolean> => {
   const { title, accountName, amount, defaultAccount, type, id } = account;
@@ -81,5 +81,5 @@ export {
   getAccountById,
   deleteAccount,
   updateAccount,
-  Account,
+  AccountType,
 };

@@ -1,11 +1,13 @@
 import { SQLiteDatabase } from "expo-sqlite";
-import { createAccountsTable } from "./accounts";
+import { createAccountsTable } from "./accountsSchema";
 import { createProfileTable } from "./profileSchema";
+import { createCategoriesTable } from "./categoriesSchema";
 
 const initializeDatabase = async (db: SQLiteDatabase): Promise<void> => {
   try {
-    await createAccountsTable(db);
     await createProfileTable(db);
+    await createAccountsTable(db);
+    await createCategoriesTable(db);
   } catch (error: any) {
     console.error("Error initializing database", error.message);
     throw error;

@@ -11,15 +11,7 @@ import {
   Switch,
 } from "react-native";
 import alert from "@/components/Alert";
-
-interface Account {
-  id: number;
-  title: string;
-  accountName: string;
-  amount: number;
-  defaultAccount: boolean;
-  type: "cash" | "wallet" | "bank";
-}
+import { AccountType } from "@/database/accountsSchema";
 
 const EditAccountForm = () => {
   const db = useSQLiteContext();
@@ -34,7 +26,7 @@ const EditAccountForm = () => {
   const [type, setType] = useState<"cash" | "wallet" | "bank">("cash");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [currentAccount, setCurrentAccount] = useState<Account | undefined>(
+  const [currentAccount, setCurrentAccount] = useState<AccountType | undefined>(
     undefined,
   );
 
@@ -77,7 +69,7 @@ const EditAccountForm = () => {
     }
 
     if (currentAccount?.id) {
-      const updatedAccount: Account = {
+      const updatedAccount: AccountType = {
         id: currentAccount.id,
         title,
         accountName,
