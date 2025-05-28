@@ -125,7 +125,12 @@ const EditTransactionForm = () => {
         "Delete Transaction",
         `Are you sure you want to delete the transaction "${currentTransaction.title}"?`,
         [
-          { text: "Cancel", style: "cancel" },
+          {
+            text: "Cancel",
+            style: "cancel",
+            onPress: () => {},
+          },
+
           {
             text: "Delete",
             style: "destructive",

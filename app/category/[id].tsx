@@ -77,6 +77,7 @@ const EditCategoryForm = () => {
           {
             text: "Cancel",
             style: "cancel",
+            onPress: () => {},
           },
           {
             text: "Delete",

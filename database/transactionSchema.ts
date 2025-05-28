@@ -58,7 +58,6 @@ const getAllTransactions = async (
   const result = await db.getAllAsync(
     "SELECT * FROM transactions ORDER BY transaction_date DESC;",
   );
-
   return result as TransactionType[];
 };
 
@@ -113,6 +112,17 @@ const deleteTransaction = async (
   return result.changes > 0;
 };
 
+const getTransactionsByAccountId = async (
+  id: number,
+  db: SQLiteDatabase,
+): Promise<TransactionType[] | null> => {
+  const result = await db.getFirstAsync(
+    "SELECT * FROM transactions WHERE account_id = ?;",
+    [id],
+  );
+  return result ? (result as TransactionType[]) : null;
+};
+
 export {
   TransactionType,
   createTransactionTable,
@@ -121,4 +131,5 @@ export {
   getTransactionById,
   updateTransaction,
   deleteTransaction,
+  getTransactionsByAccountId,
 };

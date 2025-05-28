@@ -8,6 +8,7 @@ import {
   getTransactionById as dbGetTransactionById,
   updateTransaction as dbUpdateTransaction,
   deleteTransaction as dbDeleteTransaction,
+  getTransactionsByAccountId as dbGetTransactionsByAccountId,
 } from "@/database/transactionSchema";
 
 interface useTransactionsResult {
@@ -27,6 +28,9 @@ interface useTransactionsResult {
   getTransactionById: (id: number) => Promise<TransactionType | null>;
   deleteTransaction: (id: number) => Promise<boolean | null>;
   updateTransaction: (account: TransactionType) => Promise<boolean | null>;
+  getTransactionsByAccountId: (
+    account_id: number,
+  ) => Promise<TransactionType[] | null>;
 }
 
 const useTransactions = (db: SQLiteDatabase): useTransactionsResult => {
@@ -158,6 +162,23 @@ const useTransactions = (db: SQLiteDatabase): useTransactionsResult => {
     initialize();
   }, [fetchTransactions]);
 
+  const getTransactionsByAccountId = useCallback(
+    async (account_id: number): Promise<TransactionType[] | null> => {
+      try {
+        setLoading(true);
+        const transactions = await dbGetTransactionsByAccountId(account_id, db);
+        return transactions;
+      } catch (err: any) {
+        setError(err);
+        console.error(`Error fetching account with ID ${account_id}:`, err);
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchTransactions],
+  );
+
   return {
     transactions,
     loading,
@@ -167,6 +188,7 @@ const useTransactions = (db: SQLiteDatabase): useTransactionsResult => {
     getTransactionById,
     updateTransaction,
     deleteTransaction,
+    getTransactionsByAccountId,
   };
 };
 

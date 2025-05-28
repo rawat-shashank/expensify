@@ -1,50 +1,70 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import useAccounts from "@/hooks/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useFocusEffect, useRouter } from "expo-router";
 import { AccountType } from "@/database/accountsSchema";
+import AccountCard from "@/components/AccountCard";
+import alert from "@/components/Alert";
+import useTransactions from "@/hooks/useTransactions";
+import { TransactionType } from "@/database/transactionSchema";
 
 const AccountList = () => {
   const db = useSQLiteContext();
   if (!db) {
     return <Text>Database not ready.</Text>;
   }
-  const { accounts, loading, fetchAccounts } = useAccounts(db);
+  const { accounts, loading, fetchAccounts, deleteAccount } = useAccounts(db);
+  const { transactions, fetchTransactions } = useTransactions(db);
   const router = useRouter();
 
   useFocusEffect(
     useCallback(() => {
       fetchAccounts();
+      fetchTransactions();
       return () => {};
-    }, [fetchAccounts]),
+    }, [fetchAccounts, fetchTransactions]),
   );
 
   const handleCardPress = (accountId: number) => {
     router.push(`/account/${accountId}`);
   };
 
+  const handleDeleteAccount = (accountId: number) => {
+    if (accountId) {
+      alert("Delete Account", `Are you sure you want to delete the account ?`, [
+        {
+          text: "Cancel",
+          style: "cancel",
+          onPress: () => {},
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            await deleteAccount(accountId);
+          },
+        },
+      ]);
+    }
+  };
+
   //FIX: UI need to be updated later
   const renderItem = ({ item }: { item: AccountType }) => (
-    <TouchableOpacity onPress={() => handleCardPress(item.id)}>
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{item.title}</Text>
-          {item.type === "bank" && <View style={styles.bankIcon} />}
-          {item.type === "wallet" && <View style={styles.walletIcon} />}
-          {item.type === "cash" && <View style={styles.cashIcon} />}
-        </View>
-        <Text style={styles.accountName}>{item.accountName}</Text>
-        <Text style={styles.amount}>£{item.amount.toFixed(2)}</Text>
-      </View>
-    </TouchableOpacity>
+    <AccountCard
+      item={item}
+      transactions={transactions.filter(
+        (transaction) => transaction.account_id === item.id,
+      )}
+      handleCardPress={handleCardPress}
+      handleDeleteAccount={handleDeleteAccount}
+    />
   );
 
   if (loading) {
@@ -55,6 +75,7 @@ const AccountList = () => {
     <View style={styles.container}>
       {accounts && accounts.length > 0 ? (
         <FlatList
+          initialNumToRender={2}
           data={accounts}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
@@ -71,7 +92,7 @@ const AccountList = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 16,
   },
   flatListContent: {
     paddingHorizontal: 16,

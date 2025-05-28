@@ -94,6 +94,7 @@ const EditAccountForm = () => {
           {
             text: "Cancel",
             style: "cancel",
+            onPress: () => {},
           },
           {
             text: "Delete",
