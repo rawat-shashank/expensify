@@ -1,11 +1,11 @@
 import Container from "@/components/UI/Container";
 import colors from "@/constants/colors";
 import { TransactionType } from "@/database/transactionSchema";
-import useProfile from "@/hooks/useProfile";
-import useTransactions from "@/hooks/useTransactions";
-import { useFocusEffect, useRouter } from "expo-router";
+import useProfile from "@/queries/useProfile";
+import useTransactions from "@/queries/useTransactions";
+import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { useCallback, useEffect, useState } from "react";
+
 import {
   ActivityIndicator,
   StyleSheet,
@@ -16,24 +16,12 @@ import {
 } from "react-native";
 
 export default function HomeScreen() {
+  console.log("HomeScreen: Component Rendered");
   const db = useSQLiteContext();
   const { profileData } = useProfile(db);
-  const { transactions, fetchTransactions, loading } = useTransactions(db);
-  const [profileName, setProfileName] = useState("");
+  const { transactions, isLoading: isTransactionsLoading } =
+    useTransactions(db);
   const router = useRouter();
-
-  useEffect(() => {
-    if (profileData) {
-      setProfileName(profileData.name);
-    }
-  }, [profileData]);
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchTransactions();
-      return () => {};
-    }, [fetchTransactions]),
-  );
 
   const handleCardPress = (transactionId: number) => {
     router.push(`/transaction/${transactionId}`);
@@ -70,13 +58,13 @@ export default function HomeScreen() {
     );
   };
 
-  if (loading) {
+  if (isTransactionsLoading) {
     return <ActivityIndicator size={"large"} />;
   }
 
   return (
     <Container>
-      <Text style={styles.title}>{profileName}</Text>
+      <Text style={styles.title}>{profileData?.name}</Text>
       <Text style={styles.subtitle}>Welcome Back!</Text>
       <View style={styles.container}>
         {transactions && transactions.length > 0 ? (

@@ -1,4 +1,4 @@
-import useAccounts from "@/hooks/useAccounts";
+import useAccounts from "@/queries/useAccounts";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState, useEffect } from "react";

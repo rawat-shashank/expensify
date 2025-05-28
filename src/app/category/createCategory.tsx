@@ -1,5 +1,5 @@
-import { CategoryType } from "@/database/categoriesSchema";
-import useCategories from "@/hooks/useCategories";
+import { AddCategoryType, CategoryType } from "@/database/categoriesSchema";
+import useCategories from "@/queries/useCategories";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
@@ -21,7 +21,7 @@ const CreateCategory = ({}: {}) => {
 const CreateCategoryForm = ({
   addCategory,
 }: {
-  addCategory: (title: string, desc: string) => Promise<number | undefined>;
+  addCategory: (newCategory: AddCategoryType) => Promise<number | undefined>;
 }) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
@@ -39,7 +39,7 @@ const CreateCategoryForm = ({
       desc,
     };
 
-    await addCategory(newCategory.title, newCategory.desc);
+    await addCategory(newCategory);
     router.back();
   };
 

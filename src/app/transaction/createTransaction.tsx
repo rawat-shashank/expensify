@@ -1,7 +1,8 @@
-import useTransactions from "@/hooks/useTransactions"; // Create this hook
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { AddTransactionType } from "@/database/transactionSchema";
+import useTransactions from "@/queries/useTransactions"; // Create this hook
+import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,19 +10,29 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import alert from "@/components/Alert";
-import { TransactionType } from "@/database/transactionSchema";
 
-const EditTransactionForm = () => {
+interface CreateTransactionProps {}
+
+const CreateTransaction = ({}: CreateTransactionProps) => {
   const db = useSQLiteContext();
-  const { getTransactionById, deleteTransaction, updateTransaction } =
-    useTransactions(db); // Implement these functions in your hook
+  const { addTransaction } = useTransactions(db);
+
+  return <CreateTransactionForm addTransaction={addTransaction} />;
+};
+
+interface CreateTransactionFormProps {
+  addTransaction: (
+    newTransaction: AddTransactionType,
+  ) => Promise<number | undefined>;
+}
+
+const CreateTransactionForm = ({
+  addTransaction,
+}: CreateTransactionFormProps) => {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
-  const transactionId = typeof id === "string" ? parseInt(id, 10) : undefined;
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
-  const [description, setDesc] = useState("");
+  const [description, setdescription] = useState("");
   const [transaction_date, setTransactionDate] = useState("");
   const [account_id, setAccountId] = useState("");
   const [category_id, setCategoryId] = useState("");
@@ -29,45 +40,13 @@ const EditTransactionForm = () => {
     "expense",
   );
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [currentTransaction, setCurrentTransaction] = useState<
-    TransactionType | undefined
-  >(undefined);
 
-  useEffect(() => {
-    const loadTransaction = async () => {
-      if (transactionId) {
-        setLoading(true);
-        const transaction = await getTransactionById(transactionId);
-        console.log(transaction);
-
-        if (transaction) {
-          setCurrentTransaction(transaction);
-          setTitle(transaction.title);
-          setAmount(transaction.amount.toString());
-          setDesc(transaction.description || "");
-          setTransactionDate(transaction.transaction_date);
-          setAccountId(transaction.account_id.toString());
-          setCategoryId(transaction.category_id.toString());
-          setType(transaction.type);
-        } else {
-          setError("Transaction not found.");
-        }
-        setLoading(false);
-      } else {
-        setError("Invalid transaction ID.");
-        setLoading(false);
-      }
-    };
-
-    loadTransaction();
-  }, [transactionId, getTransactionById]);
-
-  const handleUpdateTransaction = async () => {
+  const handleCreateTransaction = async () => {
     if (
       !title.trim() ||
       !amount.trim() ||
       !transaction_date.trim() ||
+      !account_id.trim() ||
       !category_id.trim() ||
       !type
     ) {
@@ -75,10 +54,16 @@ const EditTransactionForm = () => {
       return;
     }
 
-    console.log("update", transaction_date);
+    console.log("create", transaction_date);
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount)) {
       setError("Amount must be a valid number.");
+      return;
+    }
+
+    const parsedAccountId = parseInt(account_id, 10);
+    if (isNaN(parsedAccountId)) {
+      setError("Account ID must be a valid number.");
       return;
     }
 
@@ -88,79 +73,29 @@ const EditTransactionForm = () => {
       return;
     }
 
+    // Consider converting the date string to a Unix timestamp (number)
     //const timestamp = new Date(date).getTime();
     //if (isNaN(timestamp)) {
     //  setError("Date must be a valid date.");
     //  return;
     //}
 
-    const parsedAccountId = account_id ? parseInt(account_id, 10) : -1;
-    if (account_id && isNaN(parsedAccountId)) {
-      setError("Account ID must be a valid number.");
-      return;
-    }
-
-    if (currentTransaction?.id) {
-      const updatedTransaction: TransactionType = {
-        id: currentTransaction.id,
-        title,
-        amount: parsedAmount,
-        description,
-        transaction_date: transaction_date,
-        account_id: parsedAccountId,
-        category_id: parsedCategoryId,
-        type,
-      };
-
-      await updateTransaction(updatedTransaction);
-      router.back();
-    } else {
-      setError("Could not update transaction: ID is missing.");
-    }
+    const newTransaction: AddTransactionType = {
+      title,
+      amount: parsedAmount,
+      description,
+      transaction_date,
+      account_id: parsedAccountId,
+      category_id: parsedCategoryId,
+      type,
+    };
+    await addTransaction(newTransaction);
+    router.back();
   };
-
-  const handleDeleteTransaction = () => {
-    if (currentTransaction?.id) {
-      alert(
-        "Delete Transaction",
-        `Are you sure you want to delete the transaction "${currentTransaction.title}"?`,
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-            onPress: () => {},
-          },
-
-          {
-            text: "Delete",
-            style: "destructive",
-            onPress: async () => {
-              setLoading(true);
-              const success = await deleteTransaction(currentTransaction.id);
-              setLoading(false);
-              if (success) {
-                router.back();
-              } else {
-                setError("Failed to delete transaction.");
-              }
-            },
-          },
-        ],
-      );
-    }
-  };
-
-  if (loading) {
-    return <Text>Loading transaction details...</Text>;
-  }
-
-  if (error) {
-    return <Text style={styles.error}>{error}</Text>;
-  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Edit Transaction</Text>
+      <Text style={styles.heading}>Create New Transaction</Text>
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       <View style={styles.inputContainer}>
@@ -185,12 +120,12 @@ const EditTransactionForm = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Description:</Text>
+        <Text style={styles.label}>descriptionription:</Text>
         <TextInput
           style={styles.input}
           value={description}
-          onChangeText={setDesc}
-          placeholder="Optional description"
+          onChangeText={setdescription}
+          placeholder="Optional descriptionription"
         />
       </View>
 
@@ -200,24 +135,22 @@ const EditTransactionForm = () => {
           style={styles.input}
           value={transaction_date}
           onChangeText={setTransactionDate}
-          placeholder="YYYY-MM-DD"
+          placeholder="YYYY-MM-DD or other valid format"
         />
+        {/* Consider using a DatePicker component for a better user experience */}
       </View>
 
-      {/* Conditionally render accountId if it exists in your schema */}
-      {currentTransaction?.account_id !== undefined && (
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Account ID:</Text>
-          <TextInput
-            style={styles.input}
-            value={account_id}
-            onChangeText={setAccountId}
-            placeholder="Enter Account ID"
-            keyboardType="numeric"
-          />
-          {/* Consider using a dropdown/picker */}
-        </View>
-      )}
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Account ID:</Text>
+        <TextInput
+          style={styles.input}
+          value={account_id}
+          onChangeText={setAccountId}
+          placeholder="Enter Account ID"
+          keyboardType="numeric"
+        />
+        {/* Consider using a dropdown/picker to select from existing accounts */}
+      </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Category ID:</Text>
@@ -228,7 +161,7 @@ const EditTransactionForm = () => {
           placeholder="Enter Category ID"
           keyboardType="numeric"
         />
-        {/* Consider using a dropdown/picker */}
+        {/* Consider using a dropdown/picker to select from existing categories */}
       </View>
 
       <View style={styles.pickerContainer}>
@@ -287,15 +220,9 @@ const EditTransactionForm = () => {
 
       <TouchableOpacity
         style={styles.createButton}
-        onPress={handleUpdateTransaction}
+        onPress={handleCreateTransaction}
       >
-        <Text style={styles.createButtonText}>Update Transaction</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={handleDeleteTransaction}
-      >
-        <Text style={styles.deleteButtonText}>Delete Transaction</Text>
+        <Text style={styles.createButtonText}>Create Transaction</Text>
       </TouchableOpacity>
     </View>
   );
@@ -363,18 +290,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  deleteButton: {
-    backgroundColor: "#dc3545",
-    paddingVertical: 15,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  deleteButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
 });
 
-export default EditTransactionForm;
+export default CreateTransaction;

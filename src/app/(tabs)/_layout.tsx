@@ -3,7 +3,7 @@ import FloatingActionButton from "@/components/FloatingActionButton";
 import Header from "@/components/Header";
 import { Icons } from "@/components/Icons";
 import colors from "@/constants/colors";
-import useProfile from "@/hooks/useProfile";
+import useProfile from "@/queries/useProfile";
 import { Entypo } from "@expo/vector-icons";
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
@@ -21,7 +21,7 @@ export default function TabLayout() {
   const router = useRouter();
   const db = useSQLiteContext();
   const { profileData, saveProfile } = useProfile(db);
-  const [profileName, setProfileName] = useState("");
+  const [profileName, setProfileName] = useState(profileData?.name || "");
 
   const tabs: TabProps[] = [
     { name: "home", title: "Home", icon: "home" },
@@ -49,8 +49,8 @@ export default function TabLayout() {
   const closeBottomSheet = () => {
     setBottomSheetVisible(false);
   };
-  const handleProfileSubmit = () => {
-    saveProfile(profileName, profileData?.currency || "GBP");
+  const handleProfileSubmit = async () => {
+    await saveProfile(profileName, profileData?.currency || "GBP");
     setBottomSheetVisible(false);
   };
 

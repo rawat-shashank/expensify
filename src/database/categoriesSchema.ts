@@ -1,9 +1,12 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
-interface CategoryType {
-  id: number;
+interface AddCategoryType {
   title: string;
   desc: string;
+}
+
+interface CategoryType extends AddCategoryType {
+  id: number;
 }
 
 const createCategoriesTable = async (db: SQLiteDatabase): Promise<void> => {
@@ -25,10 +28,10 @@ const getAllCategories = async (
 };
 
 const insertCategory = async (
-  title: string,
-  desc: string,
+  newCategory: AddCategoryType,
   db: SQLiteDatabase,
 ): Promise<number> => {
+  const { title, desc } = newCategory;
   const result = await db.runAsync(
     "INSERT INTO categories (title, desc ) VALUES (?, ?);",
     [title, desc],
@@ -70,6 +73,7 @@ const deleteCategory = async (
 };
 
 export {
+  AddCategoryType,
   CategoryType,
   createCategoriesTable,
   getAllCategories,

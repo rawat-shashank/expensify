@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,31 +6,26 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import useAccounts from "@/hooks/useAccounts";
+import useAccounts from "@/queries/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useFocusEffect, useRouter } from "expo-router";
 import { AccountType } from "@/database/accountsSchema";
 import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
-import useTransactions from "@/hooks/useTransactions";
-import { TransactionType } from "@/database/transactionSchema";
+import useTransactions from "@/queries/useTransactions";
 
 const AccountList = () => {
   const db = useSQLiteContext();
   if (!db) {
     return <Text>Database not ready.</Text>;
   }
-  const { accounts, loading, fetchAccounts, deleteAccount } = useAccounts(db);
-  const { transactions, fetchTransactions } = useTransactions(db);
+  const {
+    accounts,
+    isLoading: isAccountLoading,
+    deleteAccount,
+  } = useAccounts(db);
+  const { transactions } = useTransactions(db);
   const router = useRouter();
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchAccounts();
-      fetchTransactions();
-      return () => {};
-    }, [fetchAccounts, fetchTransactions]),
-  );
 
   const handleCardPress = (accountId: number) => {
     router.push(`/account/${accountId}`);
@@ -67,7 +62,7 @@ const AccountList = () => {
     />
   );
 
-  if (loading) {
+  if (isAccountLoading) {
     return <ActivityIndicator size={"large"} />;
   }
 

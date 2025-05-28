@@ -1,5 +1,5 @@
-import { AccountType } from "@/database/accountsSchema";
-import useAccounts from "@/hooks/useAccounts";
+import { AccountType, AddAccountType } from "@/database/accountsSchema";
+import useAccounts from "@/queries/useAccounts";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
@@ -22,13 +22,7 @@ const CreateAccount = ({}: {}) => {
 const CreateAccountForm = ({
   addAccount,
 }: {
-  addAccount: (
-    title: string,
-    accountName: string,
-    amount: number,
-    defaultAccount: boolean,
-    type: "cash" | "wallet" | "bank",
-  ) => Promise<number | undefined>;
+  addAccount: (newAccount: AddAccountType) => Promise<number | undefined>;
 }) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
@@ -50,7 +44,7 @@ const CreateAccountForm = ({
       return;
     }
 
-    const newAccount: Omit<AccountType, "id"> = {
+    const newAccount: AddAccountType = {
       title,
       accountName,
       amount: parsedAmount,
@@ -58,13 +52,7 @@ const CreateAccountForm = ({
       type,
     };
 
-    await addAccount(
-      newAccount.title,
-      newAccount.accountName,
-      newAccount.amount,
-      newAccount.defaultAccount,
-      newAccount.type,
-    );
+    await addAccount(newAccount);
     router.back();
   };
 

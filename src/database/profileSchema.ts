@@ -29,7 +29,7 @@ const insertDefaultUserData = async (
   database: SQLiteDatabase,
 ): Promise<void> => {
   const sql = "INSERT INTO profiles (id, name, currency) VALUES (?, ?, ?);";
-  await database.runAsync(sql, [1, "Shanky", "GBP"]);
+  await database.runAsync(sql, [1, "test", "GBP"]);
 };
 
 const saveProfileData = async (

@@ -1,7 +1,6 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
-interface TransactionType {
-  id: number;
+interface AddTransactionType {
   title: string;
   amount: number;
   description: string;
@@ -9,6 +8,10 @@ interface TransactionType {
   account_id: number;
   category_id: number;
   type: "expense" | "income" | "transfer";
+}
+
+interface TransactionType extends AddTransactionType {
+  id: number;
 }
 
 const createTransactionTable = async (db: SQLiteDatabase): Promise<void> => {
@@ -28,15 +31,19 @@ const createTransactionTable = async (db: SQLiteDatabase): Promise<void> => {
 };
 
 const insertTransaction = async (
-  title: string,
-  amount: number,
-  description: string,
-  transaction_date: string,
-  account_id: number,
-  category_id: number,
-  type: "expense" | "income" | "transfer",
+  newTransaction: AddTransactionType,
   db: SQLiteDatabase,
 ): Promise<number> => {
+  const {
+    title,
+    amount,
+    description,
+    transaction_date,
+    account_id,
+    category_id,
+    type,
+  } = newTransaction;
+
   const result = await db.runAsync(
     "INSERT INTO transactions (title, amount, description, transaction_date, account_id, category_id, type) VALUES (?, ?, ?, ?, ?, ?, ?);",
     [
@@ -115,15 +122,16 @@ const deleteTransaction = async (
 const getTransactionsByAccountId = async (
   id: number,
   db: SQLiteDatabase,
-): Promise<TransactionType[] | null> => {
+): Promise<TransactionType[]> => {
   const result = await db.getFirstAsync(
     "SELECT * FROM transactions WHERE account_id = ?;",
     [id],
   );
-  return result ? (result as TransactionType[]) : null;
+  return result ? (result as TransactionType[]) : [];
 };
 
 export {
+  AddTransactionType,
   TransactionType,
   createTransactionTable,
   getAllTransactions,

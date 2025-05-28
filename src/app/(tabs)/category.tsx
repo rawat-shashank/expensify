@@ -1,8 +1,7 @@
 import { CategoryType } from "@/database/categoriesSchema";
-import useCategories from "@/hooks/useCategories";
-import { useFocusEffect, useRouter } from "expo-router";
+import useCategories from "@/queries/useCategories";
+import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import React, { useCallback } from "react";
 import {
   Text,
   View,
@@ -17,15 +16,8 @@ const CategoryList = () => {
   if (!db) {
     return <Text>Database not ready.</Text>;
   }
-  const { categories, loading, fetchCategories } = useCategories(db);
+  const { categories, isLoading: isCategoriesLoading } = useCategories(db);
   const router = useRouter();
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchCategories();
-      return () => {};
-    }, [fetchCategories]),
-  );
 
   const handleCardPress = (categoryId: number) => {
     router.push(`/category/${categoryId}`);
@@ -39,7 +31,7 @@ const CategoryList = () => {
     </TouchableOpacity>
   );
 
-  if (loading) {
+  if (isCategoriesLoading) {
     return <ActivityIndicator size={"large"} />;
   }
 

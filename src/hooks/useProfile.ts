@@ -22,10 +22,12 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
   const [error, setError] = useState<Error | null>(null);
 
   const fetchProfile = useCallback(async () => {
+    console.log("useProfile: fetchProfile called!"); // Add this
     try {
       setLoading(true);
       const data = await getProfileData(db);
       setProfileData(data);
+      console.log("useProfile: Fetched data:", data); // Add this
       setError(null);
     } catch (err: any) {
       setError(err);
@@ -34,7 +36,7 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [db]);
 
   const saveProfile = useCallback(
     async (name: string, currency: string) => {
@@ -49,7 +51,7 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
         setLoading(false);
       }
     },
-    [fetchProfile],
+    [fetchProfile, db],
   );
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
       }
     };
     initialize();
-  }, [fetchProfile]);
+  }, [fetchProfile, db]);
 
   return { profileData, loading, error, saveProfile, fetchProfile };
 };

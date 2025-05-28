@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import alert from "@/components/Alert";
-import useCategories from "@/hooks/useCategories";
+import useCategories from "@/queries/useCategories";
 import { CategoryType } from "@/database/categoriesSchema";
 
 const EditCategoryForm = () => {

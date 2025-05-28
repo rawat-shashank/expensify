@@ -1,12 +1,15 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
-interface AccountType {
-  id: number;
+interface AddAccountType {
   title: string;
   accountName: string;
   amount: number;
   defaultAccount: boolean;
   type: "cash" | "wallet" | "bank";
+}
+
+interface AccountType extends AddAccountType {
+  id: number;
 }
 
 const createAccountsTable = async (db: SQLiteDatabase): Promise<void> => {
@@ -24,13 +27,10 @@ const createAccountsTable = async (db: SQLiteDatabase): Promise<void> => {
 };
 
 const insertAccount = async (
-  title: string,
-  accountName: string,
-  amount: number,
-  defaultAccount: boolean,
-  type: "cash" | "wallet" | "bank",
+  newAccount: AddAccountType,
   db: SQLiteDatabase,
 ): Promise<number> => {
+  const { title, accountName, amount, defaultAccount, type } = newAccount;
   const result = await db.runAsync(
     "INSERT INTO accounts (title, accountName, amount, defaultAccount, type) VALUES (?, ?, ?, ?, ?);",
     [title, accountName, amount, defaultAccount ? 1 : 0, type],
@@ -75,11 +75,12 @@ const deleteAccount = async (
 };
 
 export {
+  AddAccountType,
+  AccountType,
   createAccountsTable,
   insertAccount,
   getAllAccounts,
   getAccountById,
   deleteAccount,
   updateAccount,
-  AccountType,
 };
