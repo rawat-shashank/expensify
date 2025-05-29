@@ -1,8 +1,8 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
 interface AddCategoryType {
-  title: string;
-  desc: string;
+  title: string; // category
+  desc: string; // description of the category
 }
 
 interface CategoryType extends AddCategoryType {

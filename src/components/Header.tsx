@@ -6,15 +6,20 @@ import { Icons } from "./Icons";
 interface HeaderProps {
   title: string;
   onProfilePress: () => void;
+  onMenuPress: () => void;
   menuIconName?: string;
   profileIconName?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ title, onProfilePress }) => {
+const Header: React.FC<HeaderProps> = ({
+  title,
+  onProfilePress,
+  onMenuPress,
+}) => {
   return (
     <View style={styles.header}>
       <View style={styles.leftSection}>
-        <TouchableOpacity onPress={() => console.log("Menu Pressed")}>
+        <TouchableOpacity onPress={onMenuPress}>
           <Icons name="menu" size={28} color={colors.textPrimary} />
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>

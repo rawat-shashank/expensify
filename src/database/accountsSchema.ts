@@ -1,8 +1,8 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
 interface AddAccountType {
-  title: string;
-  accountName: string;
+  title: string; //account holder's name
+  accountName: string; //account name
   amount: number;
   defaultAccount: boolean;
   type: "cash" | "wallet" | "bank";

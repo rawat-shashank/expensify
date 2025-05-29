@@ -1,4 +1,5 @@
 import { CustomBottomSheet } from "@/components/BottomSheet";
+import { CustomSheet } from "@/components/customSheet";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import Header from "@/components/Header";
 import { Icons } from "@/components/Icons";
@@ -35,6 +36,7 @@ export default function TabLayout() {
   const index = tabs.findIndex((tab) => tab.name == pathname.slice(1));
   const [activeTabIndex, setActiveIndex] = useState(index === -1 ? 0 : index);
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [isCustomSheetVisible, setCustomSheetVisible] = useState(false);
 
   useEffect(() => {
     if (profileData) {
@@ -46,9 +48,18 @@ export default function TabLayout() {
     setBottomSheetVisible(true);
   };
 
+  const handleMenuPress = () => {
+    setCustomSheetVisible(true);
+  };
+
   const closeBottomSheet = () => {
     setBottomSheetVisible(false);
   };
+
+  const closeCustomSheet = () => {
+    setCustomSheetVisible(false);
+  };
+
   const handleProfileSubmit = async () => {
     await saveProfile(profileName, profileData?.currency || "GBP");
     setBottomSheetVisible(false);
@@ -76,6 +87,7 @@ export default function TabLayout() {
       <Header
         title={tabs[activeTabIndex].title}
         onProfilePress={handleProfileTabPress}
+        onMenuPress={handleMenuPress}
       />
       <View
         style={{ flex: 1, position: "relative", backgroundColor: colors.bg }}
@@ -159,6 +171,23 @@ export default function TabLayout() {
           </>
         </View>
       </CustomBottomSheet>
+      <CustomSheet
+        isVisible={isCustomSheetVisible}
+        onClose={closeCustomSheet}
+        direction="left"
+      >
+        <View>
+          <Text>this is sidebar</Text>
+          <TouchableOpacity
+            onPress={() => {
+              closeCustomSheet();
+              router.push("/settings");
+            }}
+          >
+            <Text>Settings</Text>
+          </TouchableOpacity>
+        </View>
+      </CustomSheet>
     </Fragment>
   );
 }
