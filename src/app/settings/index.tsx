@@ -13,7 +13,6 @@ interface SettingItem {
   id: string;
   title: string;
   description: string;
-  href: string;
 }
 
 // Data for our settings list
@@ -22,7 +21,6 @@ const settingsData: SettingItem[] = [
     id: "importExport",
     title: "Backup and restore",
     description: "Backup and restore your expenses, accounts & categories",
-    href: "/settings/backup",
   },
 ];
 
@@ -33,7 +31,7 @@ export default function SettingsMenuScreen() {
       style={styles.itemContainer}
       activeOpacity={0.7}
       onPress={() => {
-        router.push("/settings/backup");
+        router.push("/settings/backupRestore");
       }}
     >
       <View style={styles.textContainer}>

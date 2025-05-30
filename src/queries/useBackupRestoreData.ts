@@ -1,47 +1,68 @@
 import { SQLiteDatabase } from "expo-sqlite";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   exportAllDataToJson,
+  importAllDataFromJson,
   BackupRestoreType,
 } from "@/database/exportsSchema";
 
-const BACKUP_RESTORE_QUERY_KEY = ["exportData", "allJoined"];
+const BACKUP_QUERY_KEY = ["backupData"];
+const RESTORE_MUTATION_KEY = ["restoreData"];
 
 interface UseBackupRestoreDataResult {
-  exportedData: BackupRestoreType | null | undefined;
-  isBackupRestoring: boolean;
+  exportedData: BackupRestoreType | undefined;
+  isExporting: boolean;
   exportError: Error | null;
-  triggerBackupRestore: () => Promise<void>;
+  triggerExport: () => Promise<void>;
+  isRestoring: boolean;
+  restoreError: Error | null;
+  triggerRestore: (data: BackupRestoreType) => Promise<void>;
 }
 
 export const useBackupRestoreData = (
   db: SQLiteDatabase,
 ): UseBackupRestoreDataResult => {
+  const queryClient = useQueryClient();
+
+  //1. Export to Json Logic
   const {
     data: exportedData,
-    isLoading: isBackupRestoring,
+    isLoading: isExporting,
     error: exportError,
-    refetch,
+    refetch: refetchBackup,
   } = useQuery<BackupRestoreType, Error>({
-    queryKey: BACKUP_RESTORE_QUERY_KEY,
-    queryFn: () => exportAllDataToJson(db).then((data) => data || []),
+    queryKey: BACKUP_QUERY_KEY,
+    queryFn: () => exportAllDataToJson(db),
     enabled: false,
     retry: false,
   });
 
-  // Function to explicitly trigger the export
-  const triggerBackupRestore = async () => {
-    try {
-      await refetch();
-    } catch (err) {
-      console.error("Manual export trigger failed:", err);
-    }
-  };
+  // 2. --- Import/Restore Logic ---
+  const {
+    mutateAsync: triggerRestore, // Renamed mutateAsync for clarity
+    isPending: isRestoring,
+    error: restoreError,
+  } = useMutation<void, Error, BackupRestoreType>({
+    mutationKey: RESTORE_MUTATION_KEY,
+    mutationFn: (data: BackupRestoreType) => importAllDataFromJson(db, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      console.log("Data successfully restored!");
+    },
+    onError: (error) => {
+      console.error("Error during data restore:", error);
+    },
+  });
 
   return {
     exportedData,
-    isBackupRestoring,
+    isExporting,
     exportError,
-    triggerBackupRestore,
+    triggerExport: async () => {
+      await refetchBackup();
+    },
+    isRestoring,
+    restoreError,
+    triggerRestore,
   };
 };

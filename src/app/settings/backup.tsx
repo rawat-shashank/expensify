@@ -16,13 +16,13 @@ import { useBackupRestoreData } from "@/queries/useBackupRestoreData"; // Adjust
 
 const ExportDataComponent: React.FC = () => {
   const db = useSQLiteContext();
-  const { exportedData, isBackupRestoring, exportError, triggerBackupRestore } =
+  const { exportedData, isExporting, exportError, triggerExport } =
     useBackupRestoreData(db);
   const [shouldTriggerDownload, setShouldTriggerDownload] = useState(false);
 
   const handleExportClick = async () => {
-    if (!isBackupRestoring) {
-      await triggerBackupRestore();
+    if (!isExporting) {
+      await triggerExport();
       setShouldTriggerDownload(true);
     }
   };
@@ -96,12 +96,7 @@ const ExportDataComponent: React.FC = () => {
 
   useEffect(() => {
     // Only call download/share handler if export completed successfully
-    if (
-      shouldTriggerDownload &&
-      exportedData &&
-      !isBackupRestoring &&
-      !exportError
-    ) {
+    if (shouldTriggerDownload && exportedData && !isExporting && !exportError) {
       handleDownloadOrShare(exportedData);
       setShouldTriggerDownload(false);
     } else if (exportError) {
@@ -112,16 +107,16 @@ const ExportDataComponent: React.FC = () => {
       );
       setShouldTriggerDownload(false);
     }
-  }, [shouldTriggerDownload, exportedData, isBackupRestoring, exportError]); // Dependencies for useEffect
+  }, [shouldTriggerDownload, exportedData, isExporting, exportError]); // Dependencies for useEffect
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Export All Data</Text>
       <Button
         onPress={handleExportClick}
-        title={isBackupRestoring ? "Exporting..." : "Export Data to JSON"}
-        disabled={isBackupRestoring}
-        color={isBackupRestoring ? "#ccc" : "#007bff"}
+        title={isExporting ? "Exporting..." : "Export Data to JSON"}
+        disabled={isExporting}
+        color={isExporting ? "#ccc" : "#007bff"}
       />
     </View>
   );
