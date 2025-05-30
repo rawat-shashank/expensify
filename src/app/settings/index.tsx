@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 import React from "react";
 import {
   View,
@@ -13,6 +13,7 @@ interface SettingItem {
   id: string;
   title: string;
   description: string;
+  href?: Href;
 }
 
 // Data for our settings list
@@ -21,6 +22,7 @@ const settingsData: SettingItem[] = [
     id: "importExport",
     title: "Backup and restore",
     description: "Backup and restore your expenses, accounts & categories",
+    href: "/settings/backupRestore",
   },
 ];
 
@@ -31,7 +33,12 @@ export default function SettingsMenuScreen() {
       style={styles.itemContainer}
       activeOpacity={0.7}
       onPress={() => {
-        router.push("/settings/backupRestore");
+        if (item.href) {
+          // if route exists push to router
+          router.push(item.href);
+        } else {
+          // TODO: will handle it with modals/customSheet component
+        }
       }}
     >
       <View style={styles.textContainer}>

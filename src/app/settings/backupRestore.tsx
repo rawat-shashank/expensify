@@ -1,8 +1,8 @@
 // components/ExportDataComponent.tsx
 import { useSQLiteContext } from "expo-sqlite";
-import React, { useEffect, useState, useRef } from "react"; // Import useRef
+import React, { useEffect, useState, useRef } from "react";
 import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
-import * as DocumentPicker from "expo-document-picker"; // For picking files on native
+import * as DocumentPicker from "expo-document-picker";
 
 // Conditionally import Expo modules for native platforms
 let Sharing: typeof import("expo-sharing") | undefined;
@@ -27,20 +27,25 @@ const ExportDataComponent: React.FC = () => {
     triggerRestore,
   } = useBackupRestoreData(db);
 
-  const [shouldTriggerDownload, setShouldTriggerDownload] = useState(false);
+  const [shouldTriggerExportAction, setShouldTriggerExportAction] = useState<
+    "share" | "download" | null
+  >(null);
   const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null); // Ref for web file input
 
   // --- Export/Backup Logic ---
-  const handleExportClick = async () => {
+  const handleExportClick = async (action: "share" | "download") => {
     if (!isExporting) {
       await triggerExport();
-      setShouldTriggerDownload(true);
+      setShouldTriggerExportAction(action);
     }
   };
 
   // --- Platform-specific download/share logic for Export ---
-  const handleDownloadOrShare = async (data: any) => {
+  const handleExportAction = async (
+    data: any,
+    action: "share" | "download",
+  ) => {
     if (!data) {
       Alert.alert("Error", "No data to export.");
       return;
@@ -68,52 +73,111 @@ const ExportDataComponent: React.FC = () => {
         Alert.alert("Error", `Failed to download data: ${err.message}`);
       }
     } else {
+      // --- Native (iOS/Android) download/sharing logic ---
       if (!FileSystem || !Sharing) {
         Alert.alert("Error", "File system or sharing modules not loaded.");
         return;
       }
 
+      const fileUri = FileSystem.cacheDirectory + fileName;
+
       try {
-        const fileUri = FileSystem.cacheDirectory + fileName;
         await FileSystem.writeAsStringAsync(fileUri, jsonString, {
           encoding: FileSystem.EncodingType.UTF8,
         });
 
-        if (!(await Sharing.isAvailableAsync())) {
-          Alert.alert(
-            "Sharing not available",
-            "Sharing files is not supported on this device.",
-          );
-          return;
+        if (action === "share") {
+          if (!(await Sharing.isAvailableAsync())) {
+            Alert.alert(
+              "Sharing not available",
+              "Sharing files is not supported on this device.",
+            );
+            return;
+          }
+          await Sharing.shareAsync(fileUri, {
+            mimeType: "application/json",
+            dialogTitle: "Share your finance data",
+            UTI: "public.json",
+          });
+          Alert.alert("Success", "Data exported and sharing dialog opened!");
+        } else if (action === "download") {
+          if (Platform.OS === "android") {
+            const permissions =
+              await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+            if (permissions.granted) {
+              const directoryUri = permissions.directoryUri;
+              const newFileUri =
+                await FileSystem.StorageAccessFramework.createFileAsync(
+                  directoryUri,
+                  fileName,
+                  "application/json",
+                );
+              await FileSystem.writeAsStringAsync(newFileUri, jsonString);
+              Alert.alert(
+                "Download Successful",
+                `File saved to: ${directoryUri.split("%2F").pop() || "Downloads"}`,
+              );
+            } else {
+              Alert.alert(
+                "Permission Denied",
+                "Cannot save file without storage permissions.",
+              );
+            }
+          } else if (Platform.OS === "ios") {
+            // On iOS, "sharing" to the Files app is the primary way to "download"
+            // There's no direct "Downloads" folder like Android.
+            if (!(await Sharing.isAvailableAsync())) {
+              Alert.alert(
+                "Sharing not available",
+                "Sharing files is not supported on this device.",
+              );
+              return;
+            }
+            await Sharing.shareAsync(fileUri, {
+              mimeType: "application/json",
+              dialogTitle: "Save your finance data",
+              UTI: "public.json",
+            });
+            Alert.alert(
+              "Success",
+              "Sharing dialog opened. Choose 'Save to Files' to download.",
+            );
+          }
         }
-
-        await Sharing.shareAsync(fileUri, {
-          mimeType: "application/json",
-          dialogTitle: "Share your finance data",
-          UTI: "public.json",
-        });
-
-        Alert.alert("Success", "Data exported and sharing dialog opened!");
       } catch (err: any) {
-        console.error("Error sharing JSON file (Native):", err);
-        Alert.alert("Error", `Failed to export or share data: ${err.message}`);
+        console.error("Error with export action (Native):", err);
+        Alert.alert("Error", `Failed to complete action: ${err.message}`);
+      } finally {
+        // Clean up the temporary file if it was created
+        try {
+          if (await FileSystem.getInfoAsync(fileUri)) {
+            await FileSystem.deleteAsync(fileUri);
+          }
+        } catch (e) {
+          console.warn("Failed to delete temp file:", e);
+        }
       }
     }
   };
 
   // Effect to handle export completion and trigger download/share
   useEffect(() => {
-    if (shouldTriggerDownload && exportedData && !isExporting && !exportError) {
-      handleDownloadOrShare(exportedData);
-      setShouldTriggerDownload(false);
+    if (
+      shouldTriggerExportAction &&
+      exportedData &&
+      !isExporting &&
+      !exportError
+    ) {
+      handleExportAction(exportedData, shouldTriggerExportAction);
+      setShouldTriggerExportAction(null); // Reset
     } else if (exportError) {
       Alert.alert(
         "Export Failed",
         exportError.message || "An unknown error occurred during export.",
       );
-      setShouldTriggerDownload(false);
+      setShouldTriggerExportAction(null); // Reset
     }
-  }, [shouldTriggerDownload, exportedData, isExporting, exportError]);
+  }, [shouldTriggerExportAction, exportedData, isExporting, exportError]);
 
   // --- Restore/Import Logic ---
 
@@ -194,11 +258,23 @@ const ExportDataComponent: React.FC = () => {
           Export all your financial records to a JSON file.
         </Text>
         <Button
-          onPress={handleExportClick}
-          title={isExporting ? "Exporting..." : "Export Data to JSON"}
+          onPress={() => handleExportClick("share")}
+          title={
+            isExporting ? "Exporting..." : "Share Data (e.g., Email, Cloud)"
+          }
           disabled={isExporting || isRestoring}
           color={isExporting ? "#ccc" : "#007bff"}
         />
+        {Platform.OS !== "web" && (
+          <View style={{ marginTop: 10, width: "100%" }}>
+            <Button
+              onPress={() => handleExportClick("download")}
+              title={isExporting ? "Exporting..." : "Download Data (to device)"}
+              disabled={isExporting || isRestoring}
+              color={isExporting ? "#ccc" : "#00aaff"} // A different color for download
+            />
+          </View>
+        )}
         {exportError && (
           <Text style={styles.errorText}>
             Export Error: {exportError.message}
@@ -220,7 +296,7 @@ const ExportDataComponent: React.FC = () => {
             type="file"
             ref={fileInputRef}
             onChange={handleWebFileChange}
-            style={{ display: "none" }} // Hide the native input
+            style={{ display: "none" }}
             accept=".json"
           />
         )}
