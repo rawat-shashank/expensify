@@ -38,16 +38,18 @@ export default function RootLayout() {
       }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <SQLiteProvider
-          databaseName="expensify.db"
-          // @NOTE: this assetSource databse is read only
-          //assetSource={{ assetId: require("../assets/expensify.db") }}
-          onInit={initializeDatabase}
-        >
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />;
-          </Stack>
-        </SQLiteProvider>
+        <QueryClientProvider client={queryClient}>
+          <SQLiteProvider
+            databaseName="expensify.db"
+            // @NOTE: this assetSource databse is read only
+            //assetSource={{ assetId: require("../assets/expensify.db") }}
+            onInit={initializeDatabase}
+          >
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />;
+            </Stack>
+          </SQLiteProvider>
+        </QueryClientProvider>
       </GestureHandlerRootView>
     </SafeAreaView>
   );
