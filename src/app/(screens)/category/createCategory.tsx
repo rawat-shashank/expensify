@@ -1,6 +1,7 @@
+import Container from "@/components/UI/Container";
 import { AddCategoryType, CategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/useCategories";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import {
@@ -44,37 +45,40 @@ const CreateCategoryForm = ({
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Create New Category</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+    <>
+      <Stack.Screen options={{ title: "Add Category" }} />
+      <Container>
+        <Text style={styles.heading}>Create New Category</Text>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Title:</Text>
-        <TextInput
-          style={styles.input}
-          value={title}
-          onChangeText={setTitle}
-          placeholder="e.g., Housing, Grocries"
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Title:</Text>
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={setTitle}
+            placeholder="e.g., Housing, Grocries"
+          />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Category Description:</Text>
-        <TextInput
-          style={styles.input}
-          value={desc}
-          onChangeText={setDesc}
-          placeholder="e.g., Category description"
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Category Description:</Text>
+          <TextInput
+            style={styles.input}
+            value={desc}
+            onChangeText={setDesc}
+            placeholder="e.g., Category description"
+          />
+        </View>
 
-      <TouchableOpacity
-        style={styles.createButton}
-        onPress={handleCreateCategory}
-      >
-        <Text style={styles.createButtonText}>Create Category</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={handleCreateCategory}
+        >
+          <Text style={styles.createButtonText}>Create Category</Text>
+        </TouchableOpacity>
+      </Container>
+    </>
   );
 };
 

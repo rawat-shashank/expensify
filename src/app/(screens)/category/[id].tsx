@@ -1,4 +1,4 @@
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState, useEffect } from "react";
 import {
@@ -11,6 +11,7 @@ import {
 import alert from "@/components/Alert";
 import useCategories from "@/queries/useCategories";
 import { CategoryType } from "@/database/categoriesSchema";
+import Container from "@/components/UI/Container";
 
 const EditCategoryForm = () => {
   const db = useSQLiteContext();
@@ -107,43 +108,46 @@ const EditCategoryForm = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Edit Category</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+    <>
+      <Stack.Screen options={{ title: "Update Category" }} />
+      <Container>
+        <Text style={styles.heading}>Edit Category</Text>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Title:</Text>
-        <TextInput
-          style={styles.input}
-          value={title}
-          onChangeText={setTitle}
-          placeholder="e.g., Savings, Main Wallet"
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Title:</Text>
+          <TextInput
+            style={styles.input}
+            value={title}
+            onChangeText={setTitle}
+            placeholder="e.g., Savings, Main Wallet"
+          />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Category Description:</Text>
-        <TextInput
-          style={styles.input}
-          value={desc}
-          onChangeText={setDesc}
-          placeholder="e.g., My Bank Category, Personal Wallet"
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Category Description:</Text>
+          <TextInput
+            style={styles.input}
+            value={desc}
+            onChangeText={setDesc}
+            placeholder="e.g., My Bank Category, Personal Wallet"
+          />
+        </View>
 
-      <TouchableOpacity
-        style={styles.createButton}
-        onPress={handleUpdateCategory}
-      >
-        <Text style={styles.createButtonText}>Update Category</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={handleDeleteCategory}
-      >
-        <Text style={styles.deleteButtonText}>Delete Category</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={handleUpdateCategory}
+        >
+          <Text style={styles.createButtonText}>Update Category</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={handleDeleteCategory}
+        >
+          <Text style={styles.deleteButtonText}>Delete Category</Text>
+        </TouchableOpacity>
+      </Container>
+    </>
   );
 };
 

@@ -14,6 +14,8 @@ if (Platform.OS !== "web") {
 
 import { useBackupRestoreData } from "@/queries/useBackupRestoreData"; // Adjust path as needed
 import { BackupRestoreType } from "@/database/exportsSchema";
+import Container from "@/components/UI/Container";
+import { Stack } from "expo-router";
 
 const ExportDataComponent: React.FC = () => {
   const db = useSQLiteContext();
@@ -248,76 +250,81 @@ const ExportDataComponent: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Backup and Restore Data</Text>
+    <>
+      <Stack.Screen options={{ title: "Settings" }} />
+      <Container>
+        <Text style={styles.title}>Backup and Restore Data</Text>
 
-      {/* Backup Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Backup Your Data</Text>
-        <Text style={styles.sectionDescription}>
-          Export all your financial records to a JSON file.
-        </Text>
-        <Button
-          onPress={() => handleExportClick("share")}
-          title={
-            isExporting ? "Exporting..." : "Share Data (e.g., Email, Cloud)"
-          }
-          disabled={isExporting || isRestoring}
-          color={isExporting ? "#ccc" : "#007bff"}
-        />
-        {Platform.OS !== "web" && (
-          <View style={{ marginTop: 10, width: "100%" }}>
-            <Button
-              onPress={() => handleExportClick("download")}
-              title={isExporting ? "Exporting..." : "Download Data (to device)"}
-              disabled={isExporting || isRestoring}
-              color={isExporting ? "#ccc" : "#00aaff"} // A different color for download
-            />
-          </View>
-        )}
-        {exportError && (
-          <Text style={styles.errorText}>
-            Export Error: {exportError.message}
+        {/* Backup Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Backup Your Data</Text>
+          <Text style={styles.sectionDescription}>
+            Export all your financial records to a JSON file.
           </Text>
-        )}
-      </View>
-
-      <View style={styles.separator} />
-
-      {/* Restore Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Restore Your Data</Text>
-        <Text style={styles.sectionDescription}>
-          Import data from a previously exported JSON file. This will overwrite
-          your current data.
-        </Text>
-        {Platform.OS === "web" && (
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleWebFileChange}
-            style={{ display: "none" }}
-            accept=".json"
+          <Button
+            onPress={() => handleExportClick("share")}
+            title={
+              isExporting ? "Exporting..." : "Share Data (e.g., Email, Cloud)"
+            }
+            disabled={isExporting || isRestoring}
+            color={isExporting ? "#ccc" : "#007bff"}
           />
-        )}
-        <Button
-          onPress={handleFilePick}
-          title={isRestoring ? "Restoring..." : "Select File & Restore Data"}
-          disabled={isRestoring || isExporting}
-          color={isRestoring ? "#ccc" : "#28a745"}
-        />
-        {selectedFileName && (
-          <Text style={styles.selectedFileText}>
-            Selected: {selectedFileName}
+          {Platform.OS !== "web" && (
+            <View style={{ marginTop: 10, width: "100%" }}>
+              <Button
+                onPress={() => handleExportClick("download")}
+                title={
+                  isExporting ? "Exporting..." : "Download Data (to device)"
+                }
+                disabled={isExporting || isRestoring}
+                color={isExporting ? "#ccc" : "#00aaff"} // A different color for download
+              />
+            </View>
+          )}
+          {exportError && (
+            <Text style={styles.errorText}>
+              Export Error: {exportError.message}
+            </Text>
+          )}
+        </View>
+
+        <View style={styles.separator} />
+
+        {/* Restore Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Restore Your Data</Text>
+          <Text style={styles.sectionDescription}>
+            Import data from a previously exported JSON file. This will
+            overwrite your current data.
           </Text>
-        )}
-        {restoreError && (
-          <Text style={styles.errorText}>
-            Restore Error: {restoreError.message}
-          </Text>
-        )}
-      </View>
-    </View>
+          {Platform.OS === "web" && (
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleWebFileChange}
+              style={{ display: "none" }}
+              accept=".json"
+            />
+          )}
+          <Button
+            onPress={handleFilePick}
+            title={isRestoring ? "Restoring..." : "Select File & Restore Data"}
+            disabled={isRestoring || isExporting}
+            color={isRestoring ? "#ccc" : "#28a745"}
+          />
+          {selectedFileName && (
+            <Text style={styles.selectedFileText}>
+              Selected: {selectedFileName}
+            </Text>
+          )}
+          {restoreError && (
+            <Text style={styles.errorText}>
+              Restore Error: {restoreError.message}
+            </Text>
+          )}
+        </View>
+      </Container>
+    </>
   );
 };
 

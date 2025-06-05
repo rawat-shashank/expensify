@@ -1,4 +1,5 @@
-import { Href, useRouter } from "expo-router";
+import Container from "@/components/UI/Container";
+import { Href, Stack, useRouter } from "expo-router";
 import React from "react";
 import {
   View,
@@ -50,16 +51,18 @@ export default function SettingsMenuScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Settings</Text>
-      <FlatList
-        data={settingsData}
-        renderItem={renderSettingItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
-    </View>
+    <>
+      <Stack.Screen options={{ title: "Settings" }} />
+      <Container>
+        <FlatList
+          data={settingsData}
+          renderItem={renderSettingItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
+      </Container>
+    </>
   );
 }
 

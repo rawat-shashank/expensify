@@ -1,4 +1,3 @@
-import React, { useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,11 +7,12 @@ import {
 } from "react-native";
 import useAccounts from "@/queries/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { AccountType } from "@/database/accountsSchema";
 import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
 import useTransactions from "@/queries/useTransactions";
+import Container from "@/components/UI/Container";
 
 const AccountList = () => {
   const db = useSQLiteContext();
@@ -67,21 +67,23 @@ const AccountList = () => {
   }
 
   return (
-    <View style={styles.container}>
-      {accounts && accounts.length > 0 ? (
-        <FlatList
-          initialNumToRender={2}
-          data={accounts}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.flatListContent}
-        />
-      ) : (
-        <Text>No accounts created yet.</Text>
-      )}
-    </View>
+    <Container>
+      <View style={styles.container}>
+        {accounts && accounts.length > 0 ? (
+          <FlatList
+            initialNumToRender={2}
+            data={accounts}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.flatListContent}
+          />
+        ) : (
+          <Text>No accounts created yet.</Text>
+        )}
+      </View>
+    </Container>
   );
 };
 

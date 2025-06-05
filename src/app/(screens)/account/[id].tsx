@@ -1,5 +1,5 @@
 import useAccounts from "@/queries/useAccounts";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState, useEffect } from "react";
 import {
@@ -8,7 +8,6 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Switch,
 } from "react-native";
 import alert from "@/components/Alert";
 import { AccountType } from "@/database/accountsSchema";
@@ -19,11 +18,11 @@ const EditAccountForm = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   const accountId = typeof id === "string" ? parseInt(id, 10) : undefined;
-  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
   const [accountName, setAccountName] = useState("");
   const [amount, setAmount] = useState("");
-  const [defaultAccount, setDefaultAccount] = useState(false);
-  const [type, setType] = useState<"cash" | "wallet" | "bank">("cash");
+  const [color, setColor] = useState<string | undefined>("");
+  const [cardType, setCardType] = useState<"cash" | "wallet" | "bank">("cash");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentAccount, setCurrentAccount] = useState<AccountType | undefined>(
@@ -38,11 +37,11 @@ const EditAccountForm = () => {
 
         if (account) {
           setCurrentAccount(account);
-          setTitle(account.title);
+          setName(account.name);
           setAccountName(account.accountName);
           setAmount(account.amount.toString());
-          setDefaultAccount(account.defaultAccount);
-          setType(account.type);
+          setColor(account.color);
+          setCardType(account.cardType);
         } else {
           setError("Account not found.");
         }
@@ -57,7 +56,7 @@ const EditAccountForm = () => {
   }, [accountId, getAccountById]);
 
   const handleUpdateAccount = async () => {
-    if (!title.trim() || !accountName.trim() || !amount.trim()) {
+    if (!name.trim() || !accountName.trim() || !amount.trim()) {
       setError("Please fill in all fields.");
       return;
     }
@@ -71,11 +70,11 @@ const EditAccountForm = () => {
     if (currentAccount?.id) {
       const updatedAccount: AccountType = {
         id: currentAccount.id,
-        title,
+        name,
         accountName,
         amount: parsedAmount,
-        defaultAccount,
-        type,
+        color,
+        cardType,
       };
 
       await updateAccount(updatedAccount);
@@ -89,7 +88,7 @@ const EditAccountForm = () => {
     if (currentAccount?.id) {
       alert(
         "Delete Account",
-        `Are you sure you want to delete the account "${currentAccount.title}"?`,
+        `Are you sure you want to delete the account "${currentAccount.name}"?`,
         [
           {
             text: "Cancel",
@@ -124,113 +123,111 @@ const EditAccountForm = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Edit Account</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+    <>
+      <Stack.Screen options={{ title: "Update Account" }} />
+      <View style={styles.container}>
+        <Text style={styles.heading}>Edit Account</Text>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Title:</Text>
-        <TextInput
-          style={styles.input}
-          value={title}
-          onChangeText={setTitle}
-          placeholder="e.g., Savings, Main Wallet"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Account Name:</Text>
-        <TextInput
-          style={styles.input}
-          value={accountName}
-          onChangeText={setAccountName}
-          placeholder="e.g., My Bank Account, Personal Wallet"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Amount:</Text>
-        <TextInput
-          style={styles.input}
-          value={amount}
-          onChangeText={setAmount}
-          placeholder="e.g., 100.50"
-          keyboardType="numeric"
-        />
-      </View>
-
-      <View style={styles.switchContainer}>
-        <Text style={styles.label}>Default Account:</Text>
-        <Switch value={defaultAccount} onValueChange={setDefaultAccount} />
-      </View>
-
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Type:</Text>
-        <View style={styles.typeButtons}>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "cash" && styles.activeTypeButton,
-            ]}
-            onPress={() => setType("cash")}
-          >
-            <Text
-              style={[
-                styles.typeButtonText,
-                type === "cash" && styles.activeTypeButtonText,
-              ]}
-            >
-              Cash
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "wallet" && styles.activeTypeButton,
-            ]}
-            onPress={() => setType("wallet")}
-          >
-            <Text
-              style={[
-                styles.typeButtonText,
-                type === "wallet" && styles.activeTypeButtonText,
-              ]}
-            >
-              Wallet
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "bank" && styles.activeTypeButton,
-            ]}
-            onPress={() => setType("bank")}
-          >
-            <Text
-              style={[
-                styles.typeButtonText,
-                type === "bank" && styles.activeTypeButtonText,
-              ]}
-            >
-              Bank
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Title:</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            placeholder="e.g., Savings, Main Wallet"
+          />
         </View>
-      </View>
 
-      <TouchableOpacity
-        style={styles.createButton}
-        onPress={handleUpdateAccount}
-      >
-        <Text style={styles.createButtonText}>Update Account</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={handleDeleteAccount}
-      >
-        <Text style={styles.deleteButtonText}>Delete Account</Text>
-      </TouchableOpacity>
-    </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Account Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={accountName}
+            onChangeText={setAccountName}
+            placeholder="e.g., My Bank Account, Personal Wallet"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Amount:</Text>
+          <TextInput
+            style={styles.input}
+            value={amount}
+            onChangeText={setAmount}
+            placeholder="e.g., 100.50"
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.pickerContainer}>
+          <Text style={styles.label}>Type:</Text>
+          <View style={styles.typeButtons}>
+            <TouchableOpacity
+              style={[
+                styles.typeButton,
+                cardType === "cash" && styles.activeTypeButton,
+              ]}
+              onPress={() => setCardType("cash")}
+            >
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  cardType === "cash" && styles.activeTypeButtonText,
+                ]}
+              >
+                Cash
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.typeButton,
+                cardType === "wallet" && styles.activeTypeButton,
+              ]}
+              onPress={() => setCardType("wallet")}
+            >
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  cardType === "wallet" && styles.activeTypeButtonText,
+                ]}
+              >
+                Wallet
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.typeButton,
+                cardType === "bank" && styles.activeTypeButton,
+              ]}
+              onPress={() => setCardType("bank")}
+            >
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  cardType === "bank" && styles.activeTypeButtonText,
+                ]}
+              >
+                Bank
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={handleUpdateAccount}
+        >
+          <Text style={styles.createButtonText}>Update Account</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={handleDeleteAccount}
+        >
+          <Text style={styles.deleteButtonText}>Delete Account</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 };
 

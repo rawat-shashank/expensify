@@ -49,12 +49,12 @@ const AccountCard = ({
                 alignItems: "center",
               }}
             >
-              {item.type === "bank" && <Icons name="bank" />}
-              {item.type === "wallet" && <Icons name="wallet-outline" />}
-              {item.type === "cash" && <Icons name="cash-outline" />}
+              {item.cardType === "bank" && <Icons name="bank" />}
+              {item.cardType === "wallet" && <Icons name="wallet-outline" />}
+              {item.cardType === "cash" && <Icons name="cash-outline" />}
               <View style={styles.names}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardSubTitle}>{item.title}</Text>
+                <Text style={styles.cardTitle}>{item.accountName}</Text>
+                <Text style={styles.cardSubTitle}>{item.name}</Text>
               </View>
             </View>
             <TouchableOpacity onPress={() => handleDeleteAccount(item.id)}>

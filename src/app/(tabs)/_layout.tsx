@@ -3,14 +3,21 @@ import { CustomSheet } from "@/components/customSheet";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import Header from "@/components/Header";
 import { Icons } from "@/components/Icons";
-import colors from "@/constants/colors";
+import { materialTheme } from "@/constants";
 import useProfile from "@/queries/useProfile";
 import { Entypo } from "@expo/vector-icons";
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { Fragment, useEffect, useState } from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface TabProps {
   name: string;
@@ -23,6 +30,8 @@ export default function TabLayout() {
   const db = useSQLiteContext();
   const { profileData, saveProfile } = useProfile(db);
   const [profileName, setProfileName] = useState(profileData?.name || "");
+
+  const insets = useSafeAreaInsets();
 
   const tabs: TabProps[] = [
     { name: "home", title: "Home", icon: "home" },
@@ -72,7 +81,7 @@ export default function TabLayout() {
         router.push("/transaction/createTransaction");
         break;
       case 1:
-        router.push("/account/createAccount");
+        router.push("/(screens)/account/createAccount");
         break;
       case 2:
         router.push("/category/createCategory");
@@ -83,21 +92,29 @@ export default function TabLayout() {
   };
 
   return (
-    <Fragment>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: materialTheme.background,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}
+    >
       <Header
         title={tabs[activeTabIndex].title}
-        onProfilePress={handleProfileTabPress}
-        onMenuPress={handleMenuPress}
+        leftIcon="menu"
+        onLeftIconPress={handleMenuPress}
+        rightIcon="person-circle-outline"
+        onRightIconPress={handleProfileTabPress}
       />
-      <View
-        style={{ flex: 1, position: "relative", backgroundColor: colors.bg }}
-      >
+      <View style={{ flex: 1, position: "relative" }}>
         <Tabs
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
-              backgroundColor: colors.bg,
-              borderColor: "#000",
+              borderColor: materialTheme.onSurface,
+              paddingTop: 8,
+              shadowColor: "transparent",
             },
           }}
           screenListeners={{
@@ -115,7 +132,8 @@ export default function TabLayout() {
                 name={tab.name}
                 options={{
                   title: tab.title,
-                  tabBarActiveTintColor: colors.textPrimary,
+                  tabBarActiveTintColor: materialTheme.onSurface,
+                  tabBarInactiveTintColor: materialTheme.onSurfaceVariant,
                   tabBarLabelStyle: {
                     fontSize: 14,
                   },
@@ -125,21 +143,22 @@ export default function TabLayout() {
                   tabBarIcon: ({}) => (
                     <Icons
                       name={tab.icon}
-                      size={28}
-                      color={colors.accent}
+                      size={24}
+                      color={
+                        activeTabIndex === index
+                          ? materialTheme.onSurface
+                          : materialTheme.onSurfaceVariant
+                      }
                       variant={
-                        activeTabIndex == index ? "pillBackground" : "default"
+                        activeTabIndex === index ? "pillBackground" : "default"
                       }
                       backgroundColor={
                         activeTabIndex == index
-                          ? colors.accrentBg
+                          ? materialTheme.tertiaryContainer
                           : "transparent"
                       }
                     />
                   ),
-                  sceneStyle: {
-                    backgroundColor: colors.bg,
-                  },
                 }}
               />
             );
@@ -188,7 +207,7 @@ export default function TabLayout() {
           </TouchableOpacity>
         </View>
       </CustomSheet>
-    </Fragment>
+    </SafeAreaView>
   );
 }
 

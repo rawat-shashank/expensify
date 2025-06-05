@@ -1,5 +1,5 @@
 import Container from "@/components/UI/Container";
-import colors from "@/constants/colors";
+import { colors, materialTheme } from "@/constants";
 import { TransactionType } from "@/database/transactionSchema";
 import useProfile from "@/queries/useProfile";
 import useTransactions from "@/queries/useTransactions";
@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: colors.textPrimary,
+    color: materialTheme.onSurfaceVariant,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 5,
-    color: colors.textPrimary,
+    color: materialTheme.onSurface,
   },
   date: {
     fontSize: 14,
