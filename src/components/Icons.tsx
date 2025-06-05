@@ -28,6 +28,7 @@ const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
   "wallet-outline": { component: Ionicons, name: "wallet-outline" },
   bank: { component: MaterialCommunityIcons, name: "bank" },
   delete: { component: MaterialCommunityIcons, name: "delete-outline" },
+  "arrow-back": { component: Ionicons, name: "arrow-back" },
 };
 
 interface IconProps {
@@ -81,9 +82,9 @@ const Icons: React.FC<IconProps> = ({
           style={[
             styles.circularBackgroundContainer,
             {
-              width: size * 2.4,
-              height: size * 1.3,
-              borderRadius: (size * 1.3) / 2,
+              width: size * 2.8,
+              height: size * 1.5,
+              borderRadius: (size * 1.5) / 2,
               backgroundColor: backgroundColor,
             },
             style,

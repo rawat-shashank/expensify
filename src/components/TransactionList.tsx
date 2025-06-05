@@ -1,5 +1,5 @@
 import { WINDOW_WIDTH } from "@/constants";
-import colors from "@/constants/colors";
+import { colors } from "@/constants/colors";
 import { TransactionType } from "@/database/transactionSchema";
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
