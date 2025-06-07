@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Modal,
   StyleSheet,
@@ -6,10 +6,7 @@ import {
   Animated,
   Easing,
   View,
-  Dimensions,
 } from "react-native";
-
-const { height: screenHeight, width: screenWidth } = Dimensions.get("window");
 
 export type SheetDirection = "bottom" | "left";
 
@@ -19,8 +16,6 @@ interface CustomSheetProps {
   animationDuration?: number;
   children?: React.ReactNode;
   direction?: SheetDirection;
-  sheetWidth?: number;
-  sheetHeight?: number;
 }
 
 export const CustomSheet: React.FC<CustomSheetProps> = ({
@@ -29,56 +24,74 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
   animationDuration = 200,
   children,
   direction = "bottom",
-  sheetWidth = screenWidth * 0.75,
-  sheetHeight = screenHeight * 0.5,
 }) => {
   const slideAnim = useState(new Animated.Value(0))[0];
-
-  // Determine the 'from' and 'to' values for the animation based on direction
-  const getAnimationConfig = (dir: SheetDirection, isVisible: boolean) => {
-    if (dir === "bottom") {
-      return {
-        from: isVisible ? 0 : sheetHeight, // Start at current position (0) or full height down
-        to: isVisible ? sheetHeight : 0, // Animate to full height up (sheetHeight) or back to 0
-      };
-    } else {
-      // 'left'
-      return {
-        from: isVisible ? 0 : sheetWidth, // Start at current position (0) or full width right
-        to: isVisible ? sheetWidth : 0, // Animate to full width left (sheetWidth) or back to 0
-      };
-    }
-  };
+  const [contentHeight, setContentHeight] = useState(0);
+  const [contentWidth, setContentWidth] = useState(0);
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
-    // Set initial value directly to prevent flicker before animation
-    const { from, to } = getAnimationConfig(direction, isVisible);
-    slideAnim.setValue(isVisible ? to : from); // Set the initial position based on visibility
+    if (
+      (direction === "bottom" && contentHeight === 0) ||
+      (direction === "left" && contentWidth === 0)
+    ) {
+      return;
+    }
 
-    Animated.timing(slideAnim, {
-      toValue: isVisible ? 0 : to, // If visible, animate to 0 (off-screen for bottom, or left-most for left), otherwise animate to 'to'
-      duration: animationDuration,
-      easing: Easing.out(Easing.ease),
-      useNativeDriver: true,
-    }).start();
+    let toValue = 0;
+    if (direction === "bottom") {
+      toValue = isVisible ? 0 : contentHeight;
+    } else {
+      toValue = isVisible ? 0 : contentWidth;
+    }
+
+    if (isInitialRender.current) {
+      slideAnim.setValue(isVisible ? 0 : toValue);
+      isInitialRender.current = false;
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: toValue,
+        duration: animationDuration,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
   }, [
     isVisible,
     animationDuration,
     slideAnim,
     direction,
-    sheetWidth,
-    sheetHeight,
-  ]); // Add new dependencies
+    contentHeight,
+    contentWidth,
+  ]);
 
-  // Determine the animated style based on direction
+  const onContentLayout = (event: any) => {
+    const { height, width } = event.nativeEvent.layout;
+    if (direction === "bottom" && height !== contentHeight) {
+      setContentHeight(height);
+      if (isVisible) {
+        slideAnim.setValue(0);
+      } else {
+        slideAnim.setValue(height);
+      }
+    } else if (direction === "left" && width !== contentWidth) {
+      setContentWidth(width);
+      if (isVisible) {
+        slideAnim.setValue(0);
+      } else {
+        slideAnim.setValue(width);
+      }
+    }
+  };
+
   const animatedStyle =
     direction === "bottom"
       ? {
           transform: [
             {
               translateY: slideAnim.interpolate({
-                inputRange: [0, screenHeight],
-                outputRange: [0, screenHeight],
+                inputRange: [0, contentHeight > 0 ? contentHeight : 1],
+                outputRange: [0, contentHeight],
               }),
             },
           ],
@@ -87,31 +100,30 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
           transform: [
             {
               translateX: slideAnim.interpolate({
-                inputRange: [0, screenWidth],
-                outputRange: [0, -screenWidth],
+                inputRange: [0, contentWidth > 0 ? contentWidth : 1],
+                outputRange: [0, -contentWidth],
               }),
             },
           ],
         };
 
-  // Determine the base style for the sheet content
   const sheetBaseStyle =
     direction === "bottom"
       ? {
           left: 0,
           right: 0,
           bottom: 0,
-          height: sheetHeight, // Apply explicit height
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+          // No fixed height here
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
         }
       : {
           top: 0,
           bottom: 0,
           left: 0,
-          width: sheetWidth, // Apply explicit width
-          borderTopRightRadius: 10,
-          borderBottomRightRadius: 10,
+          // No fixed width here
+          borderTopRightRadius: 8,
+          borderBottomRightRadius: 8,
         };
 
   return (
@@ -124,6 +136,7 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
         />
         <Animated.View
           style={[styles.sheetBase, sheetBaseStyle, animatedStyle]}
+          onLayout={onContentLayout}
         >
           {children}
         </Animated.View>
@@ -135,8 +148,8 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: "flex-end", // Align content to bottom by default
-    alignItems: "flex-start", // Align content to left by default for left sheet
+    justifyContent: "flex-end",
+    alignItems: "flex-start",
   },
   modalOverlay: {
     position: "absolute",
@@ -150,6 +163,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "white",
     padding: 20,
-    overflow: "hidden", // Ensures rounded corners are respected
+    overflow: "hidden",
   },
 });

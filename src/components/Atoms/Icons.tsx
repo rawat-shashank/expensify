@@ -29,6 +29,7 @@ const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
   bank: { component: MaterialCommunityIcons, name: "bank" },
   delete: { component: MaterialCommunityIcons, name: "delete-outline" },
   "arrow-back": { component: Ionicons, name: "arrow-back" },
+  "color-palette": { component: Ionicons, name: "color-palette" },
 };
 
 interface IconProps {
@@ -113,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Icons, IconsName };
+export { Icons, IconsName, ICON_NAME_MAPPING };
