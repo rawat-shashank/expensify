@@ -1,34 +1,45 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import colors from "@/constants/colors";
-import { Icons } from "./Icons";
+import { materialTheme } from "@/constants";
+import { Icons, IconsName } from "./Atoms/Icons";
 
 interface HeaderProps {
   title: string;
-  onProfilePress: () => void;
-  menuIconName?: string;
-  profileIconName?: string;
+  leftIcon?: IconsName;
+  onLeftIconPress?: () => void;
+  rightIcon?: IconsName;
+  onRightIconPress?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ title, onProfilePress }) => {
+const Header: React.FC<HeaderProps> = ({
+  title,
+  leftIcon,
+  onLeftIconPress,
+  rightIcon,
+  onRightIconPress,
+}) => {
   return (
     <View style={styles.header}>
       <View style={styles.leftSection}>
-        <TouchableOpacity onPress={() => console.log("Menu Pressed")}>
-          <Icons name="menu" size={28} color={colors.textPrimary} />
-        </TouchableOpacity>
+        {leftIcon && (
+          <TouchableOpacity onPress={onLeftIconPress}>
+            <Icons name={leftIcon} size={28} color={materialTheme.onSurface} />
+          </TouchableOpacity>
+        )}
         <Text style={styles.title}>{title}</Text>
       </View>
 
-      <TouchableOpacity onPress={onProfilePress}>
-        <Icons
-          name="person-circle-outline"
-          size={28}
-          color={colors.textPrimary}
-          variant="circularBackground"
-          backgroundColor={colors.accrentBg}
-        />
-      </TouchableOpacity>
+      {rightIcon && (
+        <TouchableOpacity onPress={onRightIconPress}>
+          <Icons
+            name={rightIcon}
+            size={28}
+            color={materialTheme.onSurface}
+            variant="circularBackground"
+            backgroundColor={materialTheme.tertiaryContainer}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -38,20 +49,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 0,
-    paddingHorizontal: 8,
-    backgroundColor: colors.bg,
-    borderBottomWidth: 1,
+    paddingBottom: 8,
+    paddingHorizontal: 16,
+    backgroundColor: materialTheme.background,
   },
   leftSection: {
     flexDirection: "row",
     alignItems: "flex-end",
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     marginLeft: 16,
-    color: colors.textPrimary,
+    color: materialTheme.onSurface,
   },
 });
 

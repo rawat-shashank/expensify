@@ -1,40 +1,22 @@
-import { WINDOW_WIDTH } from "@/constants";
-import { AccountType } from "@/database/accountsSchema";
+import { materialTheme, WINDOW_WIDTH } from "@/constants";
+import { AccountCardType, AccountType } from "@/database/accountsSchema";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Icons } from "./Icons";
-import { TransactionType } from "@/database/transactionSchema";
-import { FlatList } from "react-native-gesture-handler";
-import TransactionList from "./TransactionList";
+import { Icons } from "./Atoms/Icons";
 
 const AccountCard = ({
-  item,
-  transactions,
+  account,
   handleCardPress,
   handleDeleteAccount,
 }: {
-  item: AccountType;
-  transactions: TransactionType[];
+  account: AccountType;
   handleCardPress: (id: number) => void;
   handleDeleteAccount: (id: number) => void;
 }) => {
-  const handleTransactionPress = (id: number) => {
-    console.log(id);
-  };
-
-  const renderItem = ({ item }: { item: TransactionType }) => {
-    return (
-      <TransactionList
-        item={item}
-        handleTransactionPress={handleTransactionPress}
-      />
-    );
-  };
-
   return (
     <View style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <TouchableOpacity
-        onPress={() => handleCardPress(item.id)}
+        onPress={() => handleCardPress(account.id)}
         style={{
           width: WINDOW_WIDTH * 0.9,
         }}
@@ -45,50 +27,51 @@ const AccountCard = ({
               style={{
                 display: "flex",
                 flexDirection: "row",
-                gap: "8px",
+                gap: 16,
                 alignItems: "center",
               }}
             >
-              {item.type === "bank" && <Icons name="bank" />}
-              {item.type === "wallet" && <Icons name="wallet-outline" />}
-              {item.type === "cash" && <Icons name="cash-outline" />}
+              {account.cardType === AccountCardType.BANK && (
+                <Icons name="bank" />
+              )}
+              {account.cardType === AccountCardType.WALLET && (
+                <Icons name="wallet-outline" />
+              )}
+              {account.cardType === AccountCardType.CASH && (
+                <Icons name="cash-outline" color={materialTheme.tertiary} />
+              )}
               <View style={styles.names}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardSubTitle}>{item.title}</Text>
+                <Text style={styles.cardTitle}>{account.accountName}</Text>
+                <Text style={styles.cardSubTitle}>{account.name}</Text>
               </View>
             </View>
-            <TouchableOpacity onPress={() => handleDeleteAccount(item.id)}>
-              <Icons name="delete" />
+            <TouchableOpacity onPress={() => handleDeleteAccount(account.id)}>
+              <Icons name="delete" color={materialTheme.tertiary} />
             </TouchableOpacity>
           </View>
           <View style={{ marginVertical: 12 }}>
             <Text style={styles.cardSubTitle}>Total Balance</Text>
-            <Text style={styles.amount}>£{item.amount.toFixed(2)}</Text>
+            <Text style={styles.amount}>£{account.amount.toFixed(2)}</Text>
           </View>
-          <View style={{ display: "flex", flexDirection: "row" }}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 16,
+              justifyContent: "space-between",
+            }}
+          >
             <View style={{ flexGrow: 1 }}>
               <Text style={styles.cardSubTitle}>Income</Text>
-              <Text style={styles.amount}>£{item.amount.toFixed(2)}</Text>
+              <Text style={styles.amount}>£{account.amount.toFixed(2)}</Text>
             </View>
             <View style={{ flexGrow: 1 }}>
               <Text style={styles.cardSubTitle}>Expenses</Text>
-              <Text style={styles.amount}>£{item.amount.toFixed(2)}</Text>
+              <Text style={styles.amount}>£{account.amount.toFixed(2)}</Text>
             </View>
           </View>
         </View>
       </TouchableOpacity>
-      <View>
-        {transactions && transactions.length > 0 ? (
-          <FlatList
-            data={transactions}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            showsHorizontalScrollIndicator={false}
-          />
-        ) : (
-          <Text>No transactions created yet.</Text>
-        )}
-      </View>
     </View>
   );
 };
@@ -96,20 +79,20 @@ const AccountCard = ({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#e0e0e0",
-    borderRadius: 10,
-    padding: 16,
+    borderRadius: 16,
+    paddingHorizontal: 16,
     marginRight: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    elevation: 3,
   },
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 8,
+    paddingTop: 16,
   },
   names: {
     display: "flex",
@@ -118,37 +101,17 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: "bold",
+    color: materialTheme.tertiary,
   },
   cardSubTitle: {
     fontSize: 12,
-  },
-  accountName: {
-    fontSize: 16,
-    color: "#555",
-    marginBottom: 12,
+    color: materialTheme.tertiary,
   },
   amount: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 8,
-  },
-  bankIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 5,
-    backgroundColor: "#4CAF50",
-  },
-  walletIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#2196F3",
-  },
-  cashIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 2,
-    backgroundColor: "#FF9800",
+    color: materialTheme.secondary,
   },
 });
 

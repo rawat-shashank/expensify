@@ -6,8 +6,8 @@ import { createTransactionTable } from "./transactionSchema";
 
 const initializeDatabase = async (db: SQLiteDatabase): Promise<void> => {
   try {
-    await createProfileTable(db);
     await createAccountsTable(db);
+    await createProfileTable(db);
     await createCategoriesTable(db);
     await createTransactionTable(db);
   } catch (error: any) {
@@ -16,4 +16,14 @@ const initializeDatabase = async (db: SQLiteDatabase): Promise<void> => {
   }
 };
 
-export { initializeDatabase };
+const resetDatabase = async (db: SQLiteDatabase): Promise<void> => {
+  await db.withTransactionAsync(async () => {
+    // Drop existing table if it exists
+    await db.execAsync("DROP TABLE IF EXISTS accounts;");
+    await db.execAsync("DROP TABLE IF EXISTS transactions;");
+    await db.execAsync("DROP TABLE IF EXISTS categories;");
+    console.log('Table "users" dropped.');
+  });
+};
+
+export { initializeDatabase, resetDatabase };

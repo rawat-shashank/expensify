@@ -1,5 +1,5 @@
 import useTransactions from "@/queries/useTransactions"; // Create this hook
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState, useEffect } from "react";
 import {
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import alert from "@/components/Alert";
 import { TransactionType } from "@/database/transactionSchema";
+import Container from "@/components/UI/Container";
 
 const EditTransactionForm = () => {
   const db = useSQLiteContext();
@@ -159,145 +160,148 @@ const EditTransactionForm = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Edit Transaction</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+    <>
+      <Stack.Screen options={{ title: "Update Transaction" }} />
+      <Container>
+        <Text style={styles.heading}>Edit Transaction</Text>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Title:</Text>
-        <TextInput
-          style={styles.input}
-          value={title}
-          onChangeText={setTitle}
-          placeholder="e.g., Groceries, Salary"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Amount:</Text>
-        <TextInput
-          style={styles.input}
-          value={amount}
-          onChangeText={setAmount}
-          placeholder="e.g., 25.50"
-          keyboardType="numeric"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Description:</Text>
-        <TextInput
-          style={styles.input}
-          value={description}
-          onChangeText={setDesc}
-          placeholder="Optional description"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Date:</Text>
-        <TextInput
-          style={styles.input}
-          value={transaction_date}
-          onChangeText={setTransactionDate}
-          placeholder="YYYY-MM-DD"
-        />
-      </View>
-
-      {/* Conditionally render accountId if it exists in your schema */}
-      {currentTransaction?.account_id !== undefined && (
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Account ID:</Text>
+          <Text style={styles.label}>Title:</Text>
           <TextInput
             style={styles.input}
-            value={account_id}
-            onChangeText={setAccountId}
-            placeholder="Enter Account ID"
+            value={title}
+            onChangeText={setTitle}
+            placeholder="e.g., Groceries, Salary"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Amount:</Text>
+          <TextInput
+            style={styles.input}
+            value={amount}
+            onChangeText={setAmount}
+            placeholder="e.g., 25.50"
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Description:</Text>
+          <TextInput
+            style={styles.input}
+            value={description}
+            onChangeText={setDesc}
+            placeholder="Optional description"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Date:</Text>
+          <TextInput
+            style={styles.input}
+            value={transaction_date}
+            onChangeText={setTransactionDate}
+            placeholder="YYYY-MM-DD"
+          />
+        </View>
+
+        {/* Conditionally render accountId if it exists in your schema */}
+        {currentTransaction?.account_id !== undefined && (
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Account ID:</Text>
+            <TextInput
+              style={styles.input}
+              value={account_id}
+              onChangeText={setAccountId}
+              placeholder="Enter Account ID"
+              keyboardType="numeric"
+            />
+            {/* Consider using a dropdown/picker */}
+          </View>
+        )}
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Category ID:</Text>
+          <TextInput
+            style={styles.input}
+            value={category_id}
+            onChangeText={setCategoryId}
+            placeholder="Enter Category ID"
             keyboardType="numeric"
           />
           {/* Consider using a dropdown/picker */}
         </View>
-      )}
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Category ID:</Text>
-        <TextInput
-          style={styles.input}
-          value={category_id}
-          onChangeText={setCategoryId}
-          placeholder="Enter Category ID"
-          keyboardType="numeric"
-        />
-        {/* Consider using a dropdown/picker */}
-      </View>
-
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Type:</Text>
-        <View style={styles.typeButtons}>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "expense" && styles.activeTypeButton,
-            ]}
-            onPress={() => setType("expense")}
-          >
-            <Text
+        <View style={styles.pickerContainer}>
+          <Text style={styles.label}>Type:</Text>
+          <View style={styles.typeButtons}>
+            <TouchableOpacity
               style={[
-                styles.typeButtonText,
-                type === "expense" && styles.activeTypeButtonText,
+                styles.typeButton,
+                type === "expense" && styles.activeTypeButton,
               ]}
+              onPress={() => setType("expense")}
             >
-              Expense
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "income" && styles.activeTypeButton,
-            ]}
-            onPress={() => setType("income")}
-          >
-            <Text
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  type === "expense" && styles.activeTypeButtonText,
+                ]}
+              >
+                Expense
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[
-                styles.typeButtonText,
-                type === "income" && styles.activeTypeButtonText,
+                styles.typeButton,
+                type === "income" && styles.activeTypeButton,
               ]}
+              onPress={() => setType("income")}
             >
-              Income
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              type === "transfer" && styles.activeTypeButton,
-            ]}
-            onPress={() => setType("transfer")}
-          >
-            <Text
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  type === "income" && styles.activeTypeButtonText,
+                ]}
+              >
+                Income
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[
-                styles.typeButtonText,
-                type === "transfer" && styles.activeTypeButtonText,
+                styles.typeButton,
+                type === "transfer" && styles.activeTypeButton,
               ]}
+              onPress={() => setType("transfer")}
             >
-              Transfer
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.typeButtonText,
+                  type === "transfer" && styles.activeTypeButtonText,
+                ]}
+              >
+                Transfer
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-      <TouchableOpacity
-        style={styles.createButton}
-        onPress={handleUpdateTransaction}
-      >
-        <Text style={styles.createButtonText}>Update Transaction</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={handleDeleteTransaction}
-      >
-        <Text style={styles.deleteButtonText}>Delete Transaction</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={handleUpdateTransaction}
+        >
+          <Text style={styles.createButtonText}>Update Transaction</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={handleDeleteTransaction}
+        >
+          <Text style={styles.deleteButtonText}>Delete Transaction</Text>
+        </TouchableOpacity>
+      </Container>
+    </>
   );
 };
 

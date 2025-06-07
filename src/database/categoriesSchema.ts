@@ -1,8 +1,10 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
 interface AddCategoryType {
-  title: string;
+  name: string;
   desc: string;
+  icon: string;
+  color: string;
 }
 
 interface CategoryType extends AddCategoryType {
@@ -13,8 +15,10 @@ const createCategoriesTable = async (db: SQLiteDatabase): Promise<void> => {
   const sql = `
     CREATE TABLE IF NOT EXISTS categories (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      desc TEXT NOT NULL
+      name TEXT NOT NULL,
+      desc TEXT NOT NULL,
+      icon TEXT NOT NULL,
+      color TEXT NOT NULL
     );
   `;
   await db.execAsync(sql);
@@ -31,11 +35,13 @@ const insertCategory = async (
   newCategory: AddCategoryType,
   db: SQLiteDatabase,
 ): Promise<number> => {
-  const { title, desc } = newCategory;
+  const { name, desc, icon = "", color = "" } = newCategory;
+  console.log("newCategory", newCategory);
   const result = await db.runAsync(
-    "INSERT INTO categories (title, desc ) VALUES (?, ?);",
-    [title, desc],
+    "INSERT INTO categories (name, desc, icon, color ) VALUES (?, ?, ?, ?);",
+    [name, desc, icon, color],
   );
+  console.log("result", result);
   return result.lastInsertRowId;
 };
 
@@ -54,10 +60,10 @@ const updateCategory = async (
   category: CategoryType,
   db: SQLiteDatabase,
 ): Promise<boolean> => {
-  const { title, desc, id } = category;
+  const { name, desc, icon = "", color = "", id } = category;
   const result = await db.runAsync(
-    "UPDATE categories SET title = ?, desc = ? WHERE id = ?;",
-    [title, desc, id],
+    "UPDATE categories SET title = ?, desc = ?, icon = ?, color = ? WHERE id = ?;",
+    [name, desc, icon, color, id],
   );
   return result.changes > 0;
 };

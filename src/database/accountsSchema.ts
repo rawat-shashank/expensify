@@ -1,11 +1,18 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
+enum AccountCardType {
+  CASH = "cash",
+  WALLET = "wallet",
+  BANK = "bank",
+}
+
 interface AddAccountType {
-  title: string;
-  accountName: string;
+  name: string; //account holder's name
+  accountName: string; //account name
   amount: number;
-  defaultAccount: boolean;
-  type: "cash" | "wallet" | "bank";
+  cardType: AccountCardType;
+  color?: string;
+  isActive?: boolean;
 }
 
 interface AccountType extends AddAccountType {
@@ -16,11 +23,12 @@ const createAccountsTable = async (db: SQLiteDatabase): Promise<void> => {
   const sql = `
     CREATE TABLE IF NOT EXISTS accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
+      name TEXT NOT NULL,
       accountName TEXT NOT NULL,
       amount REAL NOT NULL,
-      defaultAccount INTEGER NOT NULL DEFAULT 0 CHECK (defaultAccount IN (0, 1)),
-      type TEXT NOT NULL CHECK (type IN ('cash', 'wallet', 'bank'))
+      cardType TEXT NOT NULL CHECK (cardType IN ('cash', 'wallet', 'bank')),
+      color TEXT NOT NULL,
+      isActive INTEGER DEFAULT 1 NOT NULL
     );
   `;
   await db.execAsync(sql);
@@ -30,10 +38,17 @@ const insertAccount = async (
   newAccount: AddAccountType,
   db: SQLiteDatabase,
 ): Promise<number> => {
-  const { title, accountName, amount, defaultAccount, type } = newAccount;
+  const {
+    name,
+    accountName,
+    amount,
+    cardType,
+    color = "",
+    isActive = true,
+  } = newAccount;
   const result = await db.runAsync(
-    "INSERT INTO accounts (title, accountName, amount, defaultAccount, type) VALUES (?, ?, ?, ?, ?);",
-    [title, accountName, amount, defaultAccount ? 1 : 0, type],
+    "INSERT INTO accounts (name, accountName, amount, cardType, color, isActive) VALUES (?, ?, ?, ?, ?, ?);",
+    [name, accountName, amount, cardType, color, isActive ? 1 : 0],
   );
   return result.lastInsertRowId;
 };
@@ -58,10 +73,18 @@ const updateAccount = async (
   account: AccountType,
   db: SQLiteDatabase,
 ): Promise<boolean> => {
-  const { title, accountName, amount, defaultAccount, type, id } = account;
+  const {
+    name,
+    accountName,
+    amount,
+    cardType,
+    color = "",
+    isActive = false,
+    id,
+  } = account;
   const result = await db.runAsync(
-    "UPDATE accounts SET title = ?, accountName = ?, amount = ?, defaultAccount = ?, type = ? WHERE id = ?;",
-    [title, accountName, amount, defaultAccount ? 1 : 0, type, id],
+    "UPDATE accounts SET name = ?, accountName = ?, amount = ?, color = ?, cardType = ?, isActive = ? WHERE id = ?;",
+    [name, accountName, amount, color, cardType, isActive ? 1 : 0, id],
   );
   return result.changes > 0;
 };
@@ -75,6 +98,7 @@ const deleteAccount = async (
 };
 
 export {
+  AccountCardType,
   AddAccountType,
   AccountType,
   createAccountsTable,

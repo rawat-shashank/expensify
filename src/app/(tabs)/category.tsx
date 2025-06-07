@@ -1,3 +1,4 @@
+import Container from "@/components/UI/Container";
 import { CategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/useCategories";
 import { useRouter } from "expo-router";
@@ -26,7 +27,7 @@ const CategoryList = () => {
   const renderItem = ({ item }: { item: CategoryType }) => (
     <TouchableOpacity onPress={() => handleCardPress(item.id)}>
       <View style={styles.card}>
-        <Text style={styles.accountName}>{item.title}</Text>
+        <Text style={styles.accountName}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -36,28 +37,21 @@ const CategoryList = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <Container>
       {categories && categories.length > 0 ? (
         <FlatList
           data={categories}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.flatListContent}
         />
       ) : (
         <Text>No categories created yet.</Text>
       )}
-    </View>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 10,
-  },
-  flatListContent: {
-    paddingHorizontal: 16,
-  },
   card: {
     backgroundColor: "#e0e0e0",
     borderRadius: 10,

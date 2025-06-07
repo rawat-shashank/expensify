@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, Animated } from "react-native";
-import { Icons, IconsName } from "./Icons";
+import { Icons, IconsName } from "./Atoms/Icons";
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
+import { materialTheme } from "@/constants";
 
 interface FABProps {
   onPress: () => void;
@@ -16,10 +17,12 @@ const FloatingActionButton = ({
   onPress,
   iconName = "plus",
   iconColor,
-  buttonColor = "blue",
-  iconSize = 42,
+  buttonColor = materialTheme.secondaryContainer,
+  iconSize = 28,
   style,
 }: FABProps) => {
+  const iconScale = 2 * iconSize;
+  const iconborder = iconSize / 2;
   const [animation] = useState(new Animated.Value(1));
 
   const handlePressIn = () => {
@@ -52,7 +55,11 @@ const FloatingActionButton = ({
     <Animated.View
       style={[
         styles.container,
-        { width: iconSize, height: iconSize, borderRadius: iconSize / 8 },
+        {
+          width: iconScale,
+          height: iconScale,
+          borderRadius: iconborder,
+        },
         animatedStyle,
         style,
       ]}
@@ -62,14 +69,14 @@ const FloatingActionButton = ({
           styles.button,
           {
             backgroundColor: buttonColor,
-            width: iconSize,
-            height: iconSize,
-            borderRadius: iconSize / 8,
+            width: iconScale,
+            height: iconScale,
+            borderRadius: iconborder,
           },
         ]}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        activeOpacity={0.8}
+        activeOpacity={1}
       >
         <Icons name={iconName} color={iconColor} size={iconSize} />
       </TouchableOpacity>

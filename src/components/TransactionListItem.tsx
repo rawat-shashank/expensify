@@ -1,10 +1,10 @@
 import { WINDOW_WIDTH } from "@/constants";
-import colors from "@/constants/colors";
+import { colors } from "@/constants/colors";
 import { TransactionType } from "@/database/transactionSchema";
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
-const TransactionList = ({
+const TransactionListItem = ({
   item,
   handleTransactionPress,
 }: {
@@ -56,8 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
     marginBottom: 8,
-    width: WINDOW_WIDTH * 0.9 - 16,
   },
 });
 
-export default TransactionList;
+export default TransactionListItem;

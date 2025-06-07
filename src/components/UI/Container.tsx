@@ -1,5 +1,6 @@
+import { materialTheme } from "@/constants";
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 interface Props {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: materialTheme.background,
   },
 });
 
