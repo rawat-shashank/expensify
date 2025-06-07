@@ -1,20 +1,15 @@
-import { materialTheme } from "@/constants";
 import {
   AccountCardType,
   AccountType,
   AddAccountType,
 } from "@/database/accountsSchema";
 import { useState } from "react";
-import {
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Switch, Text, View, StyleSheet } from "react-native";
 import { PillSelector } from "../UI/PillSelector";
 import { Picker } from "../Molecules/Picker";
+import { InputField } from "../Atoms/InputField";
+import { TouchableButton } from "../Atoms/TouchableButtons";
+import { materialTheme } from "@/constants";
 
 const AccountForm = ({
   account,
@@ -95,41 +90,26 @@ const AccountForm = ({
           onSelect={setCardType}
         />
 
-        <View>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            placeholder="Enter Account holder name"
-          />
-          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
-        </View>
+        <InputField
+          value={name}
+          onUpdate={setName}
+          placeholder="Enter Accountholder name"
+          error={errors.name}
+        />
 
-        <View>
-          <TextInput
-            style={styles.input}
-            value={accountName}
-            onChangeText={setAccountName}
-            placeholder="Enter Account Name"
-          />
-          {errors.accountName && (
-            <Text style={styles.errorText}>{errors.accountName}</Text>
-          )}
-        </View>
+        <InputField
+          value={accountName}
+          onUpdate={setAccountName}
+          placeholder="Enter Account name"
+          error={errors.accountName}
+        />
 
-        <View>
-          <TextInput
-            style={styles.input}
-            value={amount}
-            onChangeText={setAmount}
-            placeholder="Enter Amount"
-            keyboardType="numeric"
-          />
-
-          {errors.amount && (
-            <Text style={styles.errorText}>{errors.amount}</Text>
-          )}
-        </View>
+        <InputField
+          value={amount}
+          onUpdate={setAmount}
+          placeholder="Enter Amount"
+          error={errors.amount}
+        />
 
         <Picker variant="color" value={color} onSelect={setColor} />
 
@@ -139,48 +119,26 @@ const AccountForm = ({
         </View>
       </View>
       {(onAddAccount || onUpdateAccount) && (
-        <TouchableOpacity
-          style={styles.createButton}
-          onPress={handleCreateAccount}
-        >
+        <TouchableButton variant="submit" onPress={handleCreateAccount}>
           <Text style={styles.createButtonText}>
             {onUpdateAccount ? "Update" : "Create"}
           </Text>
-        </TouchableOpacity>
+        </TouchableButton>
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  errorText: {
-    color: "red",
-  },
-  inputContainer: {
-    marginBottom: 15,
-  },
   label: {
     fontSize: 16,
     marginBottom: 5,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 16,
   },
   switchContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 15,
-  },
-  createButton: {
-    backgroundColor: materialTheme.primary,
-    paddingVertical: 15,
-    borderRadius: 32,
-    alignItems: "center",
   },
   createButtonText: {
     color: materialTheme.onPrimary,

@@ -1,8 +1,10 @@
 import { AddCategoryType, CategoryType } from "@/database/categoriesSchema";
 import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { InputField } from "./InputField";
+import { InputField } from "../Atoms/InputField";
 import { Picker } from "../Molecules/Picker";
+import { TouchableButton } from "../Atoms/TouchableButtons";
+import { materialTheme } from "@/constants";
 
 interface CategoryFormProps {
   category?: CategoryType;
@@ -67,84 +69,19 @@ export const CategoryForm = ({
         <Picker variant="color" value={color} onSelect={setColor} />
       </View>
       {(onAddCategory || onUpdateCategory) && (
-        <TouchableOpacity
-          style={styles.createButton}
-          onPress={handleCreateCategory}
-        >
+        <TouchableButton variant="submit" onPress={handleCreateCategory}>
           <Text style={styles.createButtonText}>
             {onUpdateCategory ? "Update" : "Create"}
           </Text>
-        </TouchableOpacity>
+        </TouchableButton>
       )}
     </View>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-  },
-  heading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  error: {
-    color: "red",
-    marginBottom: 10,
-  },
-  inputContainer: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 16,
-  },
-  switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 15,
-  },
-  pickerContainer: {
-    marginBottom: 15,
-  },
-  typeButtons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 5,
-  },
-  typeButton: {
-    backgroundColor: "#f0f0f0",
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-  },
-  activeTypeButton: {
-    backgroundColor: "#007bff",
-  },
-  typeButtonText: {
-    fontSize: 16,
-    color: "#333",
-  },
-  activeTypeButtonText: {
-    color: "#fff",
-  },
-  createButton: {
-    backgroundColor: "#28a745",
-    paddingVertical: 15,
-    borderRadius: 5,
-    alignItems: "center",
-  },
   createButtonText: {
-    color: "#fff",
-    fontSize: 18,
+    color: materialTheme.onPrimary,
+    fontSize: 16,
     fontWeight: "bold",
   },
 });
