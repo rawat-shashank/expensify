@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { Text, FlatList, ActivityIndicator, View } from "react-native";
 import useAccounts from "@/queries/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter } from "expo-router";
@@ -13,6 +7,11 @@ import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
 import useTransactions from "@/queries/useTransactions";
 import Container from "@/components/UI/Container";
+import TransactionListItem from "@/components/TransactionListItem";
+import { TransactionType } from "@/database/transactionSchema";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { materialTheme } from "@/constants";
+import { ColorDotWithRing } from "@/components/UI/ColorDotWithRing";
 
 const AccountList = () => {
   const db = useSQLiteContext();
@@ -26,6 +25,42 @@ const AccountList = () => {
   } = useAccounts(db);
   const { transactions } = useTransactions(db);
   const router = useRouter();
+  const [currentVisibleIndex, setCurrentVisibleIndex] = useState(0);
+  const [accountTransactions, setAccountTransactions] = useState<
+    TransactionType[]
+  >([]);
+
+  useEffect(() => {
+    setAccountTransactions(
+      transactions.filter(
+        (transaction) =>
+          transaction.account_id === accounts[currentVisibleIndex].id,
+      ),
+    );
+  }, [currentVisibleIndex]);
+
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 70,
+    minimumViewTime: 200,
+    waitForInteraction: false,
+  }).current;
+
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }: { viewableItems: any }) => {
+      if (viewableItems.length > 0) {
+        const firstMostlyVisibleItem = viewableItems[0];
+
+        if (firstMostlyVisibleItem.index !== currentVisibleIndex) {
+          setCurrentVisibleIndex(firstMostlyVisibleItem.index);
+          console.log(
+            "Current item in view index:",
+            firstMostlyVisibleItem.index,
+          );
+        }
+      }
+    },
+    [currentVisibleIndex],
+  );
 
   const handleCardPress = (accountId: number) => {
     router.push(`/account/${accountId}`);
@@ -50,17 +85,27 @@ const AccountList = () => {
     }
   };
 
-  //FIX: UI need to be updated later
-  const renderItem = ({ item }: { item: AccountType }) => (
+  //FIXME: UI need to be updated later
+  const renderAccounts = ({ item }: { item: AccountType }) => (
     <AccountCard
-      item={item}
-      transactions={transactions.filter(
-        (transaction) => transaction.account_id === item.id,
-      )}
+      account={item}
       handleCardPress={handleCardPress}
       handleDeleteAccount={handleDeleteAccount}
     />
   );
+
+  const handleTransactionPress = (id: number) => {
+    console.log(id);
+  };
+
+  const renderTransaction = ({ item }: { item: TransactionType }) => {
+    return (
+      <TransactionListItem
+        item={item}
+        handleTransactionPress={handleTransactionPress}
+      />
+    );
+  };
 
   if (isAccountLoading) {
     return <ActivityIndicator size={"large"} />;
@@ -68,86 +113,62 @@ const AccountList = () => {
 
   return (
     <Container>
-      <View style={styles.container}>
+      <View>
         {accounts && accounts.length > 0 ? (
           <FlatList
-            initialNumToRender={2}
             data={accounts}
-            renderItem={renderItem}
+            renderItem={renderAccounts}
             keyExtractor={(item) => item.id.toString()}
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.flatListContent}
+            pagingEnabled
+            onViewableItemsChanged={onViewableItemsChanged}
+            viewabilityConfig={viewabilityConfig}
           />
         ) : (
           <Text>No accounts created yet.</Text>
+        )}
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 4,
+            marginVertical: 4,
+          }}
+        >
+          {accounts.length > 1 &&
+            accounts.map((account, index) => {
+              return currentVisibleIndex == index ? (
+                <ColorDotWithRing
+                  key={account.id}
+                  size={16}
+                  color={materialTheme.onSurfaceVariant}
+                />
+              ) : (
+                <ColorDotWithRing
+                  key={account.id}
+                  outline={true}
+                  size={16}
+                  color={materialTheme.onSurfaceVariant}
+                />
+              );
+            })}
+        </View>
+      </View>
+      <View>
+        {transactions && transactions.length > 0 ? (
+          <FlatList
+            data={accountTransactions}
+            renderItem={renderTransaction}
+            keyExtractor={(transaction) => transaction.id.toString()}
+            showsHorizontalScrollIndicator={false}
+          />
+        ) : (
+          <Text>No transactions created yet.</Text>
         )}
       </View>
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 16,
-  },
-  flatListContent: {
-    paddingHorizontal: 16,
-  },
-  card: {
-    backgroundColor: "#e0e0e0",
-    borderRadius: 10,
-    padding: 16,
-    marginRight: 16,
-    width: 200,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
-  },
-  cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  accountName: {
-    fontSize: 16,
-    color: "#555",
-    marginBottom: 12,
-  },
-  amount: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  dateCreated: {
-    fontSize: 12,
-    color: "#777",
-  },
-  bankIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 5,
-    backgroundColor: "#4CAF50",
-  },
-  walletIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: "#2196F3",
-  },
-  cashIcon: {
-    width: 20,
-    height: 20,
-    borderRadius: 2,
-    backgroundColor: "#FF9800",
-  },
-});
 
 export default AccountList;

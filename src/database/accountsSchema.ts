@@ -1,11 +1,18 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
+enum AccountCardType {
+  CASH = "cash",
+  WALLET = "wallet",
+  BANK = "bank",
+}
+
 interface AddAccountType {
   name: string; //account holder's name
   accountName: string; //account name
   amount: number;
-  cardType: "cash" | "wallet" | "bank";
+  cardType: AccountCardType;
   color?: string;
+  isActive?: boolean;
 }
 
 interface AccountType extends AddAccountType {
@@ -20,7 +27,8 @@ const createAccountsTable = async (db: SQLiteDatabase): Promise<void> => {
       accountName TEXT NOT NULL,
       amount REAL NOT NULL,
       cardType TEXT NOT NULL CHECK (cardType IN ('cash', 'wallet', 'bank')),
-      color TEXT NOT NULL
+      color TEXT NOT NULL,
+      isActive INTEGER DEFAULT 1 NOT NULL
     );
   `;
   await db.execAsync(sql);
@@ -30,10 +38,17 @@ const insertAccount = async (
   newAccount: AddAccountType,
   db: SQLiteDatabase,
 ): Promise<number> => {
-  const { name, accountName, amount, cardType, color = "" } = newAccount;
+  const {
+    name,
+    accountName,
+    amount,
+    cardType,
+    color = "",
+    isActive = true,
+  } = newAccount;
   const result = await db.runAsync(
-    "INSERT INTO accounts (name, accountName, amount, cardType, color) VALUES (?, ?, ?, ?, ?);",
-    [name, accountName, amount, cardType, color],
+    "INSERT INTO accounts (name, accountName, amount, cardType, color, isActive) VALUES (?, ?, ?, ?, ?, ?);",
+    [name, accountName, amount, cardType, color, isActive ? 1 : 0],
   );
   return result.lastInsertRowId;
 };
@@ -58,10 +73,18 @@ const updateAccount = async (
   account: AccountType,
   db: SQLiteDatabase,
 ): Promise<boolean> => {
-  const { name, accountName, amount, cardType, color = "", id } = account;
+  const {
+    name,
+    accountName,
+    amount,
+    cardType,
+    color = "",
+    isActive = false,
+    id,
+  } = account;
   const result = await db.runAsync(
-    "UPDATE accounts SET name = ?, accountName = ?, amount = ?, color = ?, cardType = ? WHERE id = ?;",
-    [name, accountName, amount, color, cardType, id],
+    "UPDATE accounts SET name = ?, accountName = ?, amount = ?, color = ?, cardType = ?, isActive = ? WHERE id = ?;",
+    [name, accountName, amount, color, cardType, isActive ? 1 : 0, id],
   );
   return result.changes > 0;
 };
@@ -75,6 +98,7 @@ const deleteAccount = async (
 };
 
 export {
+  AccountCardType,
   AddAccountType,
   AccountType,
   createAccountsTable,
