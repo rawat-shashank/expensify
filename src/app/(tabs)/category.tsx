@@ -27,7 +27,7 @@ const CategoryList = () => {
   const renderItem = ({ item }: { item: CategoryType }) => (
     <TouchableOpacity onPress={() => handleCardPress(item.id)}>
       <View style={styles.card}>
-        <Text style={styles.accountName}>{item.title}</Text>
+        <Text style={styles.accountName}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );
