@@ -1,8 +1,7 @@
-import { CustomBottomSheet } from "@/components/BottomSheet";
 import { CustomSheet } from "@/components/customSheet";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import Header from "@/components/Header";
-import { Icons } from "@/components/Icons";
+import { Icons } from "@/components/Atoms/Icons";
 import { materialTheme } from "@/constants";
 import useProfile from "@/queries/useProfile";
 import { Entypo } from "@expo/vector-icons";
@@ -75,7 +74,6 @@ export default function TabLayout() {
   };
 
   const handleFabClick = () => {
-    /* @TODO: navigate to add transaction/account/category*/
     switch (activeTabIndex) {
       case 0:
         router.push("/transaction/createTransaction");
@@ -107,7 +105,12 @@ export default function TabLayout() {
         rightIcon="person-circle-outline"
         onRightIconPress={handleProfileTabPress}
       />
-      <View style={{ flex: 1, position: "relative" }}>
+      <View
+        style={{
+          flex: 1,
+          position: "relative",
+        }}
+      >
         <Tabs
           screenOptions={{
             headerShown: false,
@@ -168,10 +171,7 @@ export default function TabLayout() {
           <FloatingActionButton onPress={handleFabClick} />
         </View>
       </View>
-      <CustomBottomSheet
-        isVisible={isBottomSheetVisible}
-        onClose={closeBottomSheet}
-      >
+      <CustomSheet isVisible={isBottomSheetVisible} onClose={closeBottomSheet}>
         <View>
           {<Text style={styles.label}>Profile</Text>}
           <>
@@ -189,7 +189,7 @@ export default function TabLayout() {
             </TouchableOpacity>
           </>
         </View>
-      </CustomBottomSheet>
+      </CustomSheet>
       <CustomSheet
         isVisible={isCustomSheetVisible}
         onClose={closeCustomSheet}

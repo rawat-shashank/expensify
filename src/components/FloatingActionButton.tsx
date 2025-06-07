@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, Animated } from "react-native";
-import { Icons, IconsName } from "./Icons";
+import { Icons, IconsName } from "./Atoms/Icons";
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
 import { materialTheme } from "@/constants";
 

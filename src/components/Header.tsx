@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { materialTheme } from "@/constants";
-import { Icons, IconsName } from "./Icons";
+import { Icons, IconsName } from "./Atoms/Icons";
 
 interface HeaderProps {
   title: string;
