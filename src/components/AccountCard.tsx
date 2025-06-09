@@ -1,5 +1,5 @@
 import { materialTheme, WINDOW_WIDTH } from "@/constants";
-import { AccountCardType, AccountType } from "@/database/accountsSchema";
+import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Icons } from "./Atoms/Icons";
@@ -31,13 +31,13 @@ const AccountCard = ({
                 alignItems: "center",
               }}
             >
-              {account.cardType === AccountCardType.BANK && (
+              {account.cardType === AccountCardTypeEnum.BANK && (
                 <Icons name="bank" />
               )}
-              {account.cardType === AccountCardType.WALLET && (
+              {account.cardType === AccountCardTypeEnum.WALLET && (
                 <Icons name="wallet-outline" />
               )}
-              {account.cardType === AccountCardType.CASH && (
+              {account.cardType === AccountCardTypeEnum.CASH && (
                 <Icons name="cash-outline" color={materialTheme.tertiary} />
               )}
               <View style={styles.names}>

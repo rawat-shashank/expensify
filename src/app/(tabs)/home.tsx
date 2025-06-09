@@ -1,5 +1,6 @@
+import { Icons } from "@/components/Atoms/Icons";
 import Container from "@/components/UI/Container";
-import { colors, materialTheme } from "@/constants";
+import { materialTheme } from "@/constants";
 import { TransactionType } from "@/database/transactionSchema";
 import useProfile from "@/queries/useProfile";
 import useTransactions from "@/queries/useTransactions";
@@ -28,6 +29,7 @@ export default function HomeScreen() {
   };
 
   const renderItem = ({ item }: { item: TransactionType }) => {
+    const time = new Date(item.time);
     const transactionTypeStyle =
       item.type === "income" ? styles.income : styles.expense;
     return (
@@ -35,18 +37,38 @@ export default function HomeScreen() {
         style={styles.itemContainer}
         onPress={() => handleCardPress(item.id)}
       >
+        <Icons
+          name={item.category_icon}
+          variant="circularBackground"
+          backgroundColor={item.category_color}
+        />
         <View style={styles.leftSection}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.date}>{item.transaction_date}</Text>
-          {item.category_id && (
-            <Text style={styles.category}>Category: {item.category_id}</Text>
-          )}
-          {item.account_id && (
-            <Text style={styles.account}>Account: {item.account_id}</Text>
-          )}
-          {item.description && (
-            <Text style={styles.description}>{item.description}</Text>
-          )}
+          <Text style={styles.title}>{item.name}</Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 4,
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Text style={styles.subtitle}>{item.account_name}</Text>
+            <Text style={styles.subtitle}>•</Text>
+            <Text style={styles.subtitle}>
+              {time.toLocaleDateString("en-GB", {
+                weekday: "short",
+                day: "2-digit",
+                month: "short",
+              })}
+            </Text>
+            <Text style={styles.subtitle}>•</Text>
+            <Text style={styles.subtitle}>
+              {time.toLocaleTimeString("en-GB", {
+                timeStyle: "short",
+              })}
+            </Text>
+          </View>
         </View>
         <View style={styles.rightSection}>
           <Text style={[styles.amount, transactionTypeStyle]}>
@@ -72,7 +94,6 @@ export default function HomeScreen() {
             data={transactions}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.flatListContent}
           />
         ) : (
           <Text>No transactions created yet.</Text>
@@ -86,27 +107,24 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 10,
   },
-  flatListContent: {
-    paddingHorizontal: 16,
-  },
   itemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 15,
-    paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
+    gap: 16,
   },
   leftSection: {
     flex: 1,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: materialTheme.onSurfaceVariant,
   },
   title: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
     color: materialTheme.onSurface,

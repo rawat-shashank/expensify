@@ -1,27 +1,40 @@
 import { SQLiteDatabase } from "expo-sqlite";
+import { AccountType } from "./accountsSchema";
+import { CategoryType } from "./categoriesSchema";
+import { IconsName } from "@/components/Atoms/Icons";
+
+enum TransactionTypeEnum {
+  EXPENSE = "expense",
+  INCOME = "income",
+  TRANSFER = "transfer",
+}
 
 interface AddTransactionType {
-  title: string;
+  name: string;
   amount: number;
-  description: string;
-  transaction_date: string;
-  account_id: number;
-  category_id: number;
-  type: "expense" | "income" | "transfer";
+  desc: string;
+  time: string;
+  account_id: number; // foreign key
+  category_id: number; // foreign key
+  type: TransactionTypeEnum;
 }
 
 interface TransactionType extends AddTransactionType {
   id: number;
+  account_name: string;
+  category_name: string;
+  category_color: string;
+  category_icon: IconsName;
 }
 
 const createTransactionTable = async (db: SQLiteDatabase): Promise<void> => {
   const sql = `
     CREATE TABLE IF NOT EXISTS transactions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
+      name TEXT NOT NULL,
+      desc TEXT,
       amount REAL NOT NULL,
-      description TEXT,
-      transaction_date TEXT NOT NULL,
+      time TEXT NOT NULL,
       account_id INTEGER NOT NULL,
       category_id INTEGER NOT NULL,
       type TEXT NOT NULL CHECK (type IN ('expense', 'income', 'transfer'))
@@ -34,27 +47,12 @@ const insertTransaction = async (
   newTransaction: AddTransactionType,
   db: SQLiteDatabase,
 ): Promise<number> => {
-  const {
-    title,
-    amount,
-    description,
-    transaction_date,
-    account_id,
-    category_id,
-    type,
-  } = newTransaction;
+  const { name, amount, desc, time, account_id, category_id, type } =
+    newTransaction;
 
   const result = await db.runAsync(
-    "INSERT INTO transactions (title, amount, description, transaction_date, account_id, category_id, type) VALUES (?, ?, ?, ?, ?, ?, ?);",
-    [
-      title,
-      amount,
-      description,
-      transaction_date,
-      account_id,
-      category_id,
-      type,
-    ],
+    "INSERT INTO transactions (name, amount, desc, time, account_id, category_id, type) VALUES (?, ?, ?, ?, ?, ?, ?);",
+    [name, amount, desc, time, account_id, category_id, type],
   );
   return result.lastInsertRowId;
 };
@@ -63,8 +61,22 @@ const getAllTransactions = async (
   db: SQLiteDatabase,
 ): Promise<TransactionType[]> => {
   const result = await db.getAllAsync(
-    "SELECT * FROM transactions ORDER BY transaction_date DESC;",
+    `SELECT
+      t.*,
+      a.accountName AS account_name,
+      c.name AS category_name,
+      c.icon AS category_icon,
+      c.color AS category_color
+    FROM
+      transactions t
+    JOIN
+      accounts a ON t.account_id = a.id
+    JOIN
+      categories c ON t.category_id = c.id
+    ORDER BY
+      t.time DESC;`,
   );
+  console.log("result", result);
   return result as TransactionType[];
 };
 
@@ -83,28 +95,11 @@ const updateTransaction = async (
   transaction: TransactionType,
   db: SQLiteDatabase,
 ): Promise<boolean> => {
-  const {
-    id,
-    title,
-    amount,
-    description,
-    transaction_date,
-    account_id,
-    category_id,
-    type,
-  } = transaction;
+  const { id, name, amount, desc, time, account_id, category_id, type } =
+    transaction;
   const result = await db.runAsync(
-    "UPDATE transactions SET title = ?, amount = ?, description = ?, transaction_date = ?, account_id = ?, category_id = ?, type = ? WHERE id = ?;",
-    [
-      title,
-      amount,
-      description,
-      transaction_date,
-      account_id,
-      category_id,
-      type,
-      id,
-    ],
+    "UPDATE transactions SET name = ?, amount = ?, desc = ?, time = ?, account_id = ?, category_id = ?, type = ? WHERE id = ?;",
+    [name, amount, desc, time, account_id, category_id, type, id],
   );
   return result.changes > 0;
 };
@@ -131,6 +126,7 @@ const getTransactionsByAccountId = async (
 };
 
 export {
+  TransactionTypeEnum,
   AddTransactionType,
   TransactionType,
   createTransactionTable,
