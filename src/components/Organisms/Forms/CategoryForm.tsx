@@ -1,9 +1,9 @@
 import { AddCategoryType, CategoryType } from "@/database/categoriesSchema";
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { InputField } from "../Atoms/InputField";
-import { Picker } from "../Molecules/Picker";
-import { TouchableButton } from "../Atoms/TouchableButtons";
+import { View, Text, StyleSheet } from "react-native";
+import { InputField } from "../../Atoms/InputField";
+import { Picker } from "../../Molecules/Picker";
+import { TouchableButton } from "../../Atoms/TouchableButtons";
 import { materialTheme } from "@/constants";
 
 interface CategoryFormProps {

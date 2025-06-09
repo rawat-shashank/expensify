@@ -1,9 +1,10 @@
+import { IconsName } from "@/components/Atoms/Icons";
 import { SQLiteDatabase } from "expo-sqlite";
 
 interface AddCategoryType {
   name: string;
   desc: string;
-  icon: string;
+  icon: IconsName;
   color: string;
 }
 
@@ -28,6 +29,7 @@ const getAllCategories = async (
   db: SQLiteDatabase,
 ): Promise<CategoryType[]> => {
   const result = await db.getAllAsync("SELECT * FROM categories;");
+  console.log("categories", result);
   return result as CategoryType[];
 };
 

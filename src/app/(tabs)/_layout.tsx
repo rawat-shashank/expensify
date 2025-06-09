@@ -82,7 +82,7 @@ export default function TabLayout() {
         router.push("/(screens)/account/createAccount");
         break;
       case 2:
-        router.push("/category/createCategory");
+        router.push("/(screens)/category/createCategory");
         break;
       default:
         break;

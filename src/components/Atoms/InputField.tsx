@@ -1,12 +1,20 @@
-import { View, StyleSheet, Text, TextInput } from "react-native";
-import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
+import { materialTheme } from "@/constants";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  KeyboardTypeOptions,
+  TextStyle,
+} from "react-native";
 
 export interface InputFieldProps {
   value: string;
   error?: string;
   placeholder?: string;
   onUpdate?: (value: string) => void;
-  style?: ViewStyle;
+  style?: TextStyle;
+  keyboardType?: KeyboardTypeOptions;
 }
 
 export const InputField = ({
@@ -15,6 +23,7 @@ export const InputField = ({
   placeholder = "Enter Input",
   onUpdate,
   style,
+  keyboardType = "default",
 }: InputFieldProps) => {
   return (
     <View>
@@ -23,6 +32,7 @@ export const InputField = ({
         value={value}
         onChangeText={onUpdate}
         placeholder={placeholder}
+        keyboardType={keyboardType}
       />
       {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
@@ -38,6 +48,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   errorText: {
-    color: "red",
+    color: materialTheme.error,
   },
 });

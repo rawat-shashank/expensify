@@ -1,14 +1,14 @@
 import {
-  AccountCardType,
+  AccountCardTypeEnum,
   AccountType,
   AddAccountType,
 } from "@/database/accountsSchema";
 import { useState } from "react";
 import { Switch, Text, View, StyleSheet } from "react-native";
-import { PillSelector } from "../UI/PillSelector";
-import { Picker } from "../Molecules/Picker";
-import { InputField } from "../Atoms/InputField";
-import { TouchableButton } from "../Atoms/TouchableButtons";
+import { PillSelector } from "../../Atoms/PillSelector";
+import { Picker } from "../../Molecules/Picker";
+import { InputField } from "../../Atoms/InputField";
+import { TouchableButton } from "../../Atoms/TouchableButtons";
 import { materialTheme } from "@/constants";
 
 const AccountForm = ({
@@ -20,18 +20,18 @@ const AccountForm = ({
   onAddAccount?: (newAccount: AddAccountType) => Promise<void>;
   onUpdateAccount?: (newAccount: AccountType) => Promise<void>;
 }) => {
-  const accountCardOptions: AccountCardType[] = [
-    AccountCardType.CASH,
-    AccountCardType.WALLET,
-    AccountCardType.BANK,
+  const accountCardOptions: AccountCardTypeEnum[] = [
+    AccountCardTypeEnum.CASH,
+    AccountCardTypeEnum.WALLET,
+    AccountCardTypeEnum.BANK,
   ];
 
   const [name, setName] = useState(account?.name || "");
   const [accountName, setAccountName] = useState(account?.accountName || "");
   const [amount, setAmount] = useState(account?.amount.toString() || "");
   const [isDisable, setIsDisable] = useState<boolean>(false);
-  const [cardType, setCardType] = useState<AccountCardType>(
-    AccountCardType.CASH,
+  const [cardType, setCardType] = useState<AccountCardTypeEnum>(
+    AccountCardTypeEnum.CASH,
   );
   const [color, setColor] = useState(account?.color || "");
 
@@ -109,6 +109,7 @@ const AccountForm = ({
           onUpdate={setAmount}
           placeholder="Enter Amount"
           error={errors.amount}
+          keyboardType="numeric"
         />
 
         <Picker variant="color" value={color} onSelect={setColor} />

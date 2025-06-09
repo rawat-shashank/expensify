@@ -18,26 +18,30 @@ const AccountList = () => {
   if (!db) {
     return <Text>Database not ready.</Text>;
   }
+
   const {
     accounts,
     isLoading: isAccountLoading,
     deleteAccount,
   } = useAccounts(db);
-  const { transactions } = useTransactions(db);
+
   const router = useRouter();
+  const { transactions } = useTransactions(db);
   const [currentVisibleIndex, setCurrentVisibleIndex] = useState(0);
   const [accountTransactions, setAccountTransactions] = useState<
     TransactionType[]
   >([]);
 
   useEffect(() => {
-    setAccountTransactions(
-      transactions.filter(
-        (transaction) =>
-          transaction.account_id === accounts[currentVisibleIndex].id,
-      ),
-    );
-  }, [currentVisibleIndex]);
+    if (accounts.length && transactions.length) {
+      setAccountTransactions(
+        transactions.filter(
+          (transaction) =>
+            transaction.account_id === accounts[currentVisibleIndex].id,
+        ),
+      );
+    }
+  }, [currentVisibleIndex, accounts, transactions]);
 
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 70,
@@ -121,7 +125,6 @@ const AccountList = () => {
             keyExtractor={(item) => item.id.toString()}
             horizontal
             showsHorizontalScrollIndicator={false}
-            pagingEnabled
             onViewableItemsChanged={onViewableItemsChanged}
             viewabilityConfig={viewabilityConfig}
           />

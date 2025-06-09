@@ -3,16 +3,11 @@ import { AccountType, getAllAccounts } from "./accountsSchema";
 import { CategoryType, getAllCategories } from "./categoriesSchema";
 import { TransactionType } from "./transactionSchema";
 
-// Define a type for the joined data structure
-interface ExportedTransaction extends TransactionType {
-  account_name: string;
-  category_title: string;
-}
-
+// FIXME: this needs to be fixed as schema is changes a little
 export interface BackupRestoreType {
   accounts: AccountType[];
   categories: CategoryType[];
-  transactions: ExportedTransaction[];
+  transactions: TransactionType[];
 }
 
 export async function exportAllDataToJson(
@@ -31,7 +26,7 @@ export async function exportAllDataToJson(
       JOIN
         categories c ON t.category_id = c.id;
     `;
-    const transactions = await db.getAllAsync<ExportedTransaction>(query);
+    const transactions = await db.getAllAsync<TransactionType>(query);
     const accounts = await getAllAccounts(db);
     const categories = await getAllCategories(db);
     return {

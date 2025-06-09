@@ -8,7 +8,7 @@ import { CategoryType } from "@/database/categoriesSchema";
 import Container from "@/components/UI/Container";
 import { Icons } from "@/components/Atoms/Icons";
 import { materialTheme } from "@/constants";
-import { CategoryForm } from "@/components/Forms/CategoryForm";
+import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
 
 const EditCategoryForm = () => {
   const router = useRouter();

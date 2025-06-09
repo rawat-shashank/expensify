@@ -1,12 +1,11 @@
-import AccountForm from "@/components/Forms/AccountForm";
-import { Icons } from "@/components/Icons";
+import AccountForm from "@/components/Organisms/Forms/AccountForm";
 import Container from "@/components/UI/Container";
 import { AddAccountType } from "@/database/accountsSchema";
 import useAccounts from "@/queries/useAccounts";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
-const CreateAccount = ({}: {}) => {
+const CreateAccount = () => {
   const db = useSQLiteContext();
   const router = useRouter();
 

@@ -1,4 +1,4 @@
-import AccountForm from "@/components/Forms/AccountForm";
+import AccountForm from "@/components/Organisms/Forms/AccountForm";
 import { Icons } from "@/components/Atoms/Icons";
 import Container from "@/components/UI/Container";
 import { materialTheme } from "@/constants";
@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import alert from "@/components/Alert";
 
-const CreateAccount = ({}: {}) => {
+const EditAccountPage = ({}: {}) => {
   const router = useRouter();
   const db = useSQLiteContext();
   const { getAccountById, updateAccount, deleteAccount } = useAccounts(db);
@@ -26,8 +26,8 @@ const CreateAccount = ({}: {}) => {
   useEffect(() => {
     const loadAccount = async () => {
       if (accountId) {
+        setLoadingAccount(true);
         const account = await getAccountById(accountId);
-        console.log(account);
         if (account) {
           setCurrentAccount(account);
         }
@@ -97,4 +97,4 @@ const CreateAccount = ({}: {}) => {
   );
 };
 
-export default CreateAccount;
+export default EditAccountPage;

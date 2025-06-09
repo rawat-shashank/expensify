@@ -22,7 +22,6 @@ const resetDatabase = async (db: SQLiteDatabase): Promise<void> => {
     await db.execAsync("DROP TABLE IF EXISTS accounts;");
     await db.execAsync("DROP TABLE IF EXISTS transactions;");
     await db.execAsync("DROP TABLE IF EXISTS categories;");
-    console.log('Table "users" dropped.');
   });
 };
 

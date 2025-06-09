@@ -1,4 +1,4 @@
-import { CategoryForm } from "@/components/Forms/CategoryForm";
+import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
 import Container from "@/components/UI/Container";
 import { AddCategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/useCategories";
@@ -11,9 +11,7 @@ const CreateCategory = ({}: {}) => {
   const { addCategory } = useCategories(db);
 
   const onAddCategory = async (newCategory: AddCategoryType) => {
-    console.log(newCategory);
-    const id = await addCategory(newCategory);
-    console.log(id);
+    addCategory(newCategory);
     router.back();
   };
 

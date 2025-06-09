@@ -1,6 +1,6 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
-enum AccountCardType {
+enum AccountCardTypeEnum {
   CASH = "cash",
   WALLET = "wallet",
   BANK = "bank",
@@ -10,7 +10,7 @@ interface AddAccountType {
   name: string; //account holder's name
   accountName: string; //account name
   amount: number;
-  cardType: AccountCardType;
+  cardType: AccountCardTypeEnum;
   color?: string;
   isActive?: boolean;
 }
@@ -55,6 +55,7 @@ const insertAccount = async (
 
 const getAllAccounts = async (db: SQLiteDatabase): Promise<AccountType[]> => {
   const result = await db.getAllAsync("SELECT * FROM accounts;");
+  console.log("accounts", result);
   return result as AccountType[];
 };
 
@@ -98,7 +99,7 @@ const deleteAccount = async (
 };
 
 export {
-  AccountCardType,
+  AccountCardTypeEnum,
   AddAccountType,
   AccountType,
   createAccountsTable,

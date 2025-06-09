@@ -28,8 +28,10 @@ const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
   "wallet-outline": { component: Ionicons, name: "wallet-outline" },
   bank: { component: MaterialCommunityIcons, name: "bank" },
   delete: { component: MaterialCommunityIcons, name: "delete-outline" },
+  "clock-outline": { component: MaterialCommunityIcons, name: "clock-outline" },
   "arrow-back": { component: Ionicons, name: "arrow-back" },
   "color-palette": { component: Ionicons, name: "color-palette" },
+  calendar: { component: Ionicons, name: "calendar" },
 };
 
 interface IconProps {
