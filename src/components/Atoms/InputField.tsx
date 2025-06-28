@@ -1,4 +1,4 @@
-import { materialTheme } from "@/constants";
+import { useTheme } from "@/context/ThemeContext";
 import { floatTwoDecFromString } from "@/utilities/helpers";
 import {
   View,
@@ -26,6 +26,7 @@ export const InputField = ({
   style,
   keyboardType = "default",
 }: InputFieldProps) => {
+  const { theme } = useTheme();
   const onChange = (value: string) => {
     if (!onUpdate) {
       return;
@@ -40,13 +41,21 @@ export const InputField = ({
   return (
     <View>
       <TextInput
-        style={[styles.input, style]}
+        style={[styles.input, style, { color: theme.onSurface }]}
         value={value}
         onChangeText={onChange}
         placeholder={placeholder}
         keyboardType={keyboardType}
       />
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && (
+        <Text
+          style={{
+            color: theme.error,
+          }}
+        >
+          {error}
+        </Text>
+      )}
     </View>
   );
 };
@@ -58,8 +67,5 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     fontSize: 16,
-  },
-  errorText: {
-    color: materialTheme.error,
   },
 });

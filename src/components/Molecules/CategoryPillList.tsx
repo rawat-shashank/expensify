@@ -2,9 +2,9 @@ import { FlatList, Text, View } from "react-native";
 import { TextLabel } from "../Atoms/TextLabel";
 import { TouchableButton } from "../Atoms/TouchableButtons";
 import { useRouter } from "expo-router";
-import { materialTheme } from "@/constants";
 import { Icons } from "../Atoms/Icons";
 import { CategoryType } from "@/database/categoriesSchema";
+import { useTheme } from "@/context/ThemeContext";
 
 interface CateggoryPillListProps {
   categories: CategoryType[];
@@ -18,6 +18,7 @@ export const CategoryPillList = ({
   onSelect,
   error,
 }: CateggoryPillListProps) => {
+  const { theme } = useTheme();
   const ItemSeparatorComponent = () => (
     <View style={{ width: 8, backgroundColor: "transparent" }} />
   );
@@ -57,7 +58,7 @@ export const CategoryPillList = ({
               style={{
                 backgroundColor:
                   activeCategoryId === item.id
-                    ? materialTheme.tertiaryContainer
+                    ? theme.tertiaryContainer
                     : "transparent",
                 paddingVertical: 8,
                 paddingHorizontal: 16,
@@ -84,7 +85,7 @@ export const CategoryPillList = ({
       {error && (
         <Text
           style={{
-            color: materialTheme.error,
+            color: theme.error,
           }}
         >
           {error}

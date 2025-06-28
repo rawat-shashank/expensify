@@ -7,13 +7,17 @@ import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
 import useTransactions from "@/queries/useTransactions";
 import Container from "@/components/UI/Container";
-import TransactionListItem from "@/components/TransactionListItem";
-import { TransactionType } from "@/database/transactionSchema";
+import {
+  TransactionType,
+  TransactionTypeExtra,
+} from "@/database/transactionSchema";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { materialTheme } from "@/constants";
 import { ColorDotWithRing } from "@/components/UI/ColorDotWithRing";
+import { useTheme } from "@/context/ThemeContext";
+import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
 
 const AccountList = () => {
+  const { theme } = useTheme();
   const db = useSQLiteContext();
   if (!db) {
     return <Text>Database not ready.</Text>;
@@ -29,7 +33,7 @@ const AccountList = () => {
   const { transactions } = useTransactions(db);
   const [currentVisibleIndex, setCurrentVisibleIndex] = useState(0);
   const [accountTransactions, setAccountTransactions] = useState<
-    TransactionType[]
+    TransactionTypeExtra[]
   >([]);
 
   useEffect(() => {
@@ -102,13 +106,8 @@ const AccountList = () => {
     console.log(id);
   };
 
-  const renderTransaction = ({ item }: { item: TransactionType }) => {
-    return (
-      <TransactionListItem
-        item={item}
-        handleTransactionPress={handleTransactionPress}
-      />
-    );
+  const renderTransaction = ({ item }: { item: TransactionTypeExtra }) => {
+    return <TransactionListItem item={item} onPress={handleTransactionPress} />;
   };
 
   if (isAccountLoading) {
@@ -129,7 +128,9 @@ const AccountList = () => {
             viewabilityConfig={viewabilityConfig}
           />
         ) : (
-          <Text>No accounts created yet.</Text>
+          <Text style={{ color: theme.onSurface }}>
+            No accounts created yet.
+          </Text>
         )}
         <View
           style={{
@@ -145,14 +146,14 @@ const AccountList = () => {
                 <ColorDotWithRing
                   key={account.id}
                   size={16}
-                  color={materialTheme.onSurfaceVariant}
+                  color={theme.onSurfaceVariant}
                 />
               ) : (
                 <ColorDotWithRing
                   key={account.id}
                   outline={true}
                   size={16}
-                  color={materialTheme.onSurfaceVariant}
+                  color={theme.onSurfaceVariant}
                 />
               );
             })}
@@ -167,7 +168,9 @@ const AccountList = () => {
             showsHorizontalScrollIndicator={false}
           />
         ) : (
-          <Text>No transactions created yet.</Text>
+          <Text style={{ color: theme.onSurface }}>
+            No transactions created yet.
+          </Text>
         )}
       </View>
     </Container>

@@ -2,7 +2,6 @@ import { CustomSheet } from "@/components/customSheet";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import Header from "@/components/Header";
 import { Icons } from "@/components/Atoms/Icons";
-import { materialTheme } from "@/constants";
 import useProfile from "@/queries/useProfile";
 import { Entypo } from "@expo/vector-icons";
 import { Tabs, usePathname, useRouter } from "expo-router";
@@ -17,6 +16,7 @@ import {
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTheme } from "@/context/ThemeContext";
 
 interface TabProps {
   name: string;
@@ -25,6 +25,7 @@ interface TabProps {
 }
 
 export default function TabLayout() {
+  const { theme } = useTheme();
   const router = useRouter();
   const db = useSQLiteContext();
   const { profileData, saveProfile } = useProfile(db);
@@ -93,7 +94,6 @@ export default function TabLayout() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: materialTheme.background,
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
       }}
@@ -115,9 +115,8 @@ export default function TabLayout() {
           screenOptions={{
             headerShown: false,
             tabBarStyle: {
-              borderColor: materialTheme.onSurface,
+              borderColor: theme.onSurface,
               paddingTop: 8,
-              shadowColor: "transparent",
             },
           }}
           screenListeners={{
@@ -135,13 +134,16 @@ export default function TabLayout() {
                 name={tab.name}
                 options={{
                   title: tab.title,
-                  tabBarActiveTintColor: materialTheme.onSurface,
-                  tabBarInactiveTintColor: materialTheme.onSurfaceVariant,
+                  tabBarActiveTintColor: theme.onSurface,
+                  tabBarInactiveTintColor: theme.onSurfaceVariant,
+                  tabBarStyle: {
+                    backgroundColor: theme.background,
+                  },
                   tabBarLabelStyle: {
                     fontSize: 14,
                   },
                   tabBarIconStyle: {
-                    marginBottom: 4,
+                    marginVertical: 8,
                   },
                   tabBarIcon: ({}) => (
                     <Icons
@@ -149,15 +151,15 @@ export default function TabLayout() {
                       size={24}
                       color={
                         activeTabIndex === index
-                          ? materialTheme.onSurface
-                          : materialTheme.onSurfaceVariant
+                          ? theme.onSurface
+                          : theme.onSurfaceVariant
                       }
                       variant={
                         activeTabIndex === index ? "pillBackground" : "default"
                       }
                       backgroundColor={
                         activeTabIndex == index
-                          ? materialTheme.tertiaryContainer
+                          ? theme.tertiaryContainer
                           : "transparent"
                       }
                     />

@@ -2,9 +2,9 @@ import { FlatList, Text, View } from "react-native";
 import { TextLabel } from "../Atoms/TextLabel";
 import { TouchableButton } from "../Atoms/TouchableButtons";
 import { useRouter } from "expo-router";
-import { materialTheme } from "@/constants";
 import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
 import { Icons } from "../Atoms/Icons";
+import { useTheme } from "@/context/ThemeContext";
 
 interface AccountCardProps {
   accounts: AccountType[];
@@ -18,6 +18,7 @@ export const AccountCardList = ({
   onSelect,
   error,
 }: AccountCardProps) => {
+  const { theme } = useTheme();
   const ItemSeparatorComponent = () => (
     <View style={{ width: 8, backgroundColor: "transparent" }} />
   );
@@ -32,7 +33,7 @@ export const AccountCardList = ({
           }}
           style={{
             borderRadius: 16,
-            borderColor: materialTheme.onSurfaceDisabled,
+            borderColor: theme.onSurfaceDisabled,
             width: 128,
             padding: 16,
             minHeight: 144,
@@ -45,7 +46,7 @@ export const AccountCardList = ({
           <Icons
             variant="circularBackground"
             name="plus"
-            backgroundColor={materialTheme.tertiary}
+            backgroundColor={theme.tertiary}
           />
           <Text>Add New</Text>
         </TouchableButton>
@@ -60,8 +61,8 @@ export const AccountCardList = ({
                 borderRadius: 16,
                 borderColor:
                   activeAccountId === item.id
-                    ? materialTheme.onSurface
-                    : materialTheme.onSurfaceDisabled,
+                    ? theme.onSurface
+                    : theme.onSurfaceDisabled,
                 width: 128,
                 padding: 16,
                 minHeight: 144,
@@ -79,21 +80,21 @@ export const AccountCardList = ({
                   <Icons
                     variant="circularBackground"
                     name="bank"
-                    backgroundColor={materialTheme.tertiary}
+                    backgroundColor={theme.tertiary}
                   />
                 )}
                 {item.cardType === AccountCardTypeEnum.WALLET && (
                   <Icons
                     variant="circularBackground"
                     name="wallet-outline"
-                    backgroundColor={materialTheme.tertiary}
+                    backgroundColor={theme.tertiary}
                   />
                 )}
                 {item.cardType === AccountCardTypeEnum.CASH && (
                   <Icons
                     name="cash-outline"
                     variant="circularBackground"
-                    backgroundColor={materialTheme.tertiary}
+                    backgroundColor={theme.tertiary}
                   />
                 )}
               </View>
@@ -112,7 +113,7 @@ export const AccountCardList = ({
       {error && (
         <Text
           style={{
-            color: materialTheme.error,
+            color: theme.error,
           }}
         >
           {error}

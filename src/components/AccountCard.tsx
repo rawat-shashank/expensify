@@ -1,8 +1,9 @@
-import { materialTheme, WINDOW_WIDTH } from "@/constants";
+import { WINDOW_WIDTH } from "@/constants";
 import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Icons } from "./Atoms/Icons";
+import { useTheme } from "@/context/ThemeContext";
 
 const AccountCard = ({
   account,
@@ -13,6 +14,7 @@ const AccountCard = ({
   handleCardPress: (id: number) => void;
   handleDeleteAccount: (id: number) => void;
 }) => {
+  const { theme } = useTheme();
   return (
     <View style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <TouchableOpacity
@@ -38,20 +40,40 @@ const AccountCard = ({
                 <Icons name="wallet-outline" />
               )}
               {account.cardType === AccountCardTypeEnum.CASH && (
-                <Icons name="cash-outline" color={materialTheme.tertiary} />
+                <Icons name="cash-outline" color={theme.onPrimary} />
               )}
               <View style={styles.names}>
-                <Text style={styles.cardTitle}>{account.accountName}</Text>
-                <Text style={styles.cardSubTitle}>{account.name}</Text>
+                <Text style={[styles.cardTitle, { color: theme.onPrimary }]}>
+                  {account.accountName}
+                </Text>
+                <Text
+                  style={[
+                    styles.cardSubTitle,
+                    {
+                      color: theme.onSecondary,
+                    },
+                  ]}
+                >
+                  {account.name}
+                </Text>
               </View>
             </View>
             <TouchableOpacity onPress={() => handleDeleteAccount(account.id)}>
-              <Icons name="delete" color={materialTheme.tertiary} />
+              <Icons name="delete" color={theme.onPrimary} />
             </TouchableOpacity>
           </View>
           <View style={{ marginVertical: 12 }}>
             <Text style={styles.cardSubTitle}>Total Balance</Text>
-            <Text style={styles.amount}>£{account.amount}</Text>
+            <Text
+              style={[
+                styles.amount,
+                {
+                  color: theme.onPrimary,
+                },
+              ]}
+            >
+              £{account.amount}
+            </Text>
           </View>
           <View
             style={{
@@ -101,17 +123,14 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    color: materialTheme.tertiary,
   },
   cardSubTitle: {
     fontSize: 12,
-    color: materialTheme.tertiary,
   },
   amount: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 8,
-    color: materialTheme.secondary,
   },
 });
 

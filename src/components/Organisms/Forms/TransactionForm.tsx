@@ -2,7 +2,6 @@ import DateTimeInput from "@/components/Atoms/DateTimeInput";
 import { InputField } from "@/components/Atoms/InputField";
 import { AccountCardList } from "@/components/Molecules/AccountCardList";
 import { CategoryPillList } from "@/components/Molecules/CategoryPillList";
-import { materialTheme } from "@/constants";
 import {
   AddTransactionType,
   TransactionType,
@@ -16,6 +15,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { PillSelector } from "../../Atoms/PillSelector";
 import { TouchableButton } from "../../Atoms/TouchableButtons";
 import CurrencyInput from "@/components/Atoms/CurrencyInput";
+import { useTheme } from "@/context/ThemeContext";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
@@ -35,6 +35,7 @@ export const TransactionForm = ({
   onAddTransaction,
   onUpdateTransaction,
 }: TransactionFormProps) => {
+  const { theme } = useTheme();
   // TODO: Add Transaction type for Transfer
   const transactionTypeOptions: TransactionTypeEnum[] = [
     TransactionTypeEnum.EXPENSE,
@@ -146,7 +147,14 @@ export const TransactionForm = ({
       </ScrollView>
       {(onAddTransaction || onUpdateTransaction) && (
         <TouchableButton variant="submit" onPress={handleCreateTransaction}>
-          <Text style={styles.createButtonText}>
+          <Text
+            style={[
+              styles.createButtonText,
+              {
+                color: theme.onPrimary,
+              },
+            ]}
+          >
             {onUpdateTransaction ? "Update" : "Create"}
           </Text>
         </TouchableButton>
@@ -156,7 +164,6 @@ export const TransactionForm = ({
 };
 const styles = StyleSheet.create({
   createButtonText: {
-    color: materialTheme.onPrimary,
     fontSize: 16,
     fontWeight: "bold",
   },

@@ -1,6 +1,6 @@
-import { materialTheme } from "@/constants";
+import { useTheme } from "@/context/ThemeContext";
 import { ReactNode } from "react";
-import { StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 
 interface ButtonProps {
   children: ReactNode;
@@ -15,11 +15,18 @@ const TouchableButton = ({
   onPress,
   variant = "basic",
 }: ButtonProps) => {
+  const { theme } = useTheme();
   switch (variant) {
     case "submit":
       return (
         <TouchableOpacity
-          style={[styles.submitButton, style]}
+          style={[
+            styles.submitButton,
+            style,
+            {
+              backgroundColor: theme.primary,
+            },
+          ]}
           onPress={onPress}
         >
           {children}
@@ -38,7 +45,6 @@ const TouchableButton = ({
 
 const styles = StyleSheet.create({
   submitButton: {
-    backgroundColor: materialTheme.primary,
     paddingVertical: 15,
     borderRadius: 32,
     alignItems: "center",

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, Animated } from "react-native";
 import { Icons, IconsName } from "./Atoms/Icons";
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
-import { materialTheme } from "@/constants";
+import { useTheme } from "@/context/ThemeContext";
 
 interface FABProps {
   onPress: () => void;
@@ -17,10 +17,11 @@ const FloatingActionButton = ({
   onPress,
   iconName = "plus",
   iconColor,
-  buttonColor = materialTheme.secondaryContainer,
+  buttonColor,
   iconSize = 28,
   style,
 }: FABProps) => {
+  const { theme } = useTheme();
   const iconScale = 2 * iconSize;
   const iconborder = iconSize / 2;
   const [animation] = useState(new Animated.Value(1));
@@ -68,7 +69,7 @@ const FloatingActionButton = ({
         style={[
           styles.button,
           {
-            backgroundColor: buttonColor,
+            backgroundColor: buttonColor || theme.secondaryContainer,
             width: iconScale,
             height: iconScale,
             borderRadius: iconborder,

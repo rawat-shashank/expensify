@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native";
-import { colors, materialTheme } from "./colors";
+import { colors } from "./colors";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
-export { WINDOW_WIDTH, WINDOW_HEIGHT, colors, materialTheme };
+export { WINDOW_WIDTH, WINDOW_HEIGHT, colors };

@@ -1,4 +1,3 @@
-import { WINDOW_WIDTH } from "@/constants";
 import { colors } from "@/constants/colors";
 import { TransactionType } from "@/database/transactionSchema";
 import React from "react";
@@ -6,16 +5,13 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 const TransactionListItem = ({
   item,
-  handleTransactionPress,
+  onPress,
 }: {
   item: TransactionType;
-  handleTransactionPress: (id: number) => void;
+  onPress: (id: number) => void;
 }) => {
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => handleTransactionPress(item.id)}
-    >
+    <TouchableOpacity style={styles.container} onPress={() => onPress(item.id)}>
       <Text style={{ color: colors.textPrimary }}>Icon</Text>
       <View
         style={{
@@ -30,10 +26,8 @@ const TransactionListItem = ({
         }}
       >
         <View>
-          <Text style={{ color: colors.textPrimary }}>{item.title}</Text>
-          <Text style={{ color: colors.textPrimary }}>
-            {item.transaction_date}
-          </Text>
+          <Text style={{ color: colors.textPrimary }}>{item.name}</Text>
+          <Text style={{ color: colors.textPrimary }}>{item.time}</Text>
         </View>
         <View>
           <Text

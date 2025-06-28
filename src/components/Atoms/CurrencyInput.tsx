@@ -1,4 +1,4 @@
-import { materialTheme } from "@/constants";
+import { useTheme } from "@/context/ThemeContext";
 import React, { useState, useEffect } from "react";
 import { TextInput, View, StyleSheet, Text } from "react-native";
 
@@ -18,6 +18,7 @@ const CurrencyInput = ({
   onUpdate,
   error,
 }: CurrencyInputProps) => {
+  const { theme } = useTheme();
   const [internalValue, setInternalValue] = useState(
     value ? String(value) : "",
   );
@@ -84,16 +85,24 @@ const CurrencyInput = ({
   return (
     <View>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: theme.onSurface }]}
         keyboardType="numeric" // Opens the number pad
         value={internalValue}
         onChangeText={handleChangeText}
         onBlur={handleBlur}
         placeholder={placeholder}
-        placeholderTextColor="#999"
+        placeholderTextColor={theme.onSurfaceVariant}
       />
 
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && (
+        <Text
+          style={{
+            color: theme.error,
+          }}
+        >
+          {error}
+        </Text>
+      )}
     </View>
   );
 };
@@ -105,9 +114,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     fontSize: 16,
-  },
-  errorText: {
-    color: materialTheme.error,
   },
 });
 

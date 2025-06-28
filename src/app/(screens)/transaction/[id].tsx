@@ -6,11 +6,12 @@ import { Text, TouchableOpacity } from "react-native";
 import alert from "@/components/Alert";
 import { TransactionType } from "@/database/transactionSchema";
 import Container from "@/components/UI/Container";
-import { materialTheme } from "@/constants";
 import { Icons } from "@/components/Atoms/Icons";
 import { TransactionForm } from "@/components/Organisms/Forms/TransactionForm";
+import { useTheme } from "@/context/ThemeContext";
 
 const EditTransactionPage = () => {
+  const { theme } = useTheme();
   const router = useRouter();
   const db = useSQLiteContext();
   const { getTransactionById, deleteTransaction, updateTransaction } =
@@ -85,7 +86,7 @@ const EditTransactionPage = () => {
           title: "Update Transaction",
           headerRight: () => (
             <TouchableOpacity onPress={handleDeleteTransaction}>
-              <Icons name="delete" color={materialTheme.tertiary} />
+              <Icons name="delete" color={theme.tertiary} />
             </TouchableOpacity>
           ),
         }}

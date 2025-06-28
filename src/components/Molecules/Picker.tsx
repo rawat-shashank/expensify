@@ -8,9 +8,10 @@ import {
 } from "react-native"; // Added FlatList, Dimensions, StyleSheet
 import { CustomSheet } from "../customSheet";
 import ColorPicker from "../Pickers/ColorPicker";
-import { materialTheme, WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
 import { Icons, IconsName, ICON_NAME_MAPPING } from "../Atoms/Icons";
 import { ColorDotWithRing } from "../UI/ColorDotWithRing";
+import { useTheme } from "@/context/ThemeContext";
 
 // Get all icon names for display in the picker
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
@@ -43,6 +44,7 @@ export const Picker = ({
   description,
   defaultIcon = "star", // Default icon if none is provided for icon variant
 }: PickerProps) => {
+  const { theme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSelectAndClose = (selectedValue: string) => {
@@ -75,23 +77,20 @@ export const Picker = ({
         >
           {/* Display relevant icon based on variant */}
           {variant === "color" ? (
-            <Icons name="color-palette" color={materialTheme.primary} />
+            <Icons name="color-palette" color={theme.primary} />
           ) : (
             // The `name` prop for `Icons` is `string`, but we know `displayIconName` is `IconsName`
-            <Icons
-              name={displayIconName as IconsName}
-              color={materialTheme.primary}
-            />
+            <Icons name={displayIconName as IconsName} color={theme.primary} />
           )}
 
           <View>
-            <Text>
+            <Text style={{ color: theme.onSurface }}>
               {label || (variant === "color" ? "Pick Color" : "Pick Icon")}
             </Text>
             <Text
               style={{
                 fontSize: 12,
-                color: materialTheme.onSecondaryContainer,
+                color: theme.onSurfaceVariant,
               }}
             >
               {description ||
@@ -104,13 +103,13 @@ export const Picker = ({
 
         {/* Display selected value representation */}
         {variant === "color" ? (
-          <ColorDotWithRing color={value || materialTheme.primary} />
+          <ColorDotWithRing color={value || theme.primary} />
         ) : (
           // Display the selected icon, or a placeholder if none is selected
           <Icons
             name={(value as IconsName) || (defaultIcon as IconsName)}
             size={30}
-            color={materialTheme.primary}
+            color={theme.primary}
           />
         )}
       </TouchableOpacity>
@@ -120,7 +119,17 @@ export const Picker = ({
           <ColorPicker onSelect={handleSelectAndClose} />
         ) : (
           <View style={styles.iconPickerContainer}>
-            <Text style={styles.pickerHeader}>Select an Icon</Text>
+            <Text
+              style={[
+                styles.pickerHeader,
+                {
+                  color: theme.onSurface,
+                },
+              ]}
+            >
+              Select an Icon
+            </Text>
+
             <FlatList
               data={ALL_ICON_NAMES}
               keyExtractor={(item) => item}
@@ -135,8 +144,8 @@ export const Picker = ({
                     size={ICON_SIZE_IN_PICKER - 10} // Smaller size for picker items
                     color={
                       value === iconName
-                        ? materialTheme.primary
-                        : materialTheme.onSurfaceVariant
+                        ? theme.primary
+                        : theme.onSurfaceVariant
                     }
                   />
                 </TouchableOpacity>
@@ -160,7 +169,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 15,
-    color: materialTheme.onSurface,
   },
   iconListContent: {
     justifyContent: "flex-start", // Align items to the start
@@ -171,11 +179,7 @@ const styles = StyleSheet.create({
     height: ICON_SIZE_IN_PICKER,
     justifyContent: "center",
     alignItems: "center",
-    margin: 5, // Spacing between icons
+    margin: 5,
     borderRadius: 8,
-    // Add a subtle border or background if you like for better visibility
-    // backgroundColor: '#f0f0f0',
-    // borderWidth: 1,
-    // borderColor: '#e0e0e0',
   },
 });

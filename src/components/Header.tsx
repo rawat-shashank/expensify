@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { materialTheme } from "@/constants";
 import { Icons, IconsName } from "./Atoms/Icons";
+import { useTheme } from "@/context/ThemeContext";
 
 interface HeaderProps {
   title: string;
@@ -18,15 +18,26 @@ const Header: React.FC<HeaderProps> = ({
   rightIcon,
   onRightIconPress,
 }) => {
+  const { theme } = useTheme();
+
   return (
     <View style={styles.header}>
       <View style={styles.leftSection}>
         {leftIcon && (
           <TouchableOpacity onPress={onLeftIconPress}>
-            <Icons name={leftIcon} size={28} color={materialTheme.onSurface} />
+            <Icons name={leftIcon} size={28} color={theme.onSurface} />
           </TouchableOpacity>
         )}
-        <Text style={styles.title}>{title}</Text>
+        <Text
+          style={[
+            styles.title,
+            {
+              color: theme.onSurface,
+            },
+          ]}
+        >
+          {title}
+        </Text>
       </View>
 
       {rightIcon && (
@@ -34,9 +45,9 @@ const Header: React.FC<HeaderProps> = ({
           <Icons
             name={rightIcon}
             size={28}
-            color={materialTheme.onSurface}
+            color={theme.onSurface}
             variant="circularBackground"
-            backgroundColor={materialTheme.tertiaryContainer}
+            backgroundColor={theme.tertiaryContainer}
           />
         </TouchableOpacity>
       )}
@@ -51,7 +62,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 8,
     paddingHorizontal: 16,
-    backgroundColor: materialTheme.background,
   },
   leftSection: {
     flexDirection: "row",
@@ -61,7 +71,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     marginLeft: 16,
-    color: materialTheme.onSurface,
   },
 });
 

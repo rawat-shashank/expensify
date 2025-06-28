@@ -1,11 +1,16 @@
-import { materialTheme } from "@/constants";
+import { useTheme } from "@/context/ThemeContext";
 import { View } from "react-native";
 
 export const ColorDotWithRing = ({
   size = 24,
-  color = materialTheme.primary,
+  color,
   outline = false,
+}: {
+  size?: number;
+  color: string;
+  outline?: boolean;
 }) => {
+  const { theme } = useTheme();
   return (
     <View
       style={{
@@ -34,7 +39,7 @@ export const ColorDotWithRing = ({
               width: size - 8,
               height: size - 8,
               borderRadius: (size - 8) / 2,
-              backgroundColor: color,
+              backgroundColor: color || theme.onPrimary,
             }}
           />
         )}

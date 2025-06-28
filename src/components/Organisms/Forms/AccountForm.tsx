@@ -9,8 +9,8 @@ import { PillSelector } from "../../Atoms/PillSelector";
 import { Picker } from "../../Molecules/Picker";
 import { InputField } from "../../Atoms/InputField";
 import { TouchableButton } from "../../Atoms/TouchableButtons";
-import { materialTheme } from "@/constants";
 import CurrencyInput from "@/components/Atoms/CurrencyInput";
+import { useTheme } from "@/context/ThemeContext";
 
 const AccountForm = ({
   account,
@@ -21,6 +21,7 @@ const AccountForm = ({
   onAddAccount?: (newAccount: AddAccountType) => Promise<void>;
   onUpdateAccount?: (newAccount: AccountType) => Promise<void>;
 }) => {
+  const { theme } = useTheme();
   const accountCardOptions: AccountCardTypeEnum[] = [
     AccountCardTypeEnum.CASH,
     AccountCardTypeEnum.WALLET,
@@ -112,13 +113,22 @@ const AccountForm = ({
         <Picker variant="color" value={color} onSelect={setColor} />
 
         <View style={styles.switchContainer}>
-          <Text style={styles.label}>Exclude Account:</Text>
+          <Text style={[styles.label, { color: theme.onSurface }]}>
+            Exclude Account:
+          </Text>
           <Switch value={isDisable} onValueChange={setIsDisable} />
         </View>
       </View>
       {(onAddAccount || onUpdateAccount) && (
         <TouchableButton variant="submit" onPress={handleCreateAccount}>
-          <Text style={styles.createButtonText}>
+          <Text
+            style={[
+              styles.createButtonText,
+              {
+                color: theme.onPrimary,
+              },
+            ]}
+          >
             {onUpdateAccount ? "Update" : "Create"}
           </Text>
         </TouchableButton>
@@ -139,7 +149,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   createButtonText: {
-    color: materialTheme.onPrimary,
     fontSize: 18,
     fontWeight: "bold",
   },

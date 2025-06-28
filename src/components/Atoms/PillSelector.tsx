@@ -1,4 +1,4 @@
-import { materialTheme } from "@/constants";
+import { useTheme } from "@/context/ThemeContext";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface PillSelectorProps<T extends string> {
@@ -12,6 +12,7 @@ export const PillSelector = <T extends string>({
   selected,
   onSelect,
 }: PillSelectorProps<T>) => {
+  const { theme } = useTheme();
   return (
     <View style={styles.pillContainer}>
       {options?.map((option) => (
@@ -19,14 +20,25 @@ export const PillSelector = <T extends string>({
           key={option}
           style={[
             styles.typeButton,
-            selected === option && styles.activeTypeButton,
+            {
+              backgroundColor: theme.tertiaryContainer,
+            },
+            selected === option && {
+              borderWidth: 2,
+              borderColor: theme.onSurface,
+            },
           ]}
           onPress={() => onSelect(option)}
         >
           <Text
             style={[
               styles.typeButtonText,
-              selected === option && styles.activeTypeButtonText,
+              {
+                color: theme.onSurfaceVariant,
+              },
+              selected === option && {
+                color: theme.onSurface,
+              },
             ]}
           >
             {option}
@@ -44,23 +56,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
     gap: 16,
   },
-
   typeButton: {
-    backgroundColor: materialTheme.tertiaryContainer,
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 32,
   },
-  activeTypeButton: {
-    borderWidth: 2,
-    borderColor: materialTheme.onSurface,
-  },
+  activeTypeButton: {},
   typeButtonText: {
     fontSize: 16,
-    color: materialTheme.onSurfaceVariant,
     textTransform: "capitalize",
-  },
-  activeTypeButtonText: {
-    color: materialTheme.onSurface,
   },
 });

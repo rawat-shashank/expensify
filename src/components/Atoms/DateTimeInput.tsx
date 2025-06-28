@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from "react-native";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { materialTheme } from "@/constants";
 import { TouchableButton } from "./TouchableButtons";
 import { Icons } from "./Icons";
 import { TextLabel } from "./TextLabel";

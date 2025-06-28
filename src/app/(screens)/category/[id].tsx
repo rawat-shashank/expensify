@@ -7,10 +7,11 @@ import useCategories from "@/queries/useCategories";
 import { CategoryType } from "@/database/categoriesSchema";
 import Container from "@/components/UI/Container";
 import { Icons } from "@/components/Atoms/Icons";
-import { materialTheme } from "@/constants";
 import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
+import { useTheme } from "@/context/ThemeContext";
 
 const EditCategoryForm = () => {
+  const { theme } = useTheme();
   const router = useRouter();
   const db = useSQLiteContext();
   const { getCategoryById, updateCategory, deleteCategory } = useCategories(db);
@@ -85,7 +86,7 @@ const EditCategoryForm = () => {
           title: "Update Category",
           headerRight: () => (
             <TouchableOpacity onPress={handleDeleteCategory}>
-              <Icons name="delete" color={materialTheme.tertiary} />
+              <Icons name="delete" color={theme.tertiary} />
             </TouchableOpacity>
           ),
         }}
