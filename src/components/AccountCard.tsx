@@ -51,7 +51,7 @@ const AccountCard = ({
           </View>
           <View style={{ marginVertical: 12 }}>
             <Text style={styles.cardSubTitle}>Total Balance</Text>
-            <Text style={styles.amount}>£{account.amount.toFixed(2)}</Text>
+            <Text style={styles.amount}>£{account.amount}</Text>
           </View>
           <View
             style={{
@@ -63,11 +63,11 @@ const AccountCard = ({
           >
             <View style={{ flexGrow: 1 }}>
               <Text style={styles.cardSubTitle}>Income</Text>
-              <Text style={styles.amount}>£{account.amount.toFixed(2)}</Text>
+              <Text style={styles.amount}>£{account.amount}</Text>
             </View>
             <View style={{ flexGrow: 1 }}>
               <Text style={styles.cardSubTitle}>Expenses</Text>
-              <Text style={styles.amount}>£{account.amount.toFixed(2)}</Text>
+              <Text style={styles.amount}>£{account.amount}</Text>
             </View>
           </View>
         </View>

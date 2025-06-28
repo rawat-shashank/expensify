@@ -10,6 +10,7 @@ import { Picker } from "../../Molecules/Picker";
 import { InputField } from "../../Atoms/InputField";
 import { TouchableButton } from "../../Atoms/TouchableButtons";
 import { materialTheme } from "@/constants";
+import CurrencyInput from "@/components/Atoms/CurrencyInput";
 
 const AccountForm = ({
   account,
@@ -54,10 +55,7 @@ const AccountForm = ({
       newErrors.accountName = "Account name required";
     }
 
-    if (typeof amount === "string" && !amount.trim()) {
-      newErrors.amount = "Amount is required.";
-    }
-    const parsedAmount = parseFloat(amount);
+    const parsedAmount = parseFloat(amount || "0.00");
     if (isNaN(parsedAmount)) {
       newErrors.amount = "Amount must be a valid number.";
     }
@@ -68,7 +66,7 @@ const AccountForm = ({
       const newAccount: AddAccountType = {
         name,
         accountName,
-        amount: parsedAmount,
+        amount: amount || "0.00",
         cardType,
         isActive: !isDisable,
         color,
@@ -104,12 +102,11 @@ const AccountForm = ({
           error={errors.accountName}
         />
 
-        <InputField
+        <CurrencyInput
           value={amount}
           onUpdate={setAmount}
-          placeholder="Enter Amount"
+          placeholder="0.00"
           error={errors.amount}
-          keyboardType="numeric"
         />
 
         <Picker variant="color" value={color} onSelect={setColor} />

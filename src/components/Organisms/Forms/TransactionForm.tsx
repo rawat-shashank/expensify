@@ -15,6 +15,7 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { PillSelector } from "../../Atoms/PillSelector";
 import { TouchableButton } from "../../Atoms/TouchableButtons";
+import CurrencyInput from "@/components/Atoms/CurrencyInput";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
@@ -63,10 +64,8 @@ export const TransactionForm = ({
     if (!name.trim()) {
       newErrors.name = "Expense name required.";
     }
-    if (!amount.trim()) {
-      newErrors.amount = "Amount required.";
-    }
-    const paresedAmount = parseFloat(amount);
+
+    const paresedAmount = parseFloat(amount || "0.00");
     if (isNaN(paresedAmount)) {
       newErrors.amount = "Amount must be a valid number.";
     }
@@ -85,7 +84,7 @@ export const TransactionForm = ({
       const newTransaction: AddTransactionType = {
         name,
         desc,
-        amount: paresedAmount,
+        amount: amount || "0.00",
         time,
         account_id,
         category_id,
@@ -118,12 +117,11 @@ export const TransactionForm = ({
             placeholder="Expense name"
             error={errors.name}
           />
-          <InputField
+          <CurrencyInput
             value={amount}
             onUpdate={setAmount}
-            placeholder="Amount"
+            placeholder="0.00"
             error={errors.amount}
-            keyboardType="numeric"
           />
 
           <InputField

@@ -1,4 +1,5 @@
 import { materialTheme } from "@/constants";
+import { floatTwoDecFromString } from "@/utilities/helpers";
 import {
   View,
   StyleSheet,
@@ -25,12 +26,23 @@ export const InputField = ({
   style,
   keyboardType = "default",
 }: InputFieldProps) => {
+  const onChange = (value: string) => {
+    if (!onUpdate) {
+      return;
+    }
+    if (keyboardType === "numeric") {
+      onUpdate(floatTwoDecFromString(value));
+    } else {
+      onUpdate(value);
+    }
+  };
+
   return (
     <View>
       <TextInput
         style={[styles.input, style]}
         value={value}
-        onChangeText={onUpdate}
+        onChangeText={onChange}
         placeholder={placeholder}
         keyboardType={keyboardType}
       />

@@ -10,6 +10,7 @@ import {
   deleteTransaction as dbDeleteTransaction,
   getTransactionsByAccountId as dbGetTransactionsByAccountId,
   AddTransactionType,
+  TransactionTypeExtra,
 } from "@/database/transactionSchema";
 
 export const transactionKeys = {
@@ -40,7 +41,7 @@ const useTransactions = (db: SQLiteDatabase) => {
     isLoading: isLoadingAllTransactions,
     error: allTransactionsError,
     refetch: refetchAllTransactions,
-  } = useQuery<TransactionType[], Error>({
+  } = useQuery<TransactionTypeExtra[], Error>({
     queryKey: transactionKeys.lists(),
     queryFn: () => dbGetAllTransactions(db),
   });

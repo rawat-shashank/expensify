@@ -1,6 +1,4 @@
 import { SQLiteDatabase } from "expo-sqlite";
-import { AccountType } from "./accountsSchema";
-import { CategoryType } from "./categoriesSchema";
 import { IconsName } from "@/components/Atoms/Icons";
 
 enum TransactionTypeEnum {
@@ -11,7 +9,7 @@ enum TransactionTypeEnum {
 
 interface AddTransactionType {
   name: string;
-  amount: number;
+  amount: string;
   desc: string;
   time: string;
   account_id: number; // foreign key
@@ -21,6 +19,9 @@ interface AddTransactionType {
 
 interface TransactionType extends AddTransactionType {
   id: number;
+}
+
+interface TransactionTypeExtra extends TransactionType {
   account_name: string;
   category_name: string;
   category_color: string;
@@ -33,7 +34,7 @@ const createTransactionTable = async (db: SQLiteDatabase): Promise<void> => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       desc TEXT,
-      amount REAL NOT NULL,
+      amount TEXT NOT NULL,
       time TEXT NOT NULL,
       account_id INTEGER NOT NULL,
       category_id INTEGER NOT NULL,
@@ -57,9 +58,18 @@ const insertTransaction = async (
   return result.lastInsertRowId;
 };
 
+//const getAllTransactions = async (
+//  db: SQLiteDatabase,
+//): Promise<TransactionType[]> => {
+//  const result = await db.getAllAsync(
+//    "SELECT * FROM transactions ORDER BY time DESC",
+//  );
+//  return result as TransactionType[];
+//};
+
 const getAllTransactions = async (
   db: SQLiteDatabase,
-): Promise<TransactionType[]> => {
+): Promise<TransactionTypeExtra[]> => {
   const result = await db.getAllAsync(
     `SELECT
       t.*,
@@ -76,8 +86,7 @@ const getAllTransactions = async (
     ORDER BY
       t.time DESC;`,
   );
-  console.log("result", result);
-  return result as TransactionType[];
+  return result as TransactionTypeExtra[];
 };
 
 const getTransactionById = async (
@@ -129,6 +138,7 @@ export {
   TransactionTypeEnum,
   AddTransactionType,
   TransactionType,
+  TransactionTypeExtra,
   createTransactionTable,
   getAllTransactions,
   insertTransaction,

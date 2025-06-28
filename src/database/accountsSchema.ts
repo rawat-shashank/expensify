@@ -9,7 +9,7 @@ enum AccountCardTypeEnum {
 interface AddAccountType {
   name: string; //account holder's name
   accountName: string; //account name
-  amount: number;
+  amount: string;
   cardType: AccountCardTypeEnum;
   color?: string;
   isActive?: boolean;
@@ -25,7 +25,7 @@ const createAccountsTable = async (db: SQLiteDatabase): Promise<void> => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       accountName TEXT NOT NULL,
-      amount REAL NOT NULL,
+      amount TEXT NOT NULL,
       cardType TEXT NOT NULL CHECK (cardType IN ('cash', 'wallet', 'bank')),
       color TEXT NOT NULL,
       isActive INTEGER DEFAULT 1 NOT NULL
@@ -46,6 +46,7 @@ const insertAccount = async (
     color = "",
     isActive = true,
   } = newAccount;
+  console.log("newAccount", newAccount);
   const result = await db.runAsync(
     "INSERT INTO accounts (name, accountName, amount, cardType, color, isActive) VALUES (?, ?, ?, ?, ?, ?);",
     [name, accountName, amount, cardType, color, isActive ? 1 : 0],

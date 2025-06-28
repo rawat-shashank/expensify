@@ -29,7 +29,7 @@ const EditTransactionPage = () => {
       if (transactionId) {
         setLoadingTransaction(true);
         const transaction = await getTransactionById(transactionId);
-
+        console.log(transaction);
         if (transaction) {
           setCurrentTransaction(transaction);
         }
@@ -49,7 +49,7 @@ const EditTransactionPage = () => {
     if (currentTransaction?.id) {
       alert(
         "Delete Transaction",
-        `Are you sure you want to delete the transaction "${currentTransaction.title}"?`,
+        `Are you sure you want to delete the transaction "${currentTransaction.name}"?`,
         [
           {
             text: "Cancel",

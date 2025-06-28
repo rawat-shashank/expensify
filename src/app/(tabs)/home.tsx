@@ -1,7 +1,7 @@
 import { Icons } from "@/components/Atoms/Icons";
 import Container from "@/components/UI/Container";
 import { materialTheme } from "@/constants";
-import { TransactionType } from "@/database/transactionSchema";
+import { TransactionTypeExtra } from "@/database/transactionSchema";
 import useProfile from "@/queries/useProfile";
 import useTransactions from "@/queries/useTransactions";
 import { useRouter } from "expo-router";
@@ -28,7 +28,7 @@ export default function HomeScreen() {
     router.push(`/transaction/${transactionId}`);
   };
 
-  const renderItem = ({ item }: { item: TransactionType }) => {
+  const renderItem = ({ item }: { item: TransactionTypeExtra }) => {
     const time = new Date(item.time);
     const transactionTypeStyle =
       item.type === "income" ? styles.income : styles.expense;
@@ -73,7 +73,7 @@ export default function HomeScreen() {
         <View style={styles.rightSection}>
           <Text style={[styles.amount, transactionTypeStyle]}>
             {item.type === "expense" ? "-" : "+"}
-            {item.amount.toFixed(2)}
+            {item.amount}
           </Text>
         </View>
       </TouchableOpacity>
