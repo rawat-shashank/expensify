@@ -115,10 +115,6 @@ export default function TabLayout() {
         <Tabs
           screenOptions={{
             headerShown: false,
-            tabBarStyle: {
-              borderColor: theme.onSurface,
-              paddingTop: 8,
-            },
           }}
           screenListeners={{
             tabPress: (e) => {
@@ -139,6 +135,7 @@ export default function TabLayout() {
                   tabBarInactiveTintColor: theme.onSurfaceVariant,
                   tabBarStyle: {
                     backgroundColor: theme.background,
+                    elevation: 0,
                   },
                   tabBarLabelStyle: {
                     fontSize: 14,
