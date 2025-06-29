@@ -1,3 +1,4 @@
+import { useTheme } from "@/context/ThemeContext";
 import { useEffect, useState, useRef } from "react";
 import {
   Modal,
@@ -25,6 +26,7 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
   children,
   direction = "bottom",
 }) => {
+  const { theme } = useTheme();
   const slideAnim = useState(new Animated.Value(0))[0];
   const [contentHeight, setContentHeight] = useState(0);
   const [contentWidth, setContentWidth] = useState(0);
@@ -130,12 +132,24 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
     <Modal transparent={true} visible={isVisible} onRequestClose={onClose}>
       <View style={styles.modalContainer}>
         <TouchableOpacity
-          style={styles.modalOverlay}
+          style={[
+            styles.modalOverlay,
+            {
+              backgroundColor: theme.backdrop,
+            },
+          ]}
           onPress={onClose}
           activeOpacity={1}
         />
         <Animated.View
-          style={[styles.sheetBase, sheetBaseStyle, animatedStyle]}
+          style={[
+            styles.sheetBase,
+            sheetBaseStyle,
+            animatedStyle,
+            {
+              backgroundColor: theme.background,
+            },
+          ]}
           onLayout={onContentLayout}
         >
           {children}
@@ -157,7 +171,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   sheetBase: {
     position: "absolute",

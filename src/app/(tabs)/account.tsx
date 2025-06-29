@@ -102,8 +102,8 @@ const AccountList = () => {
     />
   );
 
-  const handleTransactionPress = (id: number) => {
-    console.log(id);
+  const handleTransactionPress = (transactionId: number) => {
+    router.push(`/transaction/${transactionId}`);
   };
 
   const renderTransaction = ({ item }: { item: TransactionTypeExtra }) => {

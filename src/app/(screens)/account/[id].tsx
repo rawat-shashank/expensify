@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import alert from "@/components/Alert";
 import { useTheme } from "@/context/ThemeContext";
+import { TouchableButton } from "@/components/Atoms/TouchableButtons";
 
 const EditAccountPage = ({}: {}) => {
   const { theme } = useTheme();
@@ -84,14 +85,14 @@ const EditAccountPage = ({}: {}) => {
             color: theme.onSurface,
           },
           headerLeft: () => (
-            <TouchableOpacity
+            <TouchableButton
               onPress={() => router.back()}
               style={{
                 paddingRight: 16,
               }}
             >
               <Icons name="arrow-back" color={theme.onSurface} />
-            </TouchableOpacity>
+            </TouchableButton>
           ),
           headerRight: () => (
             <TouchableOpacity onPress={handleDeleteAccount}>

@@ -6,6 +6,7 @@ import DateTimePicker, {
 import { TouchableButton } from "./TouchableButtons";
 import { Icons } from "./Icons";
 import { TextLabel } from "./TextLabel";
+import { useTheme } from "@/context/ThemeContext";
 
 interface DateTimeInputProps {
   value: string;
@@ -14,6 +15,7 @@ interface DateTimeInputProps {
 }
 
 const DateTimeInput = ({ value, label, onChange }: DateTimeInputProps) => {
+  const { theme } = useTheme();
   const [date, setDate] = useState(new Date(value));
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState<"date" | "time">("date");
@@ -55,8 +57,8 @@ const DateTimeInput = ({ value, label, onChange }: DateTimeInputProps) => {
           style={styles.DateTimeButtons}
           onPress={showDatepicker}
         >
-          <Icons name="calendar" />
-          <Text style={styles.DateTimeText}>
+          <Icons name="calendar" color={theme.onSurface} />
+          <Text style={[styles.DateTimeText, { color: theme.onSurface }]}>
             {date.toLocaleDateString("en-GB", {
               year: "numeric",
               month: "2-digit",
@@ -68,8 +70,8 @@ const DateTimeInput = ({ value, label, onChange }: DateTimeInputProps) => {
           style={styles.DateTimeButtons}
           onPress={showTimepicker}
         >
-          <Icons name="clock-outline" />
-          <Text style={styles.DateTimeText}>
+          <Icons name="clock-outline" color={theme.onSurface} />
+          <Text style={[styles.DateTimeText, { color: theme.onSurface }]}>
             {date.toLocaleTimeString("en-GB", {
               timeStyle: "short",
             })}

@@ -9,6 +9,7 @@ import Container from "@/components/UI/Container";
 import { Icons } from "@/components/Atoms/Icons";
 import { TransactionForm } from "@/components/Organisms/Forms/TransactionForm";
 import { useTheme } from "@/context/ThemeContext";
+import { TouchableButton } from "@/components/Atoms/TouchableButtons";
 
 const EditTransactionPage = () => {
   const { theme } = useTheme();
@@ -84,11 +85,27 @@ const EditTransactionPage = () => {
       <Stack.Screen
         options={{
           title: "Update Transaction",
+          headerTitleStyle: {
+            color: theme.onSurface,
+          },
+          headerLeft: () => (
+            <TouchableButton
+              onPress={() => router.back()}
+              style={{
+                paddingRight: 16,
+              }}
+            >
+              <Icons name="arrow-back" color={theme.onSurface} />
+            </TouchableButton>
+          ),
           headerRight: () => (
             <TouchableOpacity onPress={handleDeleteTransaction}>
               <Icons name="delete" color={theme.tertiary} />
             </TouchableOpacity>
           ),
+          headerStyle: {
+            backgroundColor: theme.background,
+          },
         }}
       />
       <Container>

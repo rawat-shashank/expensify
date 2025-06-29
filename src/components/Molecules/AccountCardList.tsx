@@ -33,7 +33,8 @@ export const AccountCardList = ({
           }}
           style={{
             borderRadius: 16,
-            borderColor: theme.onSurfaceDisabled,
+            borderColor: theme.secondaryContainer,
+            backgroundColor: theme.background,
             width: 128,
             padding: 16,
             minHeight: 144,
@@ -46,9 +47,10 @@ export const AccountCardList = ({
           <Icons
             variant="circularBackground"
             name="plus"
-            backgroundColor={theme.tertiary}
+            color={theme.onSecondaryContainer}
+            backgroundColor={theme.secondaryContainer}
           />
-          <Text>Add New</Text>
+          <Text style={{ color: theme.onSurface }}>Add New</Text>
         </TouchableButton>
         <FlatList
           ItemSeparatorComponent={ItemSeparatorComponent}
@@ -59,10 +61,14 @@ export const AccountCardList = ({
               onPress={() => onSelect(item.id)}
               style={{
                 borderRadius: 16,
+                backgroundColor:
+                  activeAccountId === item.id
+                    ? theme.secondaryContainer
+                    : "transparent",
                 borderColor:
                   activeAccountId === item.id
-                    ? theme.onSurface
-                    : theme.onSurfaceDisabled,
+                    ? theme.onSecondaryContainer
+                    : theme.secondaryContainer,
                 width: 128,
                 padding: 16,
                 minHeight: 144,
@@ -80,27 +86,42 @@ export const AccountCardList = ({
                   <Icons
                     variant="circularBackground"
                     name="bank"
-                    backgroundColor={theme.tertiary}
+                    color={theme.onBackground}
+                    backgroundColor={theme.background}
                   />
                 )}
                 {item.cardType === AccountCardTypeEnum.WALLET && (
                   <Icons
                     variant="circularBackground"
                     name="wallet-outline"
-                    backgroundColor={theme.tertiary}
+                    color={theme.onBackground}
+                    backgroundColor={theme.background}
                   />
                 )}
                 {item.cardType === AccountCardTypeEnum.CASH && (
                   <Icons
                     name="cash-outline"
                     variant="circularBackground"
-                    backgroundColor={theme.tertiary}
+                    color={
+                      activeAccountId === item.id
+                        ? theme.onBackground
+                        : theme.onSecondaryContainer
+                    }
+                    backgroundColor={
+                      activeAccountId === item.id
+                        ? theme.background
+                        : theme.secondaryContainer
+                    }
                   />
                 )}
               </View>
               <View>
-                <Text style={{ fontSize: 16 }}>{item.name}</Text>
-                <Text style={{ fontSize: 12 }}>{item.accountName}</Text>
+                <Text style={{ fontSize: 16, color: theme.onSurface }}>
+                  {item.name}
+                </Text>
+                <Text style={{ fontSize: 12, color: theme.onSurface }}>
+                  {item.accountName}
+                </Text>
               </View>
             </TouchableButton>
           )}

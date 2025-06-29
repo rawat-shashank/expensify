@@ -69,7 +69,7 @@ const FloatingActionButton = ({
         style={[
           styles.button,
           {
-            backgroundColor: buttonColor || theme.secondaryContainer,
+            backgroundColor: buttonColor || theme.tertiary,
             width: iconScale,
             height: iconScale,
             borderRadius: iconborder,

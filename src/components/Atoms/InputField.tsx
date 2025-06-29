@@ -46,6 +46,7 @@ export const InputField = ({
         onChangeText={onChange}
         placeholder={placeholder}
         keyboardType={keyboardType}
+        placeholderTextColor={theme.onSurfaceVariant}
       />
       {error && (
         <Text

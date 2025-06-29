@@ -33,7 +33,8 @@ export const CategoryPillList = ({
             router.push("/(screens)/category/createCategory");
           }}
           style={{
-            backgroundColor: "transparent",
+            backgroundColor: theme.background,
+            borderColor: theme.secondaryContainer,
             paddingVertical: 8,
             paddingHorizontal: 16,
             borderRadius: 32,
@@ -45,8 +46,8 @@ export const CategoryPillList = ({
             borderWidth: 1,
           }}
         >
-          <Icons name="plus" />
-          <Text>Add New</Text>
+          <Icons name="plus" color={theme.tertiary} />
+          <Text style={{ color: theme.onSurface }}>Add New</Text>
         </TouchableButton>
         <FlatList
           ItemSeparatorComponent={ItemSeparatorComponent}
@@ -58,8 +59,13 @@ export const CategoryPillList = ({
               style={{
                 backgroundColor:
                   activeCategoryId === item.id
-                    ? theme.tertiaryContainer
+                    ? theme.secondaryContainer
                     : "transparent",
+
+                borderColor:
+                  activeCategoryId === item.id
+                    ? theme.onSecondaryContainer
+                    : theme.secondaryContainer,
                 paddingVertical: 8,
                 paddingHorizontal: 16,
                 borderRadius: 32,
@@ -71,8 +77,10 @@ export const CategoryPillList = ({
                 borderWidth: 1,
               }}
             >
-              <Icons name={item.icon} />
-              <Text style={{ fontSize: 16 }}>{item.name}</Text>
+              <Icons name={item.icon} color={theme.onSecondaryContainer} />
+              <Text style={{ fontSize: 16, color: theme.onSurface }}>
+                {item.name}
+              </Text>
             </TouchableButton>
           )}
           extraData={activeCategoryId}

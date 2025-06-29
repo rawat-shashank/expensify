@@ -5,6 +5,7 @@ import { useAppTheme } from "@/hooks/useMaterial3Theme";
 
 interface ThemeContextType {
   theme: Material3Scheme;
+  colorScheme: "dark" | "light";
 }
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
@@ -17,7 +18,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const { currentTheme, colorScheme } = useAppTheme();
 
   return (
-    <ThemeContext.Provider value={{ theme: currentTheme[colorScheme] }}>
+    <ThemeContext.Provider
+      value={{ theme: currentTheme[colorScheme], colorScheme }}
+    >
       {children}
     </ThemeContext.Provider>
   );

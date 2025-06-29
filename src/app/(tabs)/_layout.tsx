@@ -17,6 +17,7 @@ import {
 import { TextInput } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
+import { InputField } from "@/components/Atoms/InputField";
 
 interface TabProps {
   name: string;
@@ -175,19 +176,28 @@ export default function TabLayout() {
       </View>
       <CustomSheet isVisible={isBottomSheetVisible} onClose={closeBottomSheet}>
         <View>
-          {<Text style={styles.label}>Profile</Text>}
+          {
+            <Text style={[styles.label, { color: theme.onSurface }]}>
+              Profile
+            </Text>
+          }
           <>
-            <TextInput
+            <InputField
               value={profileName}
               style={styles.input}
               placeholder={`Enter Profile Name`}
-              onChangeText={setProfileName}
+              onUpdate={setProfileName}
             />
             <TouchableOpacity
               onPress={handleProfileSubmit}
-              style={styles.closeButton}
+              style={[
+                styles.closeButton,
+                {
+                  backgroundColor: theme.secondaryContainer,
+                },
+              ]}
             >
-              <Text>Submit</Text>
+              <Text style={{ color: theme.onSecondaryContainer }}>Submit</Text>
             </TouchableOpacity>
           </>
         </View>
@@ -228,7 +238,6 @@ const styles = StyleSheet.create({
   closeButton: {
     padding: 10,
     alignItems: "center",
-    backgroundColor: "#eee",
     borderRadius: 5,
   },
   fabContainer: {

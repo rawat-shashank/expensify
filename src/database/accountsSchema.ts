@@ -46,7 +46,6 @@ const insertAccount = async (
     color = "",
     isActive = true,
   } = newAccount;
-  console.log("newAccount", newAccount);
   const result = await db.runAsync(
     "INSERT INTO accounts (name, accountName, amount, cardType, color, isActive) VALUES (?, ?, ?, ?, ?, ?);",
     [name, accountName, amount, cardType, color, isActive ? 1 : 0],
@@ -56,7 +55,6 @@ const insertAccount = async (
 
 const getAllAccounts = async (db: SQLiteDatabase): Promise<AccountType[]> => {
   const result = await db.getAllAsync("SELECT * FROM accounts;");
-  console.log("accounts", result);
   return result as AccountType[];
 };
 

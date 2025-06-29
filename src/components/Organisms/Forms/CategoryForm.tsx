@@ -5,6 +5,7 @@ import { InputField } from "../../Atoms/InputField";
 import { Picker } from "../../Molecules/Picker";
 import { TouchableButton } from "../../Atoms/TouchableButtons";
 import { useTheme } from "@/context/ThemeContext";
+import { IconsName } from "@/components/Atoms/Icons";
 
 interface CategoryFormProps {
   category?: CategoryType;
@@ -24,7 +25,7 @@ export const CategoryForm = ({
   const { theme } = useTheme();
   const [name, setName] = useState(category?.name || "");
   const [desc, setDesc] = useState(category?.desc || "");
-  const [icon, setIcon] = useState(category?.icon || "home");
+  const [icon, setIcon] = useState<IconsName>(category?.icon || "home");
   const [color, setColor] = useState(category?.color || "");
   const [errors, setErrors] = useState<CategoryFormErrors>({});
 

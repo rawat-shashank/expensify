@@ -9,6 +9,7 @@ import Container from "@/components/UI/Container";
 import { Icons } from "@/components/Atoms/Icons";
 import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
 import { useTheme } from "@/context/ThemeContext";
+import { TouchableButton } from "@/components/Atoms/TouchableButtons";
 
 const EditCategoryForm = () => {
   const { theme } = useTheme();
@@ -84,11 +85,27 @@ const EditCategoryForm = () => {
       <Stack.Screen
         options={{
           title: "Update Category",
+          headerTitleStyle: {
+            color: theme.onSurface,
+          },
+          headerLeft: () => (
+            <TouchableButton
+              onPress={() => router.back()}
+              style={{
+                paddingRight: 16,
+              }}
+            >
+              <Icons name="arrow-back" color={theme.onSurface} />
+            </TouchableButton>
+          ),
           headerRight: () => (
             <TouchableOpacity onPress={handleDeleteCategory}>
-              <Icons name="delete" color={theme.tertiary} />
+              <Icons name="delete" color={theme.onSurface} />
             </TouchableOpacity>
           ),
+          headerStyle: {
+            backgroundColor: theme.background,
+          },
         }}
       />
       <Container>
