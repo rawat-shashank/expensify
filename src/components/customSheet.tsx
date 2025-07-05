@@ -175,7 +175,8 @@ const styles = StyleSheet.create({
   sheetBase: {
     position: "absolute",
     backgroundColor: "white",
-    padding: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     overflow: "hidden",
   },
 });

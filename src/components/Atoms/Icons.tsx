@@ -32,6 +32,7 @@ const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
   "arrow-back": { component: Ionicons, name: "arrow-back" },
   "color-palette": { component: Ionicons, name: "color-palette" },
   calendar: { component: Ionicons, name: "calendar" },
+  settings: { component: Ionicons, name: "settings-sharp" },
 };
 
 interface IconProps {

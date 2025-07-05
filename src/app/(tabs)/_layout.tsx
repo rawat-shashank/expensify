@@ -17,6 +17,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
 import { InputField } from "@/components/Atoms/InputField";
+import { TouchableButton } from "@/components/Atoms/TouchableButtons";
 
 interface TabProps {
   name: string;
@@ -113,6 +114,9 @@ export default function TabLayout() {
       >
         <Tabs
           screenOptions={{
+            sceneStyle: {
+              backgroundColor: theme.background,
+            },
             headerShown: false,
           }}
           screenListeners={{
@@ -204,15 +208,52 @@ export default function TabLayout() {
         direction="left"
       >
         <View>
-          <Text>this is sidebar</Text>
-          <TouchableOpacity
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 16,
+              alignItems: "center",
+              margin: 8,
+            }}
+          >
+            <Icons name="wallet-outline" color={theme.primary} />
+            <Text
+              style={{
+                fontSize: 18,
+                color: theme.primary,
+                fontWeight: "bold",
+              }}
+            >
+              Expensify
+            </Text>
+          </View>
+
+          <TouchableButton
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 8,
+              marginVertical: 8,
+              alignItems: "center",
+              backgroundColor: theme.secondaryContainer,
+              borderRadius: 24,
+              padding: 12,
+            }}
             onPress={() => {
               closeCustomSheet();
               router.push("/settings");
             }}
           >
-            <Text>Settings</Text>
-          </TouchableOpacity>
+            <Icons name="settings" color={theme.primary} size={18} />
+            <Text
+              style={{
+                color: theme.onSecondaryContainer,
+              }}
+            >
+              Settings
+            </Text>
+          </TouchableButton>
         </View>
       </CustomSheet>
     </SafeAreaView>
