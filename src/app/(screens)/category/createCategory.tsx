@@ -7,6 +7,7 @@ import { AddCategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/useCategories";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
+import { FlatList } from "react-native-gesture-handler";
 
 const CreateCategory = ({}: {}) => {
   const { theme } = useTheme();
@@ -42,9 +43,16 @@ const CreateCategory = ({}: {}) => {
           },
         }}
       />
-      <Container>
-        <CategoryForm onAddCategory={onAddCategory} />
-      </Container>
+
+      <FlatList
+        renderItem={null}
+        data={null}
+        ListHeaderComponent={
+          <Container>
+            <CategoryForm onAddCategory={onAddCategory} />
+          </Container>
+        }
+      />
     </>
   );
 };

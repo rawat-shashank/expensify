@@ -10,6 +10,7 @@ import { Icons } from "@/components/Atoms/Icons";
 import { TransactionForm } from "@/components/Organisms/Forms/TransactionForm";
 import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { FlatList } from "react-native-gesture-handler";
 
 const EditTransactionPage = () => {
   const { theme } = useTheme();
@@ -107,12 +108,19 @@ const EditTransactionPage = () => {
           },
         }}
       />
-      <Container>
-        <TransactionForm
-          transaction={currentTransaction}
-          onUpdateTransaction={handleUpdateTransaction}
-        />
-      </Container>
+
+      <FlatList
+        renderItem={null}
+        data={null}
+        ListHeaderComponent={
+          <Container>
+            <TransactionForm
+              transaction={currentTransaction}
+              onUpdateTransaction={handleUpdateTransaction}
+            />
+          </Container>
+        }
+      />
     </>
   );
 };

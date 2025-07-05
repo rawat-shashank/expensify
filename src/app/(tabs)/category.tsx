@@ -1,4 +1,5 @@
 import Container from "@/components/UI/Container";
+import { WINDOW_HEIGHT } from "@/constants";
 import { CategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/useCategories";
 import { useRouter } from "expo-router";
@@ -37,17 +38,23 @@ const CategoryList = () => {
   }
 
   return (
-    <Container>
-      {categories && categories.length > 0 ? (
-        <FlatList
-          data={categories}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      ) : (
-        <Text>No categories created yet.</Text>
-      )}
-    </Container>
+    <FlatList
+      renderItem={null}
+      data={null}
+      ListHeaderComponent={
+        <Container>
+          {categories && categories.length > 0 ? (
+            <FlatList
+              data={categories}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          ) : (
+            <Text>No categories created yet.</Text>
+          )}
+        </Container>
+      }
+    />
   );
 };
 

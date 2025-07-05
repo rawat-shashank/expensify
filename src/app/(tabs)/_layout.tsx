@@ -14,7 +14,6 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
 import { InputField } from "@/components/Atoms/InputField";

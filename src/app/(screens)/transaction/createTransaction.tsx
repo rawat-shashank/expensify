@@ -7,6 +7,7 @@ import { AddTransactionType } from "@/database/transactionSchema";
 import useTransactions from "@/queries/useTransactions";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
+import { FlatList } from "react-native-gesture-handler";
 
 const CreateTransaction = () => {
   const { theme } = useTheme();
@@ -43,9 +44,16 @@ const CreateTransaction = () => {
           },
         }}
       />
-      <Container>
-        <TransactionForm onAddTransaction={onAddTransaction} />
-      </Container>
+
+      <FlatList
+        renderItem={null}
+        data={null}
+        ListHeaderComponent={
+          <Container>
+            <TransactionForm onAddTransaction={onAddTransaction} />
+          </Container>
+        }
+      />
     </>
   );
 };

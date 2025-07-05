@@ -7,6 +7,7 @@ import { AddAccountType } from "@/database/accountsSchema";
 import useAccounts from "@/queries/useAccounts";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
+import { FlatList } from "react-native-gesture-handler";
 
 const CreateAccount = () => {
   const { theme } = useTheme();
@@ -43,9 +44,16 @@ const CreateAccount = () => {
           },
         }}
       />
-      <Container>
-        <AccountForm onAddAccount={handleAddAccount} />
-      </Container>
+
+      <FlatList
+        renderItem={null}
+        data={null}
+        ListHeaderComponent={
+          <Container>
+            <AccountForm onAddAccount={handleAddAccount} />
+          </Container>
+        }
+      />
     </>
   );
 };

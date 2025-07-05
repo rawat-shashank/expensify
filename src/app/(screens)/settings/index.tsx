@@ -53,15 +53,21 @@ export default function SettingsMenuScreen() {
   return (
     <>
       <Stack.Screen options={{ title: "Settings" }} />
-      <Container>
-        <FlatList
-          data={settingsData}
-          renderItem={renderSettingItem}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-        />
-      </Container>
+      <FlatList
+        renderItem={null}
+        data={null}
+        ListHeaderComponent={
+          <Container>
+            <FlatList
+              data={settingsData}
+              renderItem={renderSettingItem}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.listContent}
+              ItemSeparatorComponent={() => <View style={styles.separator} />}
+            />
+          </Container>
+        }
+      />
     </>
   );
 }

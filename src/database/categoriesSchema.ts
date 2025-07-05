@@ -29,7 +29,6 @@ const getAllCategories = async (
   db: SQLiteDatabase,
 ): Promise<CategoryType[]> => {
   const result = await db.getAllAsync("SELECT * FROM categories;");
-  console.log("categories", result);
   return result as CategoryType[];
 };
 

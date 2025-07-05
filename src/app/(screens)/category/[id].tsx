@@ -10,6 +10,7 @@ import { Icons } from "@/components/Atoms/Icons";
 import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
 import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { FlatList } from "react-native-gesture-handler";
 
 const EditCategoryForm = () => {
   const { theme } = useTheme();
@@ -108,12 +109,19 @@ const EditCategoryForm = () => {
           },
         }}
       />
-      <Container>
-        <CategoryForm
-          category={currentCategory}
-          onUpdateCategory={handleUpdateCategory}
-        />
-      </Container>
+
+      <FlatList
+        renderItem={null}
+        data={null}
+        ListHeaderComponent={
+          <Container>
+            <CategoryForm
+              category={currentCategory}
+              onUpdateCategory={handleUpdateCategory}
+            />
+          </Container>
+        }
+      />
     </>
   );
 };

@@ -44,10 +44,6 @@ const AccountList = () => {
 
         if (firstMostlyVisibleItem.index !== currentVisibleIndex) {
           setCurrentVisibleIndex(firstMostlyVisibleItem.index);
-          console.log(
-            "Current item in view index:",
-            firstMostlyVisibleItem.index,
-          );
         }
       }
     },
@@ -105,52 +101,58 @@ const AccountList = () => {
   };
 
   return (
-    <Container>
-      <View>
-        {accountsSummary && accountsSummary.length > 0 ? (
-          <FlatList
-            data={accountsSummary}
-            renderItem={renderAccounts}
-            keyExtractor={(item) => item.id.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            onViewableItemsChanged={onViewableItemsChanged}
-            viewabilityConfig={viewabilityConfig}
-          />
-        ) : (
-          <Text style={{ color: theme.onSurface }}>
-            No accounts created yet.
-          </Text>
-        )}
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 4,
-            marginVertical: 4,
-          }}
-        >
-          {accounts.length > 1 &&
-            accounts.map((account, index) => {
-              return currentVisibleIndex == index ? (
-                <ColorDotWithRing
-                  key={account.id}
-                  size={16}
-                  color={theme.onSurfaceVariant}
-                />
-              ) : (
-                <ColorDotWithRing
-                  key={account.id}
-                  outline={true}
-                  size={16}
-                  color={theme.onSurfaceVariant}
-                />
-              );
-            })}
-        </View>
-        <AccountTransactions accountId={accounts[currentVisibleIndex].id} />
-      </View>
-    </Container>
+    <FlatList
+      renderItem={null}
+      data={null}
+      ListHeaderComponent={
+        <Container>
+          <View>
+            {accountsSummary && accountsSummary.length > 0 ? (
+              <FlatList
+                data={accountsSummary}
+                renderItem={renderAccounts}
+                keyExtractor={(item) => item.id.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                onViewableItemsChanged={onViewableItemsChanged}
+                viewabilityConfig={viewabilityConfig}
+              />
+            ) : (
+              <Text style={{ color: theme.onSurface }}>
+                No accounts created yet.
+              </Text>
+            )}
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 4,
+                marginVertical: 4,
+              }}
+            >
+              {accounts.length > 1 &&
+                accounts.map((account, index) => {
+                  return currentVisibleIndex == index ? (
+                    <ColorDotWithRing
+                      key={account.id}
+                      size={16}
+                      color={theme.onSurfaceVariant}
+                    />
+                  ) : (
+                    <ColorDotWithRing
+                      key={account.id}
+                      outline={true}
+                      size={16}
+                      color={theme.onSurfaceVariant}
+                    />
+                  );
+                })}
+            </View>
+            <AccountTransactions accountId={accounts[currentVisibleIndex].id} />
+          </View>
+        </Container>
+      }
+    />
   );
 };
 

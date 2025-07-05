@@ -10,6 +10,7 @@ import { Text, TouchableOpacity } from "react-native";
 import alert from "@/components/Alert";
 import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { FlatList } from "react-native-gesture-handler";
 
 const EditAccountPage = ({}: {}) => {
   const { theme } = useTheme();
@@ -105,12 +106,18 @@ const EditAccountPage = ({}: {}) => {
         }}
       />
 
-      <Container>
-        <AccountForm
-          account={currentAccount}
-          onUpdateAccount={handleUpdateAccount}
-        />
-      </Container>
+      <FlatList
+        renderItem={null}
+        data={null}
+        ListHeaderComponent={
+          <Container>
+            <AccountForm
+              account={currentAccount}
+              onUpdateAccount={handleUpdateAccount}
+            />
+          </Container>
+        }
+      />
     </>
   );
 };

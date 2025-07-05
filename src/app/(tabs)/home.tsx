@@ -25,19 +25,25 @@ export default function HomeScreen() {
   }
 
   return (
-    <Container>
-      <Text style={[styles.title, { color: theme.onSurface }]}>
-        {profileData?.name}
-      </Text>
-      <Text style={[styles.subtitle, { color: theme.onSurface }]}>
-        Welcome Back!
-      </Text>
-      <View style={styles.container}>
-        <TransactionsGroupedByDate
-          transactionsGroupedByDate={transactionsGroupedByDate}
-        />
-      </View>
-    </Container>
+    <FlatList
+      ListHeaderComponent={
+        <Container>
+          <Text style={[styles.title, { color: theme.onSurface }]}>
+            {profileData?.name}
+          </Text>
+          <Text style={[styles.subtitle, { color: theme.onSurface }]}>
+            Welcome Back!
+          </Text>
+          <View style={styles.container}>
+            <TransactionsGroupedByDate
+              transactionsGroupedByDate={transactionsGroupedByDate}
+            />
+          </View>
+        </Container>
+      }
+      data={null}
+      renderItem={null}
+    />
   );
 }
 

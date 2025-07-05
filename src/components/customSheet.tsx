@@ -1,3 +1,4 @@
+import { WINDOW_WIDTH } from "@/constants";
 import { useTheme } from "@/context/ThemeContext";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -115,7 +116,6 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
           left: 0,
           right: 0,
           bottom: 0,
-          // No fixed height here
           borderTopLeftRadius: 16,
           borderTopRightRadius: 16,
         }
@@ -123,7 +123,7 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
           top: 0,
           bottom: 0,
           left: 0,
-          // No fixed width here
+          minWidth: WINDOW_WIDTH * 0.7,
           borderTopRightRadius: 8,
           borderBottomRightRadius: 8,
         };

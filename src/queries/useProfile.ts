@@ -8,7 +8,7 @@ import {
   QueryObserverResult,
   useMutation,
   useQuery,
-  useQueryClient
+  useQueryClient,
 } from "@tanstack/react-query";
 import { SQLiteDatabase } from "expo-sqlite";
 import { useCallback } from "react";
@@ -23,7 +23,9 @@ interface UseProfileResult {
   isLoading: boolean;
   error: Error | null;
   saveProfile: (name: string, currency: string) => Promise<void>;
-  fetchProfile: () => Promise<QueryObserverResult<ProfileData | undefined, Error>>;
+  fetchProfile: () => Promise<
+    QueryObserverResult<ProfileData | undefined, Error>
+  >;
 }
 
 const useProfile = (db: SQLiteDatabase): UseProfileResult => {
@@ -38,7 +40,6 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
   } = useQuery<ProfileData | undefined, Error>({
     queryKey: profileKeys.details(),
     queryFn: async () => {
-      console.log("TanStack Query: Fetching profile data...");
       const data = await getProfileData(db);
       return data;
     },
@@ -52,11 +53,9 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
   >({
     mutationFn: async ({ name, currency }) => {
       // The mutation function is responsible for performing the side-effect (saving data)
-      console.log("TanStack Query: Saving profile data...");
       await saveProfileData(name, currency, db);
     },
     onSuccess: () => {
-      console.log("TanStack Query: Profile saved, invalidating cache...");
       queryClient.invalidateQueries({ queryKey: profileKeys.details() });
     },
     onError: (err) => {

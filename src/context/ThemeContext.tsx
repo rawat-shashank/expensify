@@ -1,6 +1,6 @@
 // context/ThemeContext.tsx
 import React, { createContext, useContext, ReactNode } from "react";
-import { Material3Scheme, Material3Theme } from "@pchmn/expo-material3-theme";
+import { Material3Scheme } from "@pchmn/expo-material3-theme";
 import { useAppTheme } from "@/hooks/useMaterial3Theme";
 
 interface ThemeContextType {
