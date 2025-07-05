@@ -38,12 +38,10 @@ const insertCategory = async (
   db: SQLiteDatabase,
 ): Promise<number> => {
   const { name, desc, icon = "", color = "" } = newCategory;
-  console.log("newCategory", newCategory);
   const result = await db.runAsync(
     "INSERT INTO categories (name, desc, icon, color ) VALUES (?, ?, ?, ?);",
     [name, desc, icon, color],
   );
-  console.log("result", result);
   return result.lastInsertRowId;
 };
 

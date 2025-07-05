@@ -2,22 +2,19 @@ import { Text, FlatList, ActivityIndicator, View } from "react-native";
 import useAccounts from "@/queries/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter } from "expo-router";
-import { AccountType } from "@/database/accountsSchema";
+import { AccountSummaryType } from "@/database/accountsSchema";
 import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
 import useTransactions from "@/queries/useTransactions";
 import Container from "@/components/UI/Container";
-import {
-  TransactionType,
-  TransactionTypeExtra,
-} from "@/database/transactionSchema";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ColorDotWithRing } from "@/components/UI/ColorDotWithRing";
 import { useTheme } from "@/context/ThemeContext";
-import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
+import { TransactionsGroupedByDate } from "@/components/Organisms/TransactionsGroupedByDate";
 
 const AccountList = () => {
   const { theme } = useTheme();
+
   const db = useSQLiteContext();
   if (!db) {
     return <Text>Database not ready.</Text>;
@@ -25,27 +22,14 @@ const AccountList = () => {
 
   const {
     accounts,
+    accountsSummary,
     isLoading: isAccountLoading,
     deleteAccount,
   } = useAccounts(db);
 
   const router = useRouter();
-  const { transactions } = useTransactions(db);
-  const [currentVisibleIndex, setCurrentVisibleIndex] = useState(0);
-  const [accountTransactions, setAccountTransactions] = useState<
-    TransactionTypeExtra[]
-  >([]);
 
-  useEffect(() => {
-    if (accounts.length && transactions.length) {
-      setAccountTransactions(
-        transactions.filter(
-          (transaction) =>
-            transaction.account_id === accounts[currentVisibleIndex].id,
-        ),
-      );
-    }
-  }, [currentVisibleIndex, accounts, transactions]);
+  const [currentVisibleIndex, setCurrentVisibleIndex] = useState(0);
 
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 70,
@@ -94,7 +78,7 @@ const AccountList = () => {
   };
 
   //FIXME: UI need to be updated later
-  const renderAccounts = ({ item }: { item: AccountType }) => (
+  const renderAccounts = ({ item }: { item: AccountSummaryType }) => (
     <AccountCard
       account={item}
       handleCardPress={handleCardPress}
@@ -102,24 +86,30 @@ const AccountList = () => {
     />
   );
 
-  const handleTransactionPress = (transactionId: number) => {
-    router.push(`/transaction/${transactionId}`);
-  };
-
-  const renderTransaction = ({ item }: { item: TransactionTypeExtra }) => {
-    return <TransactionListItem item={item} onPress={handleTransactionPress} />;
-  };
-
   if (isAccountLoading) {
     return <ActivityIndicator size={"large"} />;
   }
 
+  const AccountTransactions = ({ accountId }: { accountId: number }) => {
+    const { transactionsGroupedByDate } = useTransactions(db, {
+      accountId: accountId,
+    });
+
+    return (
+      <View>
+        <TransactionsGroupedByDate
+          transactionsGroupedByDate={transactionsGroupedByDate}
+        />
+      </View>
+    );
+  };
+
   return (
     <Container>
       <View>
-        {accounts && accounts.length > 0 ? (
+        {accountsSummary && accountsSummary.length > 0 ? (
           <FlatList
-            data={accounts}
+            data={accountsSummary}
             renderItem={renderAccounts}
             keyExtractor={(item) => item.id.toString()}
             horizontal
@@ -158,20 +148,7 @@ const AccountList = () => {
               );
             })}
         </View>
-      </View>
-      <View>
-        {transactions && transactions.length > 0 ? (
-          <FlatList
-            data={accountTransactions}
-            renderItem={renderTransaction}
-            keyExtractor={(transaction) => transaction.id.toString()}
-            showsHorizontalScrollIndicator={false}
-          />
-        ) : (
-          <Text style={{ color: theme.onSurface }}>
-            No transactions created yet.
-          </Text>
-        )}
+        <AccountTransactions accountId={accounts[currentVisibleIndex].id} />
       </View>
     </Container>
   );

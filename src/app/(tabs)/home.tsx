@@ -1,10 +1,8 @@
-import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
+import { TransactionsGroupedByDate } from "@/components/Organisms/TransactionsGroupedByDate";
 import Container from "@/components/UI/Container";
 import { useTheme } from "@/context/ThemeContext";
-import { TransactionTypeExtra } from "@/database/transactionSchema";
 import useProfile from "@/queries/useProfile";
 import useTransactions from "@/queries/useTransactions";
-import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
 import {
@@ -19,17 +17,8 @@ export default function HomeScreen() {
   const { theme } = useTheme();
   const db = useSQLiteContext();
   const { profileData } = useProfile(db);
-  const { transactions, isLoading: isTransactionsLoading } =
+  const { transactionsGroupedByDate, isLoading: isTransactionsLoading } =
     useTransactions(db);
-  const router = useRouter();
-
-  const handleCardPress = (transactionId: number) => {
-    router.push(`/transaction/${transactionId}`);
-  };
-
-  const renderItem = ({ item }: { item: TransactionTypeExtra }) => (
-    <TransactionListItem item={item} onPress={handleCardPress} />
-  );
 
   if (isTransactionsLoading) {
     return <ActivityIndicator size={"large"} />;
@@ -44,15 +33,9 @@ export default function HomeScreen() {
         Welcome Back!
       </Text>
       <View style={styles.container}>
-        {transactions && transactions.length > 0 ? (
-          <FlatList
-            data={transactions}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        ) : (
-          <Text>No transactions created yet.</Text>
-        )}
+        <TransactionsGroupedByDate
+          transactionsGroupedByDate={transactionsGroupedByDate}
+        />
       </View>
     </Container>
   );

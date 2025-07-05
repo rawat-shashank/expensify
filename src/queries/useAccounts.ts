@@ -2,6 +2,7 @@ import { SQLiteDatabase } from "expo-sqlite";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import {
+  AccountSummaryType,
   AccountType,
   AddAccountType,
   deleteAccount as dbDeleteAccount,
@@ -9,12 +10,14 @@ import {
   getAllAccounts as dbGetAllAccounts,
   insertAccount as dbInsertAccount,
   updateAccount as dbUpdateAccount,
+  getAccountIncomeExpenseSummary as dbGetAccountIncomeExpenseSummary,
 } from "@/database/accountsSchema";
 
 // Define a query key for accounts
 export const accountKeys = {
   all: ["accounts"] as const,
   list: () => [...accountKeys.all, "list"] as const,
+  listWithSummary: () => [...accountKeys.all, "withSummary"] as const,
   details: (id: number) => [...accountKeys.all, "details", id] as const,
 };
 
@@ -30,6 +33,16 @@ const useAccounts = (db: SQLiteDatabase) => {
   } = useQuery<AccountType[], Error>({
     queryKey: accountKeys.list(),
     queryFn: () => dbGetAllAccounts(db),
+  });
+
+  const {
+    data: accountsSummary,
+    isLoading: isLoadingAccountsSummary,
+    error: accountsSummaryError,
+    refetch: refetchAccountsSummary,
+  } = useQuery<AccountSummaryType[], Error>({
+    queryKey: accountKeys.listWithSummary(),
+    queryFn: () => dbGetAccountIncomeExpenseSummary(db),
   });
 
   // Mutation to add an account
@@ -96,23 +109,27 @@ const useAccounts = (db: SQLiteDatabase) => {
 
   return {
     accounts: accounts || [],
+    accountsSummary: accountsSummary || [],
     isLoading:
       isLoadingAccounts ||
       isAddingAccount ||
       isGettingAccountById ||
       isUpdatingAccount ||
-      isDeletingAccount,
+      isDeletingAccount ||
+      isLoadingAccountsSummary,
     error:
       accountsError ||
       addAccountError ||
       getAccountByIdError ||
       updateAccountError ||
-      deleteAccountError,
+      deleteAccountError ||
+      accountsSummaryError,
     addAccount,
     getAccountById,
     updateAccount,
     deleteAccount,
     refetchAccounts,
+    refetchAccountsSummary,
   };
 };
 

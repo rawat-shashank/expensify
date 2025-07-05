@@ -9,13 +9,19 @@ import {
   updateTransaction as dbUpdateTransaction,
   deleteTransaction as dbDeleteTransaction,
   getTransactionsByAccountId as dbGetTransactionsByAccountId,
+  getGroupedTransactionsByDate as dbGetGroupedTransactionsByDate,
   AddTransactionType,
   TransactionTypeExtra,
+  TransactionGroupedByDate,
 } from "@/database/transactionSchema";
 
 export const transactionKeys = {
   all: ["transactions"] as const,
   lists: () => [...transactionKeys.all, "list"] as const,
+  listGroupedByDate: (accountId?: number) =>
+    accountId
+      ? ([...transactionKeys.lists(), "groupedByDate", accountId] as const)
+      : ([...transactionKeys.lists(), "groupedByDate", "all"] as const),
   listsByAccount: (accountId: number) =>
     [...transactionKeys.all, "list", "byAccountId", accountId] as const,
   details: (id: number) => [...transactionKeys.all, "detail", id] as const,
@@ -32,7 +38,12 @@ export const useGetTransactionsByAccountId = (
   });
 };
 
-const useTransactions = (db: SQLiteDatabase) => {
+const useTransactions = (
+  db: SQLiteDatabase,
+  options?: {
+    accountId?: number;
+  },
+) => {
   const queryClient = useQueryClient();
 
   // Query to fetch all transactions
@@ -44,6 +55,17 @@ const useTransactions = (db: SQLiteDatabase) => {
   } = useQuery<TransactionTypeExtra[], Error>({
     queryKey: transactionKeys.lists(),
     queryFn: () => dbGetAllTransactions(db),
+  });
+
+  const accountId = options?.accountId;
+  const {
+    data: transactionsGroupedByDate,
+    isLoading: isLoadingTransactionsByGroupedByDate,
+    error: allTransactionsGroupedByDateError,
+    refetch: refetchAllTransactionsGroupedByDate,
+  } = useQuery<TransactionGroupedByDate, Error>({
+    queryKey: transactionKeys.listGroupedByDate(accountId),
+    queryFn: () => dbGetGroupedTransactionsByDate(db, accountId),
   });
 
   const {
@@ -115,22 +137,26 @@ const useTransactions = (db: SQLiteDatabase) => {
 
   return {
     transactions: transactions || [],
+    transactionsGroupedByDate: transactionsGroupedByDate || {},
     isLoading:
       isLoadingAllTransactions ||
       isGettingTransactionById ||
       isAddingTransaction ||
       isUpdatingTransaction ||
-      isDeletingTransaction,
+      isDeletingTransaction ||
+      isLoadingTransactionsByGroupedByDate,
     error:
       allTransactionsError ||
       getTransactionByIdError ||
       addTransactionError ||
       updateTransactionError ||
-      deleteTransactionError,
+      deleteTransactionError ||
+      allTransactionsGroupedByDateError,
     addTransaction,
     updateTransaction,
     deleteTransaction,
     refetchAllTransactions,
+    refetchAllTransactionsGroupedByDate,
     getTransactionById,
   };
 };

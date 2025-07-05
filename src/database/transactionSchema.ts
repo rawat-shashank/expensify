@@ -69,9 +69,10 @@ const insertTransaction = async (
 
 const getAllTransactions = async (
   db: SQLiteDatabase,
+  account_id?: number,
 ): Promise<TransactionTypeExtra[]> => {
-  const result = await db.getAllAsync(
-    `SELECT
+  const params: (number | string)[] = [];
+  let query = `SELECT
       t.*,
       a.accountName AS account_name,
       c.name AS category_name,
@@ -83,10 +84,59 @@ const getAllTransactions = async (
       accounts a ON t.account_id = a.id
     JOIN
       categories c ON t.category_id = c.id
-    ORDER BY
-      t.time DESC;`,
-  );
+      `;
+  if (account_id !== undefined) {
+    query += `WHERE t.account_id = ?`;
+    params.push(account_id);
+  }
+  query += `ORDER BY t.time DESC`;
+
+  const result = await db.getAllAsync(query, params);
   return result as TransactionTypeExtra[];
+};
+
+export interface TransactionGroupedByDate {
+  [date: string]: {
+    total_amount: number;
+    transactions: TransactionTypeExtra[];
+  };
+}
+
+const getGroupedTransactionsByDate = async (
+  db: SQLiteDatabase,
+  account_id?: number,
+): Promise<TransactionGroupedByDate> => {
+  const allTransactions = await getAllTransactions(db, account_id || undefined);
+  const grouped: TransactionGroupedByDate = {};
+
+  for (const transaction of allTransactions) {
+    // Assuming t.time is a string like 'YYYY-MM-DD HH:MM:SS' or a Date object that can be formatted
+    const transactionDate = new Date(transaction.time)
+      .toISOString()
+      .split("T")[0];
+
+    if (!grouped[transactionDate]) {
+      grouped[transactionDate] = {
+        total_amount: 0,
+        transactions: [],
+      };
+    }
+
+    grouped[transactionDate].total_amount +=
+      transaction.type === TransactionTypeEnum.INCOME
+        ? parseFloat(transaction.amount)
+        : -1 * parseFloat(transaction.amount);
+    grouped[transactionDate].transactions.push(transaction);
+  }
+
+  const sortedGroupedOutput: TransactionGroupedByDate = {};
+  Object.keys(grouped)
+    .sort((a, b) => b.localeCompare(a))
+    .forEach((key) => {
+      sortedGroupedOutput[key] = grouped[key];
+    });
+
+  return sortedGroupedOutput;
 };
 
 const getTransactionById = async (
@@ -146,4 +196,5 @@ export {
   updateTransaction,
   deleteTransaction,
   getTransactionsByAccountId,
+  getGroupedTransactionsByDate,
 };

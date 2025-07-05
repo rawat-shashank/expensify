@@ -72,8 +72,7 @@ export const TransactionListItem = ({
       </View>
       <View style={styles.rightSection}>
         <Text style={[styles.amount, transactionTypeStyle]}>
-          £{item.type === "expense" ? "-" : "+"}
-          {item.amount}
+          £{item.amount}
         </Text>
       </View>
     </TouchableOpacity>

@@ -11,7 +11,7 @@ interface AddAccountType {
   accountName: string; //account name
   amount: string;
   cardType: AccountCardTypeEnum;
-  color?: string;
+  color: string;
   isActive?: boolean;
 }
 
@@ -56,6 +56,50 @@ const insertAccount = async (
 const getAllAccounts = async (db: SQLiteDatabase): Promise<AccountType[]> => {
   const result = await db.getAllAsync("SELECT * FROM accounts;");
   return result as AccountType[];
+};
+
+export type AccountSummaryType = {
+  id: number;
+  name: string;
+  accountName: string;
+  amount: string;
+  color: string;
+  current_balance: number;
+  cardType: AccountCardTypeEnum;
+  type: "expense" | "income";
+  total_income: number;
+  total_expense: number;
+};
+
+const getAccountIncomeExpenseSummary = async (
+  db: SQLiteDatabase,
+): Promise<AccountSummaryType[]> => {
+  const result = await db.getAllAsync(
+    `SELECT
+      a.id,
+      a.name,
+      a.accountName,
+      a.cardType,
+      a.amount,
+      a.color,
+      SUM(CASE WHEN t.type = 'income' THEN CAST(t.amount AS REAL) ELSE 0 END) AS total_income,
+      SUM(CASE WHEN t.type = 'expense' THEN CAST(t.amount AS REAL) ELSE 0 END) AS total_expense,
+      (CAST(a.amount AS REAL) +
+         SUM(CASE WHEN t.type = 'income' THEN CAST(t.amount AS REAL) ELSE 0 END) -
+         SUM(CASE WHEN t.type = 'expense' THEN CAST(t.amount AS REAL) ELSE 0 END)
+      ) AS current_balance
+    FROM
+      accounts a
+    LEFT JOIN
+      transactions t ON a.id = t.account_id
+    GROUP BY
+      a.id,
+      a.name,
+      a.accountName
+    ORDER BY
+    a.id;`,
+  );
+  return result as AccountSummaryType[];
 };
 
 const getAccountById = async (
@@ -107,4 +151,5 @@ export {
   getAccountById,
   deleteAccount,
   updateAccount,
+  getAccountIncomeExpenseSummary,
 };

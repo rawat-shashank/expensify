@@ -31,7 +31,6 @@ const EditTransactionPage = () => {
       if (transactionId) {
         setLoadingTransaction(true);
         const transaction = await getTransactionById(transactionId);
-        console.log(transaction);
         if (transaction) {
           setCurrentTransaction(transaction);
         }
