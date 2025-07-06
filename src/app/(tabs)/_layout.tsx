@@ -35,7 +35,7 @@ export default function TabLayout() {
   const insets = useSafeAreaInsets();
 
   const tabs: TabProps[] = [
-    { name: "home", title: "Home", icon: "home" },
+    { name: "index", title: "Home", icon: "home" },
     { name: "account", title: "Account", icon: "credit-card" },
     { name: "category", title: "Category", icon: "archive" },
     { name: "overview", title: "Overview", icon: "area-graph" },

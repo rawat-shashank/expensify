@@ -2,45 +2,33 @@ import { SQLiteDatabase } from "expo-sqlite";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import {
-  AccountSummaryType,
   AccountType,
-  AddAccountType,
-  deleteAccount as dbDeleteAccount,
+  CreateAccountType,
+  AccountSummaryListType,
+  getAccountSummaryList as dbGetAccountIncomeExpenseSummary,
   getAccountById as dbGetAccountById,
-  getAllAccounts as dbGetAllAccounts,
   insertAccount as dbInsertAccount,
   updateAccount as dbUpdateAccount,
-  getAccountIncomeExpenseSummary as dbGetAccountIncomeExpenseSummary,
+  deleteAccount as dbDeleteAccount,
 } from "@/database/accountsSchema";
 
-// Define a query key for accounts
+// ---- Query Keys ----
 export const accountKeys = {
   all: ["accounts"] as const,
   list: () => [...accountKeys.all, "list"] as const,
-  listWithSummary: () => [...accountKeys.all, "withSummary"] as const,
+  listWithSummary: () => [...accountKeys.all, "listWithSummary"] as const,
   details: (id: number) => [...accountKeys.all, "details", id] as const,
 };
 
 const useAccounts = (db: SQLiteDatabase) => {
   const queryClient = useQueryClient();
 
-  // Query to fetch all accounts
-  const {
-    data: accounts,
-    isLoading: isLoadingAccounts,
-    error: accountsError,
-    refetch: refetchAccounts, // Expose refetch if you still need manual refetching
-  } = useQuery<AccountType[], Error>({
-    queryKey: accountKeys.list(),
-    queryFn: () => dbGetAllAccounts(db),
-  });
-
   const {
     data: accountsSummary,
     isLoading: isLoadingAccountsSummary,
     error: accountsSummaryError,
     refetch: refetchAccountsSummary,
-  } = useQuery<AccountSummaryType[], Error>({
+  } = useQuery<AccountSummaryListType[], Error>({
     queryKey: accountKeys.listWithSummary(),
     queryFn: () => dbGetAccountIncomeExpenseSummary(db),
   });
@@ -50,7 +38,7 @@ const useAccounts = (db: SQLiteDatabase) => {
     mutateAsync: addAccount,
     isPending: isAddingAccount,
     error: addAccountError,
-  } = useMutation<number | undefined, Error, AddAccountType>({
+  } = useMutation<number | undefined, Error, CreateAccountType>({
     mutationFn: async (params) => {
       const newAccountId = await dbInsertAccount(params, db);
       return newAccountId;
@@ -108,17 +96,14 @@ const useAccounts = (db: SQLiteDatabase) => {
   });
 
   return {
-    accounts: accounts || [],
     accountsSummary: accountsSummary || [],
     isLoading:
-      isLoadingAccounts ||
       isAddingAccount ||
       isGettingAccountById ||
       isUpdatingAccount ||
       isDeletingAccount ||
       isLoadingAccountsSummary,
     error:
-      accountsError ||
       addAccountError ||
       getAccountByIdError ||
       updateAccountError ||
@@ -128,7 +113,6 @@ const useAccounts = (db: SQLiteDatabase) => {
     getAccountById,
     updateAccount,
     deleteAccount,
-    refetchAccounts,
     refetchAccountsSummary,
   };
 };

@@ -2,7 +2,7 @@ import { Text, FlatList, ActivityIndicator, View } from "react-native";
 import useAccounts from "@/queries/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter } from "expo-router";
-import { AccountSummaryType } from "@/database/accountsSchema";
+import { AccountSummaryListType } from "@/database/accountsSchema";
 import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
 import useTransactions from "@/queries/useTransactions";
@@ -21,7 +21,6 @@ const AccountList = () => {
   }
 
   const {
-    accounts,
     accountsSummary,
     isLoading: isAccountLoading,
     deleteAccount,
@@ -74,7 +73,7 @@ const AccountList = () => {
   };
 
   //FIXME: UI need to be updated later
-  const renderAccounts = ({ item }: { item: AccountSummaryType }) => (
+  const renderAccounts = ({ item }: { item: AccountSummaryListType }) => (
     <AccountCard
       account={item}
       handleCardPress={handleCardPress}
@@ -130,8 +129,8 @@ const AccountList = () => {
                 marginVertical: 4,
               }}
             >
-              {accounts.length > 1 &&
-                accounts.map((account, index) => {
+              {accountsSummary.length > 1 &&
+                accountsSummary.map((account, index) => {
                   return currentVisibleIndex == index ? (
                     <ColorDotWithRing
                       key={account.id}
@@ -148,7 +147,11 @@ const AccountList = () => {
                   );
                 })}
             </View>
-            <AccountTransactions accountId={accounts[currentVisibleIndex].id} />
+            {accountsSummary.length > 1 && (
+              <AccountTransactions
+                accountId={accountsSummary[currentVisibleIndex].id}
+              />
+            )}
           </View>
         </Container>
       }
