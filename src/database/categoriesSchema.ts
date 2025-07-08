@@ -107,7 +107,7 @@ const deleteCategory = async (
 };
 
 export {
-  CreateCategoryType as AddCategoryType,
+  CreateCategoryType,
   CategoryType,
   createCategoriesTable,
   getAllCategories,

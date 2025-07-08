@@ -3,16 +3,15 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import {
   TransactionType,
+  TransactionDetaillsType,
+  CreateTransactionType,
+  TransactionsGroupedByDate,
   getAllTransactions as dbGetAllTransactions,
   insertTransaction as dbInsertTransaction,
   getTransactionById as dbGetTransactionById,
   updateTransaction as dbUpdateTransaction,
   deleteTransaction as dbDeleteTransaction,
-  getTransactionsByAccountId as dbGetTransactionsByAccountId,
   getGroupedTransactionsByDate as dbGetGroupedTransactionsByDate,
-  AddTransactionType,
-  TransactionTypeExtra,
-  TransactionGroupedByDate,
 } from "@/database/transactionSchema";
 
 export const transactionKeys = {
@@ -25,17 +24,6 @@ export const transactionKeys = {
   listsByAccount: (accountId: number) =>
     [...transactionKeys.all, "list", "byAccountId", accountId] as const,
   details: (id: number) => [...transactionKeys.all, "detail", id] as const,
-};
-
-export const useGetTransactionsByAccountId = (
-  db: SQLiteDatabase,
-  accountId: number,
-) => {
-  return useQuery<TransactionType[], Error>({
-    queryKey: transactionKeys.listsByAccount(accountId!),
-    queryFn: () => dbGetTransactionsByAccountId(accountId, db),
-    enabled: accountId !== null,
-  });
 };
 
 const useTransactions = (
@@ -52,7 +40,7 @@ const useTransactions = (
     isLoading: isLoadingAllTransactions,
     error: allTransactionsError,
     refetch: refetchAllTransactions,
-  } = useQuery<TransactionTypeExtra[], Error>({
+  } = useQuery<TransactionDetaillsType[], Error>({
     queryKey: transactionKeys.lists(),
     queryFn: () => dbGetAllTransactions(db),
   });
@@ -63,7 +51,7 @@ const useTransactions = (
     isLoading: isLoadingTransactionsByGroupedByDate,
     error: allTransactionsGroupedByDateError,
     refetch: refetchAllTransactionsGroupedByDate,
-  } = useQuery<TransactionGroupedByDate, Error>({
+  } = useQuery<TransactionsGroupedByDate, Error>({
     queryKey: transactionKeys.listGroupedByDate(accountId),
     queryFn: () => dbGetGroupedTransactionsByDate(db, accountId),
   });
@@ -81,7 +69,7 @@ const useTransactions = (
     mutateAsync: addTransaction,
     isPending: isAddingTransaction,
     error: addTransactionError,
-  } = useMutation<number | undefined, Error, AddTransactionType>({
+  } = useMutation<number | undefined, Error, CreateTransactionType>({
     mutationFn: async (params) => {
       const newTransactionId = await dbInsertTransaction(params, db);
       return newTransactionId;

@@ -8,7 +8,7 @@ import {
   getCategoryById as dbGetCategoryById,
   updateCategory as dbUpdateCategory,
   deleteCategory as dbDeleteCategory,
-  AddCategoryType,
+  CreateCategoryType,
 } from "@/database/categoriesSchema";
 
 export const categoryKeys = {
@@ -44,7 +44,7 @@ const useCategories = (db: SQLiteDatabase) => {
     mutateAsync: addCategory,
     isPending: isAddingCategory,
     error: addCategoryError,
-  } = useMutation<number | undefined, Error, AddCategoryType>({
+  } = useMutation<number | undefined, Error, CreateCategoryType>({
     mutationFn: async (params) => {
       const newCategoryId = await dbInsertCategory(params, db);
       return newCategoryId;
