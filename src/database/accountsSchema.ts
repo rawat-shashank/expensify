@@ -20,7 +20,7 @@ interface AccountType extends CreateAccountType {
   id: number;
 }
 
-interface AccountSummaryListType extends AccountType {
+interface AccountSummaryType extends AccountType {
   current_balance: number;
   total_income: number;
   total_expense: number;
@@ -41,7 +41,7 @@ const SQL_CREATE_ACCOUNTS_TABLE = `
 `;
 
 const SQL_GET_ALL_ACCOUNTS = `
-  SELECT * FROM accounts;
+  SELECT * FROM accounts;"
 `;
 
 const SQL_INSERT_ACCOUNT = `
@@ -145,9 +145,9 @@ const getAllAccounts = async (db: SQLiteDatabase): Promise<AccountType[]> => {
  */
 const getAccountSummaryList = async (
   db: SQLiteDatabase,
-): Promise<AccountSummaryListType[]> => {
+): Promise<AccountSummaryType[]> => {
   const result = await db.getAllAsync(SQL_GET_ACCOUNT_SUMMARY_LIST);
-  return result as AccountSummaryListType[];
+  return result as AccountSummaryType[];
 };
 
 /**
@@ -213,7 +213,7 @@ export {
   AccountCardTypeEnum,
   CreateAccountType,
   AccountType,
-  AccountSummaryListType,
+  AccountSummaryType,
   createAccountsTable,
   getAllAccounts,
   insertAccount,

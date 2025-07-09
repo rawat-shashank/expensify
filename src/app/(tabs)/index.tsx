@@ -1,6 +1,8 @@
+import { SummaryCard } from "@/components/Molecules/SummaryCard";
 import { TransactionsGroupedByDate } from "@/components/Organisms/TransactionsGroupedByDate";
 import Container from "@/components/UI/Container";
 import { useTheme } from "@/context/ThemeContext";
+import { useSummaryCard } from "@/queries/useGeneral";
 import useProfile from "@/queries/useProfile";
 import useTransactions from "@/queries/useTransactions";
 import { useSQLiteContext } from "expo-sqlite";
@@ -17,10 +19,14 @@ export default function HomeScreen() {
   const { theme } = useTheme();
   const db = useSQLiteContext();
   const { profileData } = useProfile(db);
+  const { summaryCard, isLoading: isLoadingSummaryCard } = useSummaryCard(db);
   const { transactionsGroupedByDate, isLoading: isTransactionsLoading } =
     useTransactions(db);
 
   if (isTransactionsLoading) {
+    return <ActivityIndicator size={"large"} />;
+  }
+  if (isLoadingSummaryCard) {
     return <ActivityIndicator size={"large"} />;
   }
 
@@ -34,6 +40,7 @@ export default function HomeScreen() {
           <Text style={[styles.subtitle, { color: theme.onSurface }]}>
             Welcome Back!
           </Text>
+          <SummaryCard summaryCardDetails={summaryCard} />
           <View style={styles.container}>
             <TransactionsGroupedByDate
               transactionsGroupedByDate={transactionsGroupedByDate}
