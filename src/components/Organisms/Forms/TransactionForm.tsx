@@ -8,7 +8,7 @@ import {
   TransactionTypeEnum,
 } from "@/database/transactionSchema";
 import useAccounts from "@/queries/useAccounts";
-import useCategories from "@/queries/useCategories";
+import useCategories from "@/queries/categories";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";

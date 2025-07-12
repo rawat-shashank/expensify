@@ -3,8 +3,8 @@ import { TouchableButton } from "@/components/Atoms/TouchableButtons";
 import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
 import Container from "@/components/UI/Container";
 import { useTheme } from "@/context/ThemeContext";
-import { AddCategoryType } from "@/database/categoriesSchema";
-import useCategories from "@/queries/useCategories";
+import { CreateCategoryType } from "@/database/categoriesSchema";
+import useCategories from "@/queries/categories";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { FlatList } from "react-native-gesture-handler";
@@ -15,7 +15,7 @@ const CreateCategory = ({}: {}) => {
   const db = useSQLiteContext();
   const { addCategory } = useCategories(db);
 
-  const onAddCategory = async (newCategory: AddCategoryType) => {
+  const onAddCategory = async (newCategory: CreateCategoryType) => {
     addCategory(newCategory);
     router.back();
   };

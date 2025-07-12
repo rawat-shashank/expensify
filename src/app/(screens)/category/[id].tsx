@@ -1,9 +1,9 @@
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { useState, useEffect } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import alert from "@/components/Alert";
-import useCategories from "@/queries/useCategories";
+import useCategories from "@/queries/categories";
 import { CategoryType } from "@/database/categoriesSchema";
 import Container from "@/components/UI/Container";
 import { Icons } from "@/components/Atoms/Icons";
@@ -16,33 +16,11 @@ const EditCategoryForm = () => {
   const { theme } = useTheme();
   const router = useRouter();
   const db = useSQLiteContext();
-  const { getCategoryById, updateCategory, deleteCategory } = useCategories(db);
 
   const { id } = useLocalSearchParams();
-  const categoryId = typeof id === "string" ? parseInt(id, 10) : undefined;
-
-  const [loadingCategory, setLoadingCategory] = useState(true);
-  const [currentCategory, setCurrentCategory] = useState<
-    CategoryType | undefined
-  >(undefined);
-
-  useEffect(() => {
-    const loadCategory = async () => {
-      if (categoryId) {
-        setLoadingCategory(true);
-        const category = await getCategoryById(categoryId);
-
-        if (category) {
-          setCurrentCategory(category);
-        }
-        setLoadingCategory(false);
-      } else {
-        setLoadingCategory(false);
-      }
-    };
-
-    loadCategory();
-  }, [categoryId, getCategoryById]);
+  const categoryId = typeof id === "string" ? parseInt(id, 10) : 0;
+  const { categoryDetails, isLoading, updateCategory, deleteCategory } =
+    useCategories(db, { categoryId });
 
   const handleUpdateCategory = async (category: CategoryType) => {
     await updateCategory(category);
@@ -50,10 +28,10 @@ const EditCategoryForm = () => {
   };
 
   const handleDeleteCategory = () => {
-    if (currentCategory?.id) {
+    if (categoryDetails?.id) {
       alert(
         "Delete Category",
-        `Are you sure you want to delete the category "${currentCategory.name}"?`,
+        `Are you sure you want to delete the category "${categoryDetails.name}"?`,
         [
           {
             text: "Cancel",
@@ -64,9 +42,7 @@ const EditCategoryForm = () => {
             text: "Delete",
             style: "destructive",
             onPress: async () => {
-              setLoadingCategory(true);
-              const success = await deleteCategory(currentCategory.id);
-              setLoadingCategory(false);
+              const success = await deleteCategory(categoryDetails.id);
               if (success) {
                 router.back();
               }
@@ -77,8 +53,16 @@ const EditCategoryForm = () => {
     }
   };
 
-  if (loadingCategory) {
+  if (isLoading) {
     return <Text>Loading account details...</Text>;
+  }
+
+  if (!categoryDetails) {
+    return (
+      <View>
+        <Text>No Category for this ID </Text>
+      </View>
+    );
   }
 
   return (
@@ -116,7 +100,7 @@ const EditCategoryForm = () => {
         ListHeaderComponent={
           <Container>
             <CategoryForm
-              category={currentCategory}
+              category={categoryDetails}
               onUpdateCategory={handleUpdateCategory}
             />
           </Container>

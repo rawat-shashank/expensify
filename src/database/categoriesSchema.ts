@@ -40,7 +40,7 @@ const SQL_GET_CATEGORY_BY_ID = `
 
 const SQL_UPDATE_ACCOUNT = `
   UPDATE categories
-  SET title = ?, desc = ?, icon = ?, color = ?
+  SET name = ?, desc = ?, icon = ?, color = ?
   WHERE id = ?;
 `;
 
@@ -88,6 +88,13 @@ const updateCategory = async (
   db: SQLiteDatabase,
 ): Promise<boolean> => {
   const { name, desc, icon = "", color = "", id } = category;
+  console.log({
+    name,
+    desc,
+    icon,
+    color,
+    id,
+  });
   const result = await db.runAsync(SQL_UPDATE_ACCOUNT, [
     name,
     desc,
@@ -95,6 +102,7 @@ const updateCategory = async (
     color,
     id,
   ]);
+  console.log("result", result);
   return result.changes > 0;
 };
 

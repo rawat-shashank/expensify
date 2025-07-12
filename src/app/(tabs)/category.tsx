@@ -1,7 +1,6 @@
 import Container from "@/components/UI/Container";
-import { WINDOW_HEIGHT } from "@/constants";
 import { CategoryType } from "@/database/categoriesSchema";
-import useCategories from "@/queries/useCategories";
+import useCategories from "@/queries/categories";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import {

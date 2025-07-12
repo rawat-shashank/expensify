@@ -20,17 +20,21 @@ const EditTransactionPage = () => {
 
   const transactionId = typeof id === "string" ? parseInt(id, 10) : 0;
 
-  const { transaction, isPending, deleteTransaction, updateTransaction } =
-    useTransactions(db, {
-      transactionId,
-    });
+  const {
+    transactionDetails,
+    isPending,
+    deleteTransaction,
+    updateTransaction,
+  } = useTransactions(db, {
+    transactionId,
+  });
 
   const handleUpdateTransaction = async (transaction: TransactionType) => {
     await updateTransaction(transaction);
     router.back();
   };
 
-  if (!transaction) {
+  if (!transactionDetails) {
     return (
       <View>
         <Text>No transaction for this ID </Text>
@@ -42,7 +46,7 @@ const EditTransactionPage = () => {
     if (transactionId) {
       alert(
         "Delete Transaction",
-        `Are you sure you want to delete the transaction "${transaction?.name}"?`,
+        `Are you sure you want to delete the transaction "${transactionDetails?.name}"?`,
         [
           {
             text: "Cancel",
@@ -104,7 +108,7 @@ const EditTransactionPage = () => {
         ListHeaderComponent={
           <Container>
             <TransactionForm
-              transaction={transaction}
+              transaction={transactionDetails}
               onUpdateTransaction={handleUpdateTransaction}
             />
           </Container>

@@ -30,7 +30,7 @@ const useTransactions = (
     paginatedTransactions?.pages.flatMap((page) => page) || [];
 
   const {
-    data: transaction,
+    data: transactionDetails,
     isLoading: isLoadingTransactionDetails,
     error: transactionDetailsError,
     refetch: refetchTransactionDetails,
@@ -72,7 +72,7 @@ const useTransactions = (
   return {
     // Data
     transactions,
-    transaction,
+    transactionDetails,
 
     // Loading
     isPending,
