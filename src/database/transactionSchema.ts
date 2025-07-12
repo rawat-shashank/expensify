@@ -30,7 +30,7 @@ interface TransactionDetaillsType extends TransactionType {
   category_icon: IconsName;
 }
 
-interface TransactionsGroupedByDate {
+interface TransactionsGroupedByDateType {
   [date: string]: {
     total_amount: number;
     transactions: TransactionDetaillsType[];
@@ -51,6 +51,21 @@ const SQL_CREATE_TRANSACTION_TABLE = `
     type TEXT NOT NULL CHECK (type IN ('expense', 'income', 'transfer'))
   );  
 `;
+
+const SQL_GET_TRANSACTIONS = `
+  SELECT
+    t.*,
+    a.accountName AS account_name,
+    c.name AS category_name,
+    c.icon AS category_icon,
+    c.color AS category_color
+  FROM
+    transactions t
+  JOIN
+    accounts a ON t.account_id = a.id
+  JOIN
+    categories c ON t.category_id = c.id
+  `;
 
 const SQL_INSERT_TRANSACTION = `
   INSERT INTO transactions (name, amount, desc, time, account_id, category_id, type)
@@ -111,6 +126,25 @@ const insertTransaction = async (
   return result.lastInsertRowId;
 };
 
+const getPaginatedTransactions = async (
+  db: SQLiteDatabase,
+  limit: number = 10,
+  offset: number = 0,
+  account_id?: number,
+): Promise<TransactionDetaillsType[]> => {
+  let query = SQL_GET_TRANSACTIONS;
+  let params: (number | string)[] = [];
+
+  if (account_id !== undefined) {
+    query += `WHERE account_id = ?`;
+    params.push(account_id);
+  }
+  query += `ORDER BY time DESC LIMIT ? OFFSET ?`;
+  params.push(limit, offset);
+  const result = await db.getAllAsync(query, params);
+  return result as TransactionDetaillsType[];
+};
+
 const getAllTransactions = async (
   db: SQLiteDatabase,
   account_id?: number,
@@ -130,9 +164,9 @@ const getAllTransactions = async (
 const getGroupedTransactionsByDate = async (
   db: SQLiteDatabase,
   account_id?: number,
-): Promise<TransactionsGroupedByDate> => {
+): Promise<TransactionsGroupedByDateType> => {
   const allTransactions = await getAllTransactions(db, account_id || undefined);
-  const grouped: TransactionsGroupedByDate = {};
+  const grouped: TransactionsGroupedByDateType = {};
 
   for (const transaction of allTransactions) {
     const transactionDate = new Date(transaction.time)
@@ -153,7 +187,7 @@ const getGroupedTransactionsByDate = async (
     grouped[transactionDate].transactions.push(transaction);
   }
 
-  const sortedGroupedOutput: TransactionsGroupedByDate = {};
+  const sortedGroupedOutput: TransactionsGroupedByDateType = {};
   Object.keys(grouped)
     .sort((a, b) => b.localeCompare(a))
     .forEach((key) => {
@@ -203,7 +237,7 @@ export {
   CreateTransactionType,
   TransactionType,
   TransactionDetaillsType,
-  TransactionsGroupedByDate,
+  TransactionsGroupedByDateType,
   createTransactionTable,
   getAllTransactions,
   insertTransaction,
@@ -211,4 +245,5 @@ export {
   updateTransaction,
   deleteTransaction,
   getGroupedTransactionsByDate,
+  getPaginatedTransactions,
 };

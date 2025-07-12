@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   AccountType,
   CreateAccountType,
-  AccountSummaryListType,
+  AccountSummaryType,
   getAccountSummaryList as dbGetAccountIncomeExpenseSummary,
   getAccountById as dbGetAccountById,
   insertAccount as dbInsertAccount,
@@ -28,7 +28,7 @@ const useAccounts = (db: SQLiteDatabase) => {
     isLoading: isLoadingAccountsSummary,
     error: accountsSummaryError,
     refetch: refetchAccountsSummary,
-  } = useQuery<AccountSummaryListType[], Error>({
+  } = useQuery<AccountSummaryType[], Error>({
     queryKey: accountKeys.listWithSummary(),
     queryFn: () => dbGetAccountIncomeExpenseSummary(db),
   });

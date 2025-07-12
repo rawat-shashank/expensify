@@ -2,15 +2,17 @@ import { Text, FlatList, ActivityIndicator, View } from "react-native";
 import useAccounts from "@/queries/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter } from "expo-router";
-import { AccountSummaryListType } from "@/database/accountsSchema";
+import { AccountSummaryType } from "@/database/accountsSchema";
 import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
-import useTransactions from "@/queries/useTransactions";
+import useTransactions from "@/queries/transactions";
 import Container from "@/components/UI/Container";
 import { useCallback, useRef, useState } from "react";
 import { ColorDotWithRing } from "@/components/UI/ColorDotWithRing";
 import { useTheme } from "@/context/ThemeContext";
 import { TransactionsGroupedByDate } from "@/components/Organisms/TransactionsGroupedByDate";
+import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
+import { TransactionDetaillsType } from "@/database/transactionSchema";
 
 const AccountList = () => {
   const { theme } = useTheme();
@@ -73,7 +75,7 @@ const AccountList = () => {
   };
 
   //FIXME: UI need to be updated later
-  const renderAccounts = ({ item }: { item: AccountSummaryListType }) => (
+  const renderAccounts = ({ item }: { item: AccountSummaryType }) => (
     <AccountCard
       account={item}
       handleCardPress={handleCardPress}
@@ -86,14 +88,36 @@ const AccountList = () => {
   }
 
   const AccountTransactions = ({ accountId }: { accountId: number }) => {
-    const { transactionsGroupedByDate } = useTransactions(db, {
+    const router = useRouter();
+    const handleCardPress = (transactionId: number) => {
+      router.push(`/transaction/${transactionId}`);
+    };
+    const {
+      transactions,
+      hasNextPage,
+      fetchNextPage,
+      refetchPaginatedTransactions,
+    } = useTransactions(db, {
       accountId: accountId,
     });
 
+    const renderItem = ({ item }: { item: TransactionDetaillsType }) => (
+      <TransactionListItem item={item} onPress={handleCardPress} />
+    );
+
     return (
       <View>
-        <TransactionsGroupedByDate
-          transactionsGroupedByDate={transactionsGroupedByDate}
+        <FlatList
+          data={transactions}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          onEndReached={() => {
+            if (hasNextPage) {
+              fetchNextPage();
+            }
+          }}
+          onEndReachedThreshold={0.5}
+          onRefresh={() => refetchPaginatedTransactions()}
         />
       </View>
     );
@@ -147,7 +171,7 @@ const AccountList = () => {
                   );
                 })}
             </View>
-            {accountsSummary.length > 1 && (
+            {accountsSummary.length > 0 && (
               <AccountTransactions
                 accountId={accountsSummary[currentVisibleIndex].id}
               />

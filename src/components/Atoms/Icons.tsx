@@ -45,7 +45,7 @@ interface IconProps {
 }
 
 const Icons: React.FC<IconProps> = ({
-  name,
+  name = "home",
   size = 24,
   color = "black",
   style,

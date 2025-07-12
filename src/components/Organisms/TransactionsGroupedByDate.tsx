@@ -1,6 +1,6 @@
 import {
-  TransactionGroupedByDate,
-  TransactionTypeExtra,
+  TransactionsGroupedByDateType,
+  TransactionDetaillsType,
 } from "@/database/transactionSchema";
 import { Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -11,17 +11,17 @@ import { useTheme } from "@/context/ThemeContext";
 export const TransactionsGroupedByDate = ({
   transactionsGroupedByDate,
 }: {
-  transactionsGroupedByDate: TransactionGroupedByDate;
+  transactionsGroupedByDate: TransactionsGroupedByDateType;
 }) => {
   const { theme } = useTheme();
   const router = useRouter();
-  const dates: string[] = Object.keys(transactionsGroupedByDate) || [];
+  const dates: string[] = Object.keys(transactionsGroupedByDate || []) || [];
 
   const handleCardPress = (transactionId: number) => {
     router.push(`/transaction/${transactionId}`);
   };
 
-  const renderItem = ({ item }: { item: TransactionTypeExtra }) => (
+  const renderItem = ({ item }: { item: TransactionDetaillsType }) => (
     <TransactionListItem item={item} onPress={handleCardPress} />
   );
 

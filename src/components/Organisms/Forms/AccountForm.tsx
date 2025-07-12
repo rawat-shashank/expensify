@@ -1,7 +1,7 @@
 import {
   AccountCardTypeEnum,
   AccountType,
-  AddAccountType,
+  CreateAccountType,
 } from "@/database/accountsSchema";
 import { useState } from "react";
 import { Switch, Text, View, StyleSheet } from "react-native";
@@ -18,7 +18,7 @@ const AccountForm = ({
   onUpdateAccount,
 }: {
   account?: AccountType;
-  onAddAccount?: (newAccount: AddAccountType) => Promise<void>;
+  onAddAccount?: (newAccount: CreateAccountType) => Promise<void>;
   onUpdateAccount?: (newAccount: AccountType) => Promise<void>;
 }) => {
   const { theme } = useTheme();
@@ -64,7 +64,7 @@ const AccountForm = ({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const newAccount: AddAccountType = {
+      const newAccount: CreateAccountType = {
         name,
         accountName,
         amount: amount || "0.00",

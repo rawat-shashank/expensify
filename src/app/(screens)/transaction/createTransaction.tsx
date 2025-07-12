@@ -3,8 +3,8 @@ import { TouchableButton } from "@/components/Atoms/TouchableButtons";
 import { TransactionForm } from "@/components/Organisms/Forms/TransactionForm";
 import Container from "@/components/UI/Container";
 import { useTheme } from "@/context/ThemeContext";
-import { AddTransactionType } from "@/database/transactionSchema";
-import useTransactions from "@/queries/useTransactions";
+import { CreateTransactionType } from "@/database/transactionSchema";
+import useTransactions from "@/queries/transactions";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { FlatList } from "react-native-gesture-handler";
@@ -15,7 +15,7 @@ const CreateTransaction = () => {
   const db = useSQLiteContext();
   const { addTransaction } = useTransactions(db);
 
-  const onAddTransaction = async (newTransaction: AddTransactionType) => {
+  const onAddTransaction = async (newTransaction: CreateTransactionType) => {
     addTransaction(newTransaction);
     router.back();
   };

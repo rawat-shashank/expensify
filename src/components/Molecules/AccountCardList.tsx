@@ -56,79 +56,81 @@ export const AccountCardList = ({
           ItemSeparatorComponent={ItemSeparatorComponent}
           data={accounts}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableButton
-              onPress={() => onSelect(item.id)}
-              style={{
-                borderRadius: 16,
-                backgroundColor:
-                  activeAccountId === item.id
-                    ? theme.secondaryContainer
-                    : "transparent",
-                borderColor:
-                  activeAccountId === item.id
-                    ? theme.onSecondaryContainer
-                    : theme.secondaryContainer,
-                width: 128,
-                padding: 16,
-                minHeight: 144,
-                display: "flex",
-                justifyContent: "space-between",
-                borderLeftWidth: activeAccountId == item.id ? 2 : 1,
-                borderRightWidth: activeAccountId == item.id ? 2 : 1,
-                borderBottomWidth: 2,
-                borderTopWidth: activeAccountId == item.id ? 2 : 1,
-                gap: 32,
-              }}
-            >
-              <View>
-                {item.cardType === AccountCardTypeEnum.BANK && (
-                  <Icons
-                    variant="circularBackground"
-                    name="bank"
-                    color={theme.onBackground}
-                    backgroundColor={theme.background}
-                  />
-                )}
-                {item.cardType === AccountCardTypeEnum.WALLET && (
-                  <Icons
-                    variant="circularBackground"
-                    name="wallet-outline"
-                    color={theme.onBackground}
-                    backgroundColor={theme.background}
-                  />
-                )}
-                {item.cardType === AccountCardTypeEnum.CASH && (
-                  <Icons
-                    name="cash-outline"
-                    variant="circularBackground"
-                    color={
-                      activeAccountId === item.id
-                        ? theme.onBackground
-                        : theme.onSecondaryContainer
-                    }
-                    backgroundColor={
-                      activeAccountId === item.id
-                        ? theme.background
-                        : theme.secondaryContainer
-                    }
-                  />
-                )}
-              </View>
-              <View>
-                <Text style={{ fontSize: 16, color: theme.onSurface }}>
-                  {item.name}
-                </Text>
-                <Text style={{ fontSize: 12, color: theme.onSurface }}>
-                  {item.accountName}
-                </Text>
-              </View>
-            </TouchableButton>
-          )}
           extraData={activeAccountId}
           horizontal
           showsHorizontalScrollIndicator={false}
           pagingEnabled
+          renderItem={({ item }) => {
+            return (
+              <TouchableButton
+                onPress={() => onSelect(item.id)}
+                style={{
+                  borderRadius: 16,
+                  backgroundColor:
+                    activeAccountId === item.id
+                      ? theme.secondaryContainer
+                      : "transparent",
+                  borderColor:
+                    activeAccountId === item.id
+                      ? theme.onSecondaryContainer
+                      : theme.secondaryContainer,
+                  width: 128,
+                  padding: 16,
+                  minHeight: 144,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  borderLeftWidth: activeAccountId == item.id ? 2 : 1,
+                  borderRightWidth: activeAccountId == item.id ? 2 : 1,
+                  borderBottomWidth: 2,
+                  borderTopWidth: activeAccountId == item.id ? 2 : 1,
+                  gap: 32,
+                }}
+              >
+                <View>
+                  {item.cardType === AccountCardTypeEnum.BANK && (
+                    <Icons
+                      variant="circularBackground"
+                      name="bank"
+                      color={theme.onBackground}
+                      backgroundColor={theme.background}
+                    />
+                  )}
+                  {item.cardType === AccountCardTypeEnum.WALLET && (
+                    <Icons
+                      variant="circularBackground"
+                      name="wallet-outline"
+                      color={theme.onBackground}
+                      backgroundColor={theme.background}
+                    />
+                  )}
+                  {item.cardType === AccountCardTypeEnum.CASH && (
+                    <Icons
+                      name="cash-outline"
+                      variant="circularBackground"
+                      color={
+                        activeAccountId === item.id
+                          ? theme.onBackground
+                          : theme.onSecondaryContainer
+                      }
+                      backgroundColor={
+                        activeAccountId === item.id
+                          ? theme.background
+                          : theme.secondaryContainer
+                      }
+                    />
+                  )}
+                </View>
+                <View>
+                  <Text style={{ fontSize: 16, color: theme.onSurface }}>
+                    {item.name}
+                  </Text>
+                  <Text style={{ fontSize: 12, color: theme.onSurface }}>
+                    {item.accountName}
+                  </Text>
+                </View>
+              </TouchableButton>
+            );
+          }}
         />
       </View>
       {error && (

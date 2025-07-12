@@ -3,7 +3,7 @@ import { InputField } from "@/components/Atoms/InputField";
 import { AccountCardList } from "@/components/Molecules/AccountCardList";
 import { CategoryPillList } from "@/components/Molecules/CategoryPillList";
 import {
-  AddTransactionType,
+  CreateTransactionType,
   TransactionType,
   TransactionTypeEnum,
 } from "@/database/transactionSchema";
@@ -19,7 +19,7 @@ import { useTheme } from "@/context/ThemeContext";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
-  onAddTransaction?: (newTransaction: AddTransactionType) => Promise<void>;
+  onAddTransaction?: (newTransaction: CreateTransactionType) => Promise<void>;
   onUpdateTransaction?: (transaction: TransactionType) => Promise<void>;
 }
 
@@ -43,7 +43,7 @@ export const TransactionForm = ({
   ];
 
   const db = useSQLiteContext();
-  const { accounts } = useAccounts(db);
+  const { accountsSummary } = useAccounts(db);
   const { categories } = useCategories(db);
 
   const [name, setName] = useState(transaction?.name || "");
@@ -82,7 +82,7 @@ export const TransactionForm = ({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const newTransaction: AddTransactionType = {
+      const newTransaction: CreateTransactionType = {
         name,
         desc,
         amount: amount || "0.00",
@@ -134,7 +134,7 @@ export const TransactionForm = ({
           <AccountCardList
             activeAccountId={account_id}
             onSelect={setAccountId}
-            accounts={accounts}
+            accounts={accountsSummary}
             error={errors.account_id}
           />
           <CategoryPillList

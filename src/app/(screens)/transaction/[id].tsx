@@ -1,8 +1,8 @@
-import useTransactions from "@/queries/useTransactions";
+import useTransactions from "@/queries/transactions";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState, useEffect } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import alert from "@/components/Alert";
 import { TransactionType } from "@/database/transactionSchema";
 import Container from "@/components/UI/Container";
@@ -14,44 +14,35 @@ import { FlatList } from "react-native-gesture-handler";
 
 const EditTransactionPage = () => {
   const { theme } = useTheme();
+  const { id } = useLocalSearchParams();
   const router = useRouter();
   const db = useSQLiteContext();
-  const { getTransactionById, deleteTransaction, updateTransaction } =
-    useTransactions(db);
 
-  const { id } = useLocalSearchParams();
-  const transactionId = typeof id === "string" ? parseInt(id, 10) : undefined;
+  const transactionId = typeof id === "string" ? parseInt(id, 10) : 0;
 
-  const [loadingTransaction, setLoadingTransaction] = useState(true);
-  const [currentTransaction, setCurrentTransaction] = useState<
-    TransactionType | undefined
-  >(undefined);
-
-  useEffect(() => {
-    const loadTransaction = async () => {
-      if (transactionId) {
-        setLoadingTransaction(true);
-        const transaction = await getTransactionById(transactionId);
-        if (transaction) {
-          setCurrentTransaction(transaction);
-        }
-        setLoadingTransaction(false);
-      }
-    };
-
-    loadTransaction();
-  }, [transactionId, getTransactionById]);
+  const { transaction, isPending, deleteTransaction, updateTransaction } =
+    useTransactions(db, {
+      transactionId,
+    });
 
   const handleUpdateTransaction = async (transaction: TransactionType) => {
     await updateTransaction(transaction);
     router.back();
   };
 
+  if (!transaction) {
+    return (
+      <View>
+        <Text>No transaction for this ID </Text>
+      </View>
+    );
+  }
+
   const handleDeleteTransaction = () => {
-    if (currentTransaction?.id) {
+    if (transactionId) {
       alert(
         "Delete Transaction",
-        `Are you sure you want to delete the transaction "${currentTransaction.name}"?`,
+        `Are you sure you want to delete the transaction "${transaction?.name}"?`,
         [
           {
             text: "Cancel",
@@ -63,9 +54,7 @@ const EditTransactionPage = () => {
             text: "Delete",
             style: "destructive",
             onPress: async () => {
-              setLoadingTransaction(true);
-              const success = await deleteTransaction(currentTransaction.id);
-              setLoadingTransaction(false);
+              const success = await deleteTransaction(transactionId);
               if (success) {
                 router.back();
               }
@@ -76,7 +65,7 @@ const EditTransactionPage = () => {
     }
   };
 
-  if (loadingTransaction) {
+  if (isPending) {
     return <Text>Loading transaction details...</Text>;
   }
 
@@ -115,7 +104,7 @@ const EditTransactionPage = () => {
         ListHeaderComponent={
           <Container>
             <TransactionForm
-              transaction={currentTransaction}
+              transaction={transaction}
               onUpdateTransaction={handleUpdateTransaction}
             />
           </Container>
