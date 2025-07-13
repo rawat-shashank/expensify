@@ -1,13 +1,13 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Icons, IconsName } from "./Atoms/Icons";
+import { Icons, IconsNameType } from "./atoms";
 import { useTheme } from "@/context/ThemeContext";
 
 interface HeaderProps {
   title: string;
-  leftIcon?: IconsName;
+  leftIcon?: IconsNameType;
   onLeftIconPress?: () => void;
-  rightIcon?: IconsName;
+  rightIcon?: IconsNameType;
   onRightIconPress?: () => void;
 }
 

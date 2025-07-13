@@ -1,4 +1,4 @@
-import Container from "@/components/UI/Container";
+import { Container } from "@/components";
 import { Href, Stack, useRouter } from "expo-router";
 import React from "react";
 import {

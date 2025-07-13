@@ -1,9 +1,9 @@
 import { FlatList, Text, View } from "react-native";
 import { TextLabel } from "../Atoms/TextLabel";
-import { TouchableButton } from "../Atoms/TouchableButtons";
+import { TouchableButton } from "../atoms";
 import { useRouter } from "expo-router";
 import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
-import { Icons } from "../Atoms/Icons";
+import { Icons } from "../atoms";
 import { useTheme } from "@/context/ThemeContext";
 
 interface AccountCardProps {

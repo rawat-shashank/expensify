@@ -5,7 +5,7 @@ import {
 } from "@/database/accountsSchema";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Icons } from "./Atoms/Icons";
+import { Icons } from "./atoms";
 import { useTheme } from "@/context/ThemeContext";
 import { BlurView } from "expo-blur";
 

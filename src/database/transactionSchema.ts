@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from "expo-sqlite";
-import { IconsName } from "@/components/Atoms/Icons";
+import { IconsNameType } from "@/components";
 
 // ---- Enums ----
 enum TransactionTypeEnum {
@@ -27,7 +27,7 @@ interface TransactionDetaillsType extends TransactionType {
   account_name: string;
   category_name: string;
   category_color: string;
-  category_icon: IconsName;
+  category_icon: IconsNameType;
 }
 
 interface TransactionsGroupedByDateType {
@@ -164,9 +164,9 @@ const getAllTransactions = async (
 const getGroupedTransactionsByDate = async (
   db: SQLiteDatabase,
   account_id?: number,
-): Promise<TransactionsGroupedByDateType> => {
+): Promise<trans> => {
   const allTransactions = await getAllTransactions(db, account_id || undefined);
-  const grouped: TransactionsGroupedByDateType = {};
+  const grouped: TransactionsGroupedByDate = {};
 
   for (const transaction of allTransactions) {
     const transactionDate = new Date(transaction.time)

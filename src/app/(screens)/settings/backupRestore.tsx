@@ -14,7 +14,7 @@ if (Platform.OS !== "web") {
 
 import { useBackupRestoreData } from "@/queries/useBackupRestoreData"; // Adjust path as needed
 import { BackupRestoreType } from "@/database/exportsSchema";
-import Container from "@/components/UI/Container";
+import { Container } from "@/components";
 import { Stack } from "expo-router";
 import { FlatList } from "react-native-gesture-handler";
 

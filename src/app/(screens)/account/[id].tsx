@@ -1,6 +1,6 @@
 import AccountForm from "@/components/Organisms/Forms/AccountForm";
-import { Icons } from "@/components/Atoms/Icons";
-import Container from "@/components/UI/Container";
+import { Icons } from "@/components";
+import { Container } from "@/components";
 import { AccountType } from "@/database/accountsSchema";
 import useAccounts from "@/queries/useAccounts";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import alert from "@/components/Alert";
 import { useTheme } from "@/context/ThemeContext";
-import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { TouchableButton } from "@/components";
 import { FlatList } from "react-native-gesture-handler";
 
 const EditAccountPage = ({}: {}) => {

@@ -1,6 +1,6 @@
 import { SummaryCard } from "@/components/Molecules/SummaryCard";
 import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
-import Container from "@/components/UI/Container";
+import { Container } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
 import { TransactionDetaillsType } from "@/database/transactionSchema";
 import { useSummaryCard } from "@/queries/useGeneral"; // Assuming this still exists and is needed

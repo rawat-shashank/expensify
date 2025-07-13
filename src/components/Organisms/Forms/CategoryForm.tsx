@@ -1,15 +1,15 @@
-import { AddCategoryType, CategoryType } from "@/database/categoriesSchema";
+import { CreateCategoryType, CategoryType } from "@/database/categoriesSchema";
 import { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { InputField } from "../../Atoms/InputField";
 import { Picker } from "../../Molecules/Picker";
-import { TouchableButton } from "../../Atoms/TouchableButtons";
+import { TouchableButton } from "../../atoms";
 import { useTheme } from "@/context/ThemeContext";
-import { IconsName } from "@/components/Atoms/Icons";
+import { IconsNameType } from "@/components";
 
 interface CategoryFormProps {
   category?: CategoryType;
-  onAddCategory?: (newCategory: AddCategoryType) => Promise<void>;
+  onAddCategory?: (newCategory: CreateCategoryType) => Promise<void>;
   onUpdateCategory?: (category: CategoryType) => Promise<void>;
 }
 
@@ -25,7 +25,7 @@ export const CategoryForm = ({
   const { theme } = useTheme();
   const [name, setName] = useState(category?.name || "");
   const [desc, setDesc] = useState(category?.desc || "");
-  const [icon, setIcon] = useState<IconsName>(category?.icon || "home");
+  const [icon, setIcon] = useState<IconsNameType>(category?.icon || "home");
   const [color, setColor] = useState(category?.color || "");
   const [errors, setErrors] = useState<CategoryFormErrors>({});
 
@@ -37,7 +37,7 @@ export const CategoryForm = ({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const newCategory: AddCategoryType = {
+      const newCategory: CreateCategoryType = {
         name,
         desc,
         color,

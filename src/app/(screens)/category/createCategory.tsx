@@ -1,7 +1,7 @@
-import { Icons } from "@/components/Atoms/Icons";
-import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { Icons } from "@/components";
+import { TouchableButton } from "@/components";
 import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
-import Container from "@/components/UI/Container";
+import { Container } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
 import { CreateCategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/categories";

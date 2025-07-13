@@ -1,8 +1,4 @@
-import { Dimensions } from "react-native";
 import { colors } from "./colors";
+import { FONT_SIZES, WINDOW_WIDTH, WINDOW_HEIGHT, PAGE_SIZE } from "./sizes";
 
-const WINDOW_WIDTH = Dimensions.get("window").width;
-const WINDOW_HEIGHT = Dimensions.get("window").height;
-const PAGE_SIZE = 20;
-
-export { WINDOW_WIDTH, WINDOW_HEIGHT, PAGE_SIZE, colors };
+export { FONT_SIZES, WINDOW_WIDTH, WINDOW_HEIGHT, PAGE_SIZE, colors };

@@ -1,7 +1,7 @@
-import { Icons } from "@/components/Atoms/Icons";
-import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { Icons } from "@/components";
+import { TouchableButton } from "@/components";
 import AccountForm from "@/components/Organisms/Forms/AccountForm";
-import Container from "@/components/UI/Container";
+import { Container } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
 import { CreateAccountType } from "@/database/accountsSchema";
 import useAccounts from "@/queries/useAccounts";

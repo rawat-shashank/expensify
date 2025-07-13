@@ -9,7 +9,7 @@ import {
 import { CustomSheet } from "../customSheet";
 import ColorPicker from "../Pickers/ColorPicker";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
-import { Icons, IconsName, ICON_NAME_MAPPING } from "../Atoms/Icons";
+import { Icons, IconsNameType, ICON_NAME_MAPPING } from "../atoms";
 import { ColorDotWithRing } from "../UI/ColorDotWithRing";
 import { useTheme } from "@/context/ThemeContext";
 
@@ -33,7 +33,7 @@ interface PickerProps {
   label?: string; // Optional label for the picker
   description?: string; // Optional description
   // If variant is "icon", you might want a default icon to display when no value is set
-  defaultIcon?: IconsName;
+  defaultIcon?: IconsNameType;
 }
 
 export const Picker = ({
@@ -80,7 +80,10 @@ export const Picker = ({
             <Icons name="color-palette" color={theme.primary} />
           ) : (
             // The `name` prop for `Icons` is `string`, but we know `displayIconName` is `IconsName`
-            <Icons name={displayIconName as IconsName} color={theme.primary} />
+            <Icons
+              name={displayIconName as IconsNameType}
+              color={theme.primary}
+            />
           )}
 
           <View>
@@ -107,7 +110,7 @@ export const Picker = ({
         ) : (
           // Display the selected icon, or a placeholder if none is selected
           <Icons
-            name={(value as IconsName) || (defaultIcon as IconsName)}
+            name={(value as IconsNameType) || (defaultIcon as IconsNameType)}
             size={30}
             color={theme.primary}
           />
@@ -140,7 +143,7 @@ export const Picker = ({
                   onPress={() => handleSelectAndClose(iconName)}
                 >
                   <Icons
-                    name={iconName as IconsName} // Assert the name is one of the valid icon names
+                    name={iconName as IconsNameType} // Assert the name is one of the valid icon names
                     size={ICON_SIZE_IN_PICKER - 10} // Smaller size for picker items
                     color={
                       value === iconName

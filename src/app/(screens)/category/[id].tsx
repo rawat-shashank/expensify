@@ -1,15 +1,14 @@
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import alert from "@/components/Alert";
 import useCategories from "@/queries/categories";
 import { CategoryType } from "@/database/categoriesSchema";
-import Container from "@/components/UI/Container";
-import { Icons } from "@/components/Atoms/Icons";
+import { Container } from "@/components";
+import { Icons } from "@/components";
 import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
 import { useTheme } from "@/context/ThemeContext";
-import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { TouchableButton } from "@/components";
 import { FlatList } from "react-native-gesture-handler";
 
 const EditCategoryForm = () => {

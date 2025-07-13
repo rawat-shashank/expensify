@@ -1,8 +1,8 @@
 import { FlatList, Text, View } from "react-native";
 import { TextLabel } from "../Atoms/TextLabel";
-import { TouchableButton } from "../Atoms/TouchableButtons";
+import { TouchableButton } from "../atoms";
 import { useRouter } from "expo-router";
-import { Icons } from "../Atoms/Icons";
+import { Icons } from "../atoms";
 import { CategoryType } from "@/database/categoriesSchema";
 import { useTheme } from "@/context/ThemeContext";
 

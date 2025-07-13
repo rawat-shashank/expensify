@@ -1,6 +1,6 @@
 import { TransactionTypeExtra } from "@/database/transactionSchema";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Icons } from "../Atoms/Icons";
+import { Icons } from "../atoms";
 import { useTheme } from "@/context/ThemeContext";
 
 export const TransactionListItem = ({

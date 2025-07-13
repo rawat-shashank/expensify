@@ -3,14 +3,14 @@ import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
 
-type IconsName =
+type IconsNameType =
   | keyof typeof Entypo.glyphMap
   | keyof typeof Ionicons.glyphMap
   | keyof typeof MaterialCommunityIcons.glyphMap;
 
 type IconMappingValue = {
   component: React.ComponentType<any>;
-  name: IconsName;
+  name: IconsNameType;
 };
 
 const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
@@ -36,7 +36,7 @@ const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
 };
 
 interface IconProps {
-  name: IconsName;
+  name: IconsNameType;
   size?: number;
   color?: string;
   style?: ViewStyle;
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Icons, IconsName, ICON_NAME_MAPPING };
+export { Icons, IconsNameType, ICON_NAME_MAPPING };

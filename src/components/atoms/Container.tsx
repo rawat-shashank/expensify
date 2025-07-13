@@ -7,7 +7,7 @@ interface Props {
   style?: any;
 }
 
-const Container: React.FC<Props> = ({ children, style }) => {
+export const Container: React.FC<Props> = ({ children, style }) => {
   const { theme } = useTheme();
 
   return (
@@ -28,8 +28,6 @@ const Container: React.FC<Props> = ({ children, style }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
   },
 });
-
-export default Container;

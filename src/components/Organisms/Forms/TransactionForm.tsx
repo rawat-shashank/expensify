@@ -13,7 +13,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { PillSelector } from "../../Atoms/PillSelector";
-import { TouchableButton } from "../../Atoms/TouchableButtons";
+import { TouchableButton } from "../../atoms";
 import CurrencyInput from "@/components/Atoms/CurrencyInput";
 import { useTheme } from "@/context/ThemeContext";
 

@@ -1,11 +1,11 @@
-import { IconsName } from "@/components/Atoms/Icons";
+import { IconsNameType } from "@/components";
 import { SQLiteDatabase } from "expo-sqlite";
 
 // ---- Interface ----
 interface CreateCategoryType {
   name: string;
   desc: string;
-  icon: IconsName;
+  icon: IconsNameType;
   color: string;
 }
 
@@ -26,7 +26,7 @@ const SQL_CREATE_CATEGORIES_TABLE = `
 `;
 
 const SQL_GET_ALL_CATEGORIES = `
-  SELECT * FROM categories;
+  SELECT * FROM categories ORDER BY name ASC;
 `;
 
 const SQL_INSERT_CATEGORY = `

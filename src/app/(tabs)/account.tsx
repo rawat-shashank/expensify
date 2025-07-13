@@ -6,11 +6,10 @@ import { AccountSummaryType } from "@/database/accountsSchema";
 import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
 import useTransactions from "@/queries/transactions";
-import Container from "@/components/UI/Container";
+import { Container } from "@/components";
 import { useCallback, useRef, useState } from "react";
 import { ColorDotWithRing } from "@/components/UI/ColorDotWithRing";
 import { useTheme } from "@/context/ThemeContext";
-import { TransactionsGroupedByDate } from "@/components/Organisms/TransactionsGroupedByDate";
 import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
 import { TransactionDetaillsType } from "@/database/transactionSchema";
 

@@ -1,7 +1,7 @@
 import { CustomSheet } from "@/components/customSheet";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import Header from "@/components/Header";
-import { Icons } from "@/components/Atoms/Icons";
+import { Icons } from "@/components";
 import useProfile from "@/queries/useProfile";
 import { Entypo } from "@expo/vector-icons";
 import { Tabs, usePathname, useRouter } from "expo-router";
@@ -17,7 +17,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
 import { InputField } from "@/components/Atoms/InputField";
-import { TouchableButton } from "@/components/Atoms/TouchableButtons";
+import { TouchableButton } from "@/components";
 
 interface TabProps {
   name: string;
