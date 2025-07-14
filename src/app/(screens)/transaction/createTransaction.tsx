@@ -1,13 +1,16 @@
-import { Icons } from "@/components";
-import { TouchableButton } from "@/components";
-import { TransactionForm } from "@/components/Organisms/Forms/TransactionForm";
-import { Container } from "@/components";
+import { Stack, useRouter } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+
 import { useTheme } from "@/context/ThemeContext";
 import { CreateTransactionType } from "@/database/transactionSchema";
 import useTransactions from "@/queries/transactions";
-import { Stack, useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
-import { FlatList } from "react-native-gesture-handler";
+import {
+  Icons,
+  TransactionForm,
+  TouchableButton,
+  Container,
+} from "@/components";
+import { FlatList } from "react-native";
 
 const CreateTransaction = () => {
   const { theme } = useTheme();

@@ -1,16 +1,13 @@
-import AccountForm from "@/components/Organisms/Forms/AccountForm";
-import { Icons } from "@/components";
-import { Container } from "@/components";
-import { AccountType } from "@/database/accountsSchema";
-import useAccounts from "@/queries/useAccounts";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Text, TouchableOpacity, FlatList } from "react-native";
+import { useSQLiteContext } from "expo-sqlite";
+
 import alert from "@/components/Alert";
+import useAccounts from "@/queries/useAccounts";
+import { AccountType } from "@/database/accountsSchema";
 import { useTheme } from "@/context/ThemeContext";
-import { TouchableButton } from "@/components";
-import { FlatList } from "react-native-gesture-handler";
+import { TouchableButton, Container, Icons, AccountForm } from "@/components";
 
 const EditAccountPage = ({}: {}) => {
   const { theme } = useTheme();

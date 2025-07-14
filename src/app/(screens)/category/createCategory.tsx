@@ -1,13 +1,11 @@
-import { Icons } from "@/components";
-import { TouchableButton } from "@/components";
-import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
-import { Container } from "@/components";
+import { FlatList } from "react-native";
+import { Stack, useRouter } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+
 import { useTheme } from "@/context/ThemeContext";
 import { CreateCategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/categories";
-import { Stack, useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
-import { FlatList } from "react-native-gesture-handler";
+import { CategoryForm, Container, Icons, TouchableButton } from "@/components";
 
 const CreateCategory = ({}: {}) => {
   const { theme } = useTheme();
@@ -47,6 +45,9 @@ const CreateCategory = ({}: {}) => {
       <FlatList
         renderItem={null}
         data={null}
+        contentContainerStyle={{
+          paddingVertical: 16,
+        }}
         ListHeaderComponent={
           <Container>
             <CategoryForm onAddCategory={onAddCategory} />

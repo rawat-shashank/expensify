@@ -8,7 +8,7 @@ import alert from "@/components/Alert";
 import useTransactions from "@/queries/transactions";
 import { Container } from "@/components";
 import { useCallback, useRef, useState } from "react";
-import { ColorDotWithRing } from "@/components/UI/ColorDotWithRing";
+import { ColorDotWithRing } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
 import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
 import { TransactionDetaillsType } from "@/database/transactionSchema";

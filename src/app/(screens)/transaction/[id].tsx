@@ -1,15 +1,17 @@
-import useTransactions from "@/queries/transactions";
+import { FlatList, Text, View } from "react-native";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { Text, TouchableOpacity, View } from "react-native";
+
+import useTransactions from "@/queries/transactions";
 import alert from "@/components/Alert";
 import { TransactionType } from "@/database/transactionSchema";
-import { Container } from "@/components";
-import { Icons } from "@/components/";
-import { TransactionForm } from "@/components/Organisms/Forms/TransactionForm";
+import {
+  Container,
+  TransactionForm,
+  Icons,
+  TouchableButton,
+} from "@/components";
 import { useTheme } from "@/context/ThemeContext";
-import { TouchableButton } from "@/components";
-import { FlatList } from "react-native-gesture-handler";
 
 const EditTransactionPage = () => {
   const { theme } = useTheme();
@@ -91,9 +93,9 @@ const EditTransactionPage = () => {
             </TouchableButton>
           ),
           headerRight: () => (
-            <TouchableOpacity onPress={handleDeleteTransaction}>
+            <TouchableButton onPress={handleDeleteTransaction}>
               <Icons name="delete" color={theme.tertiary} />
-            </TouchableOpacity>
+            </TouchableButton>
           ),
           headerStyle: {
             backgroundColor: theme.background,

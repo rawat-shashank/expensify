@@ -1,9 +1,6 @@
-import { CustomSheet } from "@/components/customSheet";
-import FloatingActionButton from "@/components/FloatingActionButton";
-import Header from "@/components/Header";
-import { Icons } from "@/components";
 import useProfile from "@/queries/useProfile";
-import { Entypo } from "@expo/vector-icons";
+
+import Header from "@/components/Header";
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
@@ -16,13 +13,19 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
-import { InputField } from "@/components/Atoms/InputField";
-import { TouchableButton } from "@/components";
+import {
+  Icons,
+  InputField,
+  TouchableButton,
+  CustomSheet,
+  IconsNameType,
+} from "@/components";
+import FloatingActionButton from "@/components/FloatingActionButton";
 
 interface TabProps {
   name: string;
   title: string;
-  icon: keyof typeof Entypo.glyphMap;
+  icon: IconsNameType;
 }
 
 export default function TabLayout() {

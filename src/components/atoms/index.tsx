@@ -3,6 +3,10 @@ import { Text } from "./Text";
 import { Icons, IconsNameType, ICON_NAME_MAPPING } from "./Icons";
 import { TouchableButton } from "./TouchableButtons";
 import { Container } from "./Container";
+import { InputField } from "./InputField";
+import { ColorDotWithRing } from "./ColorDotWithRing";
+import { CustomSheet } from "./customSheet";
+import ColorPicker from "./ColorPicker";
 
 export {
   IconsNameType,
@@ -12,4 +16,8 @@ export {
   TouchableButton,
   ItemSeparator,
   Container,
+  InputField,
+  ColorDotWithRing,
+  CustomSheet,
+  ColorPicker,
 };

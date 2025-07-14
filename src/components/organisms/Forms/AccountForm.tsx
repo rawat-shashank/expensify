@@ -7,8 +7,7 @@ import { useState } from "react";
 import { Switch, Text, View, StyleSheet } from "react-native";
 import { PillSelector } from "../../Atoms/PillSelector";
 import { Picker } from "../../Molecules/Picker";
-import { InputField } from "../../Atoms/InputField";
-import { TouchableButton } from "../../atoms/";
+import { InputField, TouchableButton } from "../../atoms/";
 import CurrencyInput from "@/components/Atoms/CurrencyInput";
 import { useTheme } from "@/context/ThemeContext";
 

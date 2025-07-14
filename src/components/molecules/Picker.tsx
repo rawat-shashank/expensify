@@ -1,17 +1,17 @@
 import { Fragment, useState } from "react";
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-} from "react-native"; // Added FlatList, Dimensions, StyleSheet
-import { CustomSheet } from "../customSheet";
-import ColorPicker from "../Pickers/ColorPicker";
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
-import { Icons, IconsNameType, ICON_NAME_MAPPING } from "../atoms";
-import { ColorDotWithRing } from "../UI/ColorDotWithRing";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+
 import { useTheme } from "@/context/ThemeContext";
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
+import {
+  TouchableButton,
+  Icons,
+  IconsNameType,
+  ICON_NAME_MAPPING,
+  ColorDotWithRing,
+  CustomSheet,
+  ColorPicker,
+} from "../atoms";
 
 // Get all icon names for display in the picker
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
@@ -57,7 +57,7 @@ export const Picker = ({
 
   return (
     <Fragment>
-      <TouchableOpacity
+      <TouchableButton
         style={{
           display: "flex",
           flexDirection: "row",
@@ -115,7 +115,7 @@ export const Picker = ({
             color={theme.primary}
           />
         )}
-      </TouchableOpacity>
+      </TouchableButton>
 
       <CustomSheet isVisible={isVisible} onClose={() => setIsVisible(false)}>
         {variant === "color" ? (
@@ -138,7 +138,7 @@ export const Picker = ({
               keyExtractor={(item) => item}
               numColumns={NUM_COLUMNS}
               renderItem={({ item: iconName }) => (
-                <TouchableOpacity
+                <TouchableButton
                   style={styles.iconItem}
                   onPress={() => handleSelectAndClose(iconName)}
                 >
@@ -151,7 +151,7 @@ export const Picker = ({
                         : theme.onSurfaceVariant
                     }
                   />
-                </TouchableOpacity>
+                </TouchableButton>
               )}
               contentContainerStyle={styles.iconListContent}
             />

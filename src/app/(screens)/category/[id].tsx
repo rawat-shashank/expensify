@@ -1,15 +1,11 @@
+import { Text, TouchableOpacity, View, FlatList, Alert } from "react-native";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { Text, TouchableOpacity, View } from "react-native";
-import alert from "@/components/Alert";
+
 import useCategories from "@/queries/categories";
 import { CategoryType } from "@/database/categoriesSchema";
-import { Container } from "@/components";
-import { Icons } from "@/components";
-import { CategoryForm } from "@/components/Organisms/Forms/CategoryForm";
+import { CategoryForm, Container, Icons, TouchableButton } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
-import { TouchableButton } from "@/components";
-import { FlatList } from "react-native-gesture-handler";
 
 const EditCategoryForm = () => {
   const { theme } = useTheme();
@@ -28,7 +24,7 @@ const EditCategoryForm = () => {
 
   const handleDeleteCategory = () => {
     if (categoryDetails?.id) {
-      alert(
+      Alert.alert(
         "Delete Category",
         `Are you sure you want to delete the category "${categoryDetails.name}"?`,
         [
@@ -96,6 +92,9 @@ const EditCategoryForm = () => {
       <FlatList
         renderItem={null}
         data={null}
+        contentContainerStyle={{
+          paddingVertical: 16,
+        }}
         ListHeaderComponent={
           <Container>
             <CategoryForm

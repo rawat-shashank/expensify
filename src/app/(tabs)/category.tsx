@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { ActivityIndicator, FlatList } from "react-native";
+
 import {
   Container,
   CategoryListItem,

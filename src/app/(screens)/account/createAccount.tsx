@@ -1,13 +1,11 @@
-import { Icons } from "@/components";
-import { TouchableButton } from "@/components";
-import AccountForm from "@/components/Organisms/Forms/AccountForm";
-import { Container } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
-import { CreateAccountType } from "@/database/accountsSchema";
-import useAccounts from "@/queries/useAccounts";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { FlatList } from "react-native-gesture-handler";
+
+import { CreateAccountType } from "@/database/accountsSchema";
+import useAccounts from "@/queries/useAccounts";
+import { Container, TouchableButton, Icons, AccountForm } from "@/components";
+import { FlatList } from "react-native";
 
 const CreateAccount = () => {
   const { theme } = useTheme();
