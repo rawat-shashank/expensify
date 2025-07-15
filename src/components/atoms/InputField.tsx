@@ -3,11 +3,12 @@ import { floatTwoDecFromString } from "@/utilities/helpers";
 import {
   View,
   StyleSheet,
-  Text,
   TextInput,
   KeyboardTypeOptions,
   TextStyle,
 } from "react-native";
+import { Text } from "./Text";
+import { FONT_SIZES } from "@/constants";
 
 export interface InputFieldProps {
   value: string;
@@ -50,6 +51,7 @@ export const InputField = ({
       />
       {error && (
         <Text
+          size={FONT_SIZES.xs}
           style={{
             color: theme.error,
           }}

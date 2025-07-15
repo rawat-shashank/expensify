@@ -1,20 +1,32 @@
-import DateTimeInput from "@/components/Atoms/DateTimeInput";
-import { AccountCardList } from "@/components/Molecules/AccountCardList";
-import { CategoryPillList } from "@/components/Molecules/CategoryPillList";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { useSQLiteContext } from "expo-sqlite";
+import { useState } from "react";
+import { useTheme } from "@/context/ThemeContext";
+
+// ---- hooks ----
+import useAccounts from "@/queries/useAccounts";
+import useCategories from "@/queries/categories";
+
+// ---- db functions----
 import {
   CreateTransactionType,
   TransactionType,
   TransactionTypeEnum,
 } from "@/database/transactionSchema";
-import useAccounts from "@/queries/useAccounts";
-import useCategories from "@/queries/categories";
-import { useSQLiteContext } from "expo-sqlite";
-import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { PillSelector } from "../../Atoms/PillSelector";
-import { InputField, TouchableButton } from "../../atoms";
-import CurrencyInput from "@/components/Atoms/CurrencyInput";
-import { useTheme } from "@/context/ThemeContext";
+
+// ---- Components import ----
+import {
+  InputField,
+  TouchableButton,
+  Text,
+  PillSelector,
+  CurrencyInput,
+} from "../../atoms";
+import {
+  DateTimeInput,
+  AccountCardList,
+  CategoryPillList,
+} from "../../molecules";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
@@ -146,14 +158,7 @@ export const TransactionForm = ({
       </ScrollView>
       {(onAddTransaction || onUpdateTransaction) && (
         <TouchableButton variant="submit" onPress={handleCreateTransaction}>
-          <Text
-            style={[
-              styles.createButtonText,
-              {
-                color: theme.onPrimary,
-              },
-            ]}
-          >
+          <Text color={theme.onPrimary} style={styles.createButtonText}>
             {onUpdateTransaction ? "Update" : "Create"}
           </Text>
         </TouchableButton>

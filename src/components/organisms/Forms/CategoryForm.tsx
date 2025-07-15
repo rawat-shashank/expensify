@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 
 import { useTheme } from "@/context/ThemeContext";
 import { InputField, IconsNameType, TouchableButton } from "../../atoms";
-import { Picker } from "../../Molecules/Picker";
+import { Picker } from "@/components/molecules";
 
 interface CategoryFormProps {
   category?: CategoryType;

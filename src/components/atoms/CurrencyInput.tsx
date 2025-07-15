@@ -1,6 +1,8 @@
-import { useTheme } from "@/context/ThemeContext";
 import React, { useState, useEffect } from "react";
-import { TextInput, View, StyleSheet, Text } from "react-native";
+import { TextInput, View, StyleSheet } from "react-native";
+
+import { useTheme } from "@/context/ThemeContext";
+import { Text } from "../atoms";
 
 // Define the properties (props) for the CurrencyInput component.
 interface CurrencyInputProps {
@@ -76,7 +78,6 @@ const CurrencyInput = ({
       setInternalValue(value);
       onUpdate(value);
     } else {
-      // If for some reason it's not a number after formatting, reset to 0.00
       setInternalValue("0.00");
       onUpdate("0.00");
     }
@@ -86,7 +87,7 @@ const CurrencyInput = ({
     <View>
       <TextInput
         style={[styles.input, { color: theme.onSurface }]}
-        keyboardType="numeric" // Opens the number pad
+        keyboardType="numeric"
         value={internalValue}
         onChangeText={handleChangeText}
         onBlur={handleBlur}
@@ -94,15 +95,7 @@ const CurrencyInput = ({
         placeholderTextColor={theme.onSurfaceVariant}
       />
 
-      {error && (
-        <Text
-          style={{
-            color: theme.error,
-          }}
-        >
-          {error}
-        </Text>
-      )}
+      {error && <Text color={theme.error}>{error}</Text>}
     </View>
   );
 };

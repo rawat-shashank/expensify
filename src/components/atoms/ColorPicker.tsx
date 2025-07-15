@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { ColorDotWithRing } from "../atoms";
 
-const ColorPicker = ({
+export const ColorPicker = ({
   onSelect,
 }: {
   color?: string;
@@ -123,5 +123,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 });
-
-export default ColorPicker;

@@ -1,10 +1,16 @@
-import { Text, TouchableOpacity, View, FlatList, Alert } from "react-native";
+import { TouchableOpacity, View, FlatList, Alert } from "react-native";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
 import useCategories from "@/queries/categories";
 import { CategoryType } from "@/database/categoriesSchema";
-import { CategoryForm, Container, Icons, TouchableButton } from "@/components";
+import {
+  Text,
+  CategoryForm,
+  Container,
+  Icons,
+  TouchableButton,
+} from "@/components";
 import { useTheme } from "@/context/ThemeContext";
 
 const EditCategoryForm = () => {

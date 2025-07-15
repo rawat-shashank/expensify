@@ -1,12 +1,13 @@
+import { View, FlatList } from "react-native";
+import { useRouter } from "expo-router";
+
 import {
   TransactionsGroupedByDateType,
   TransactionDetaillsType,
 } from "@/database/transactionSchema";
-import { Text, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 import { TransactionListItem } from "../Molecules/TransactionListItem";
-import { useRouter } from "expo-router";
 import { useTheme } from "@/context/ThemeContext";
+import { Text } from "../atoms";
 
 export const TransactionsGroupedByDate = ({
   transactionsGroupedByDate,
@@ -43,7 +44,7 @@ export const TransactionsGroupedByDate = ({
                 justifyContent: "space-between",
               }}
             >
-              <Text style={{ color: theme.onBackground, fontSize: 13 }}>
+              <Text size={13} color={theme.onBackground}>
                 {time.toLocaleDateString("en-GB", {
                   weekday: "short",
                   day: "2-digit",

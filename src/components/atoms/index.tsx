@@ -6,7 +6,9 @@ import { Container } from "./Container";
 import { InputField } from "./InputField";
 import { ColorDotWithRing } from "./ColorDotWithRing";
 import { CustomSheet } from "./customSheet";
-import ColorPicker from "./ColorPicker";
+import { ColorPicker } from "./ColorPicker";
+import { PillSelector } from "./PillSelector";
+import CurrencyInput from "./CurrencyInput";
 
 export {
   IconsNameType,
@@ -20,4 +22,6 @@ export {
   ColorDotWithRing,
   CustomSheet,
   ColorPicker,
+  PillSelector,
+  CurrencyInput,
 };

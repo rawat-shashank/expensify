@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 
 import { useTheme } from "@/context/ThemeContext";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
@@ -11,6 +11,7 @@ import {
   ColorDotWithRing,
   CustomSheet,
   ColorPicker,
+  Text,
 } from "../atoms";
 
 // Get all icon names for display in the picker
@@ -122,14 +123,7 @@ export const Picker = ({
           <ColorPicker onSelect={handleSelectAndClose} />
         ) : (
           <View style={styles.iconPickerContainer}>
-            <Text
-              style={[
-                styles.pickerHeader,
-                {
-                  color: theme.onSurface,
-                },
-              ]}
-            >
+            <Text color={theme.onSurface} style={styles.pickerHeader}>
               Select an Icon
             </Text>
 

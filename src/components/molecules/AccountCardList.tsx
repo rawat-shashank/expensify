@@ -1,10 +1,9 @@
-import { FlatList, Text, View } from "react-native";
-import { TextLabel } from "../Atoms/TextLabel";
-import { TouchableButton } from "../atoms";
+import { FlatList, View } from "react-native";
 import { useRouter } from "expo-router";
+
 import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
-import { Icons } from "../atoms";
 import { useTheme } from "@/context/ThemeContext";
+import { Icons, TouchableButton, Text } from "../atoms";
 
 interface AccountCardProps {
   accounts: AccountType[];
@@ -25,7 +24,15 @@ export const AccountCardList = ({
   const router = useRouter();
   return (
     <View>
-      <TextLabel label="Select account" />
+      <Text
+        color={theme.tertiary}
+        style={{
+          marginBottom: 16,
+          fontWeight: "bold",
+        }}
+      >
+        Select account
+      </Text>
       <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
         <TouchableButton
           onPress={() => {
@@ -50,7 +57,7 @@ export const AccountCardList = ({
             color={theme.onSecondaryContainer}
             backgroundColor={theme.secondaryContainer}
           />
-          <Text style={{ color: theme.onSurface }}>Add New</Text>
+          <Text color={theme.onSurface}>Add New</Text>
         </TouchableButton>
         <FlatList
           ItemSeparatorComponent={ItemSeparatorComponent}
@@ -121,10 +128,8 @@ export const AccountCardList = ({
                   )}
                 </View>
                 <View>
-                  <Text style={{ fontSize: 16, color: theme.onSurface }}>
-                    {item.name}
-                  </Text>
-                  <Text style={{ fontSize: 12, color: theme.onSurface }}>
+                  <Text color={theme.onSurface}>{item.name}</Text>
+                  <Text size={12} color={theme.onSurface}>
                     {item.accountName}
                   </Text>
                 </View>
@@ -133,15 +138,7 @@ export const AccountCardList = ({
           }}
         />
       </View>
-      {error && (
-        <Text
-          style={{
-            color: theme.error,
-          }}
-        >
-          {error}
-        </Text>
-      )}
+      {error && <Text color={theme.error}>{error}</Text>}
     </View>
   );
 };

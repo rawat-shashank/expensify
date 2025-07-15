@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Icons } from "../atoms";
 import { useTheme } from "@/context/ThemeContext";
 
-export const TransactionListItem = ({
+export const TransactionListItemOld = ({
   item,
   onPress,
 }: {

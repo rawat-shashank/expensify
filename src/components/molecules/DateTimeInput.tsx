@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { TouchableButton } from "../atoms";
-import { Icons } from "../atoms";
-import { TextLabel } from "./TextLabel";
+
 import { useTheme } from "@/context/ThemeContext";
+import { Text, Icons, TouchableButton } from "../atoms";
 
 interface DateTimeInputProps {
   value: string;
@@ -14,7 +13,11 @@ interface DateTimeInputProps {
   onChange: (time: string) => void;
 }
 
-const DateTimeInput = ({ value, label, onChange }: DateTimeInputProps) => {
+export const DateTimeInput = ({
+  value,
+  label,
+  onChange,
+}: DateTimeInputProps) => {
   const { theme } = useTheme();
   const [date, setDate] = useState(new Date(value));
   const [show, setShow] = useState(false);
@@ -45,7 +48,14 @@ const DateTimeInput = ({ value, label, onChange }: DateTimeInputProps) => {
 
   return (
     <View>
-      {label && <TextLabel label={label} />}
+      {label && (
+        <Text
+          color={theme.tertiary}
+          style={{ fontWeight: "bold", marginBottom: 16 }}
+        >
+          {label}
+        </Text>
+      )}
       <View
         style={{
           flexDirection: "row",
@@ -58,7 +68,7 @@ const DateTimeInput = ({ value, label, onChange }: DateTimeInputProps) => {
           onPress={showDatepicker}
         >
           <Icons name="calendar" color={theme.onSurface} />
-          <Text style={[styles.DateTimeText, { color: theme.onSurface }]}>
+          <Text color={theme.onSurface} style={styles.DateTimeText}>
             {date.toLocaleDateString("en-GB", {
               year: "numeric",
               month: "2-digit",
@@ -71,7 +81,7 @@ const DateTimeInput = ({ value, label, onChange }: DateTimeInputProps) => {
           onPress={showTimepicker}
         >
           <Icons name="clock-outline" color={theme.onSurface} />
-          <Text style={[styles.DateTimeText, { color: theme.onSurface }]}>
+          <Text color={theme.onSurface} style={styles.DateTimeText}>
             {date.toLocaleTimeString("en-GB", {
               timeStyle: "short",
             })}
@@ -103,5 +113,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-export default DateTimeInput;

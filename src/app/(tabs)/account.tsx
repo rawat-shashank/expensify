@@ -1,4 +1,4 @@
-import { Text, FlatList, ActivityIndicator, View } from "react-native";
+import { FlatList, ActivityIndicator, View } from "react-native";
 import useAccounts from "@/queries/useAccounts";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter } from "expo-router";
@@ -6,11 +6,11 @@ import { AccountSummaryType } from "@/database/accountsSchema";
 import AccountCard from "@/components/AccountCard";
 import alert from "@/components/Alert";
 import useTransactions from "@/queries/transactions";
-import { Container } from "@/components";
+import { Container, Text } from "@/components";
 import { useCallback, useRef, useState } from "react";
 import { ColorDotWithRing } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
-import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
+import { TransactionListItemOld } from "@/components/Molecules/TransactionListItemOld";
 import { TransactionDetaillsType } from "@/database/transactionSchema";
 
 const AccountList = () => {
@@ -101,7 +101,7 @@ const AccountList = () => {
     });
 
     const renderItem = ({ item }: { item: TransactionDetaillsType }) => (
-      <TransactionListItem item={item} onPress={handleCardPress} />
+      <TransactionListItemOld item={item} onPress={handleCardPress} />
     );
 
     return (

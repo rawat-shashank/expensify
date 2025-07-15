@@ -1,3 +1,4 @@
+import { FlatList } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
@@ -10,7 +11,6 @@ import {
   TouchableButton,
   Container,
 } from "@/components";
-import { FlatList } from "react-native";
 
 const CreateTransaction = () => {
   const { theme } = useTheme();

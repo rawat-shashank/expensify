@@ -4,13 +4,7 @@ import Header from "@/components/Header";
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-} from "react-native";
+import { TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
 import {
@@ -19,6 +13,7 @@ import {
   TouchableButton,
   CustomSheet,
   IconsNameType,
+  Text,
 } from "@/components";
 import FloatingActionButton from "@/components/FloatingActionButton";
 
@@ -180,7 +175,7 @@ export default function TabLayout() {
       <CustomSheet isVisible={isBottomSheetVisible} onClose={closeBottomSheet}>
         <View>
           {
-            <Text style={[styles.label, { color: theme.onSurface }]}>
+            <Text color={theme.onSurface} style={styles.label}>
               Profile
             </Text>
           }

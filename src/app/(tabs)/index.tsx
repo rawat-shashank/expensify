@@ -1,16 +1,19 @@
-import { SummaryCard } from "@/components/Molecules/SummaryCard";
-import { TransactionListItem } from "@/components/Molecules/TransactionListItem";
-import { Container } from "@/components";
-import { useTheme } from "@/context/ThemeContext";
+import { useSQLiteContext } from "expo-sqlite";
+import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+
 import { TransactionDetaillsType } from "@/database/transactionSchema";
 import { useSummaryCard } from "@/queries/useGeneral"; // Assuming this still exists and is needed
 import useProfile from "@/queries/useProfile"; // Assuming this still exists and is needed
 import useTransactions from "@/queries/transactions"; // Your combined transactions hook
-import { useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
-
-import { ActivityIndicator, Text, FlatList } from "react-native";
-import { StyleSheet } from "react-native"; // Keep StyleSheet if 'styles.title' and 'styles.subtitle' are used
+import { useTheme } from "@/context/ThemeContext";
+import {
+  Text,
+  Container,
+  IconListItem,
+  SummaryCard,
+  TransactionListItem,
+} from "@/components";
 
 export default function HomeScreen() {
   const { theme } = useTheme();
@@ -18,8 +21,6 @@ export default function HomeScreen() {
   const { profileData } = useProfile(db);
   const { summaryCard, isLoading: isLoadingSummaryCard } = useSummaryCard(db);
 
-  // Using the combined useTransactions hook.
-  // The 'transactions' here will be the paginated ones by default as per your last setup.
   const {
     transactions,
     hasNextPage,
@@ -33,14 +34,16 @@ export default function HomeScreen() {
     router.push(`/transaction/${transactionId}`);
   };
 
-  // Render function for individual transaction items in the main FlatList
-  const renderTransactionItem = ({
-    item,
-  }: {
-    item: TransactionDetaillsType;
-  }) => <TransactionListItem item={item} onPress={handleCardPress} />;
+  const renderItem = ({ item }: { item: TransactionDetaillsType }) => (
+    <IconListItem
+      icon={item.category_icon}
+      color={item.category_color}
+      onPress={() => handleCardPress(item.id)}
+    >
+      <TransactionListItem item={item} />
+    </IconListItem>
+  );
 
-  // Show loading indicator for critical initial data (summary card)
   if (isLoadingSummaryCard) {
     return <ActivityIndicator size={"large"} />;
   }
@@ -48,42 +51,36 @@ export default function HomeScreen() {
   return (
     <Container>
       <FlatList
-        // The main FlatList now directly consumes the paginated transactions
         data={transactions}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={renderTransactionItem}
+        renderItem={renderItem}
         onEndReached={() => {
           if (hasNextPage) {
             fetchNextPage();
           }
         }}
         onEndReachedThreshold={0.5}
-        onRefresh={() => refetchPaginatedTransactions()} // Pull-to-refresh
-        refreshing={false} // You might want to tie this to a specific refreshing state from your useTransactions hook
+        onRefresh={() => refetchPaginatedTransactions()}
+        refreshing={false}
         ListHeaderComponent={
           <>
-            <Text style={[styles.title, { color: theme.onSurface }]}>
+            <Text color={theme.onSurface} style={styles.title}>
               {profileData?.name}
             </Text>
-            <Text style={[styles.subtitle, { color: theme.onSurface }]}>
+            <Text size={13} color={theme.onSurface}>
               Welcome Back!
             </Text>
             <SummaryCard summaryCardDetails={summaryCard} />
-            {/* If you want a section title for "Latest Transactions" */}
             <Text
-              style={[
-                styles.latestTransactionsTitle,
-                { color: theme.onSurface },
-              ]}
+              color={theme.onSurface}
+              size={18}
+              style={styles.latestTransactionsTitle}
             >
               Latest Transactions
             </Text>
           </>
         }
-        // Optional: A footer component for loading more data
         ListFooterComponent={() =>
-          // You might have a specific loading state from useTransactions (e.g., isFetchingNextPage)
-          // For simplicity, just showing an indicator if there's more data to load.
           hasNextPage ? <ActivityIndicator size="small" /> : null
         }
         showsVerticalScrollIndicator={false}
@@ -93,19 +90,13 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  // Kept only the styles that are actually used in this component
-  subtitle: {
-    fontSize: 13,
-  },
   title: {
-    fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
   },
   latestTransactionsTitle: {
-    fontSize: 18,
     fontWeight: "bold",
-    marginTop: 20, // Add some space above the title
+    marginTop: 20,
     marginBottom: 10,
   },
 });

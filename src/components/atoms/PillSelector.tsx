@@ -1,5 +1,7 @@
 import { useTheme } from "@/context/ThemeContext";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+
+import { Text } from "../atoms";
 
 interface PillSelectorProps<T extends string> {
   options: T[];
@@ -31,15 +33,12 @@ export const PillSelector = <T extends string>({
           onPress={() => onSelect(option)}
         >
           <Text
-            style={[
-              styles.typeButtonText,
-              {
-                color: theme.onSurfaceVariant,
-              },
-              selected === option && {
-                color: theme.onSurface,
-              },
-            ]}
+            color={
+              selected === option ? theme.onSurface : theme.onSurfaceVariant
+            }
+            style={{
+              textTransform: "capitalize",
+            }}
           >
             {option}
           </Text>

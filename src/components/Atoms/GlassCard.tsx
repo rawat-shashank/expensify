@@ -1,6 +1,7 @@
-import { Text, StyleSheet, View, SafeAreaView } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import { BlurView } from "expo-blur";
 import { useTheme } from "@/context/ThemeContext";
+import { Text } from "../atoms";
 
 export default function App() {
   const { theme } = useTheme();

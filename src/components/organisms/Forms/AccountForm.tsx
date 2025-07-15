@@ -1,15 +1,19 @@
+import { Switch, Text, View, StyleSheet } from "react-native";
 import {
   AccountCardTypeEnum,
   AccountType,
   CreateAccountType,
 } from "@/database/accountsSchema";
 import { useState } from "react";
-import { Switch, Text, View, StyleSheet } from "react-native";
-import { PillSelector } from "../../Atoms/PillSelector";
-import { Picker } from "../../Molecules/Picker";
-import { InputField, TouchableButton } from "../../atoms/";
-import CurrencyInput from "@/components/Atoms/CurrencyInput";
+
 import { useTheme } from "@/context/ThemeContext";
+import {
+  InputField,
+  TouchableButton,
+  PillSelector,
+  CurrencyInput,
+} from "../../atoms/";
+import { Picker } from "@/components/molecules";
 
 const AccountForm = ({
   account,

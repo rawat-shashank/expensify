@@ -1,10 +1,9 @@
-import { FlatList, Text, View } from "react-native";
-import { TextLabel } from "../Atoms/TextLabel";
-import { TouchableButton } from "../atoms";
+import { FlatList, View } from "react-native";
 import { useRouter } from "expo-router";
-import { Icons } from "../atoms";
+
 import { CategoryType } from "@/database/categoriesSchema";
 import { useTheme } from "@/context/ThemeContext";
+import { TouchableButton, Icons, Text } from "../atoms";
 
 interface CateggoryPillListProps {
   categories: CategoryType[];
@@ -26,8 +25,22 @@ export const CategoryPillList = ({
 
   return (
     <View>
-      <TextLabel label="Select category" />
-      <View style={{ display: "flex", flexDirection: "row", gap: 8 }}>
+      <Text
+        color={theme.tertiary}
+        style={{
+          marginBottom: 16,
+          fontWeight: "bold",
+        }}
+      >
+        Select category
+      </Text>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 8,
+        }}
+      >
         <TouchableButton
           onPress={() => {
             router.push("/(screens)/category/createCategory");
@@ -47,7 +60,7 @@ export const CategoryPillList = ({
           }}
         >
           <Icons name="plus" color={theme.tertiary} />
-          <Text style={{ color: theme.onSurface }}>Add New</Text>
+          <Text color={theme.onSurface}>Add New</Text>
         </TouchableButton>
         <FlatList
           ItemSeparatorComponent={ItemSeparatorComponent}
@@ -78,9 +91,7 @@ export const CategoryPillList = ({
               }}
             >
               <Icons name={item.icon} color={theme.onSecondaryContainer} />
-              <Text style={{ fontSize: 16, color: theme.onSurface }}>
-                {item.name}
-              </Text>
+              <Text color={theme.onSurface}>{item.name}</Text>
             </TouchableButton>
           )}
           extraData={activeCategoryId}
@@ -90,15 +101,7 @@ export const CategoryPillList = ({
         />
       </View>
 
-      {error && (
-        <Text
-          style={{
-            color: theme.error,
-          }}
-        >
-          {error}
-        </Text>
-      )}
+      {error && <Text color={theme.error}>{error}</Text>}
     </View>
   );
 };

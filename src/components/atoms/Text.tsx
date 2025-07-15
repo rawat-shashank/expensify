@@ -5,8 +5,11 @@ interface TextLabelProps {
   children: ReactNode;
   size?: number;
   style?: TextStyle;
+  color?: string;
 }
 
-export const Text = ({ children, style, size = 16 }: TextLabelProps) => {
-  return <TextLabel style={[style, { fontSize: size }]}>{children}</TextLabel>;
+export const Text = ({ children, style, color, size = 16 }: TextLabelProps) => {
+  return (
+    <TextLabel style={[style, { fontSize: size, color }]}>{children}</TextLabel>
+  );
 };
