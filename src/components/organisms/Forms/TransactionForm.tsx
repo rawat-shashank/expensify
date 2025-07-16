@@ -111,7 +111,7 @@ export const TransactionForm = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingVertical: 16 }}>
       <ScrollView
         style={{ marginBottom: 16 }}
         showsVerticalScrollIndicator={false}

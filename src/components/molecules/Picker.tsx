@@ -14,28 +14,30 @@ import {
   Text,
 } from "../atoms";
 
-// Get all icon names for display in the picker
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
-
-// Determine the number of columns for the icon picker grid
-const ICON_SIZE_IN_PICKER = 40; // Adjust as needed
+const ICON_SIZE_IN_PICKER = 40;
 const PADDING = 8; // Adjust as needed
 const NUM_COLUMNS = Math.floor(
   (WINDOW_WIDTH - PADDING * 2) / ICON_SIZE_IN_PICKER,
 );
 
-// Define the props for the Picker component
-interface PickerProps {
-  variant: "color" | "icon";
-  // Value can be a color string OR an icon name string
-  value: string;
-  // onSelect will pass back a color string OR an icon name string
-  onSelect: (selectedValue: string) => void;
-  label?: string; // Optional label for the picker
-  description?: string; // Optional description
-  // If variant is "icon", you might want a default icon to display when no value is set
-  defaultIcon?: IconsNameType;
-}
+type PickerProps =
+  | {
+      variant: "color";
+      value: string;
+      onSelect: (selectedValue: string) => void;
+      label?: string;
+      description?: string;
+      defaultIcon?: IconsNameType;
+    }
+  | {
+      variant: "icon";
+      value: IconsNameType;
+      onSelect: (selectedValue: IconsNameType) => void;
+      label?: string;
+      description?: string;
+      defaultIcon?: IconsNameType;
+    };
 
 export const Picker = ({
   variant,
@@ -43,18 +45,24 @@ export const Picker = ({
   onSelect,
   label,
   description,
-  defaultIcon = "star", // Default icon if none is provided for icon variant
+  defaultIcon = "star",
 }: PickerProps) => {
   const { theme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleSelectAndClose = (selectedValue: string) => {
-    onSelect(selectedValue);
+  const handleSelectAndClose = (selectedValue: string | IconsNameType) => {
+    if (variant === "color") {
+      (onSelect as (val: string) => void)(selectedValue as string);
+    } else {
+      (onSelect as (val: IconsNameType) => void)(
+        selectedValue as IconsNameType,
+      );
+    }
     setIsVisible(false);
   };
 
   const displayIconName =
-    variant === "icon" ? value || defaultIcon : "color-palette"; // Display selected icon or default, or palette icon
+    variant === "icon" ? value || defaultIcon : "color-palette";
 
   return (
     <Fragment>
@@ -64,7 +72,7 @@ export const Picker = ({
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingVertical: 10, // Add some padding for better touch area
+          paddingVertical: 10,
         }}
         onPress={() => setIsVisible(true)}
       >
@@ -76,11 +84,9 @@ export const Picker = ({
             alignItems: "center",
           }}
         >
-          {/* Display relevant icon based on variant */}
           {variant === "color" ? (
             <Icons name="color-palette" color={theme.primary} />
           ) : (
-            // The `name` prop for `Icons` is `string`, but we know `displayIconName` is `IconsName`
             <Icons
               name={displayIconName as IconsNameType}
               color={theme.primary}
@@ -105,11 +111,9 @@ export const Picker = ({
           </View>
         </View>
 
-        {/* Display selected value representation */}
         {variant === "color" ? (
           <ColorDotWithRing color={value || theme.primary} />
         ) : (
-          // Display the selected icon, or a placeholder if none is selected
           <Icons
             name={(value as IconsNameType) || (defaultIcon as IconsNameType)}
             size={30}
@@ -137,8 +141,8 @@ export const Picker = ({
                   onPress={() => handleSelectAndClose(iconName)}
                 >
                   <Icons
-                    name={iconName as IconsNameType} // Assert the name is one of the valid icon names
-                    size={ICON_SIZE_IN_PICKER - 10} // Smaller size for picker items
+                    name={iconName as IconsNameType}
+                    size={ICON_SIZE_IN_PICKER - 10}
                     color={
                       value === iconName
                         ? theme.primary
@@ -159,7 +163,7 @@ export const Picker = ({
 const styles = StyleSheet.create({
   iconPickerContainer: {
     padding: PADDING,
-    paddingTop: 20, // Adjust as needed
+    paddingTop: 20,
     height: WINDOW_HEIGHT,
   },
   pickerHeader: {
@@ -168,8 +172,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   iconListContent: {
-    justifyContent: "flex-start", // Align items to the start
-    alignItems: "flex-start", // Align items to the start
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   iconItem: {
     width: ICON_SIZE_IN_PICKER,
