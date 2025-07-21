@@ -1,9 +1,9 @@
 import { CreateCategoryType, CategoryType } from "@/database/categoriesSchema";
 import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import { useTheme } from "@/context/ThemeContext";
-import { InputField, IconsNameType, TouchableButton } from "../../atoms";
+import { Text, InputField, IconsNameType, TouchableButton } from "../../atoms";
 import { Picker } from "@/components/molecules";
 
 interface CategoryFormProps {
@@ -22,6 +22,7 @@ export const CategoryForm = ({
   onUpdateCategory,
 }: CategoryFormProps) => {
   const { theme } = useTheme();
+
   const [name, setName] = useState(category?.name || "");
   const [desc, setDesc] = useState(category?.desc || "");
   const [icon, setIcon] = useState<IconsNameType>(category?.icon || "home");
@@ -72,12 +73,9 @@ export const CategoryForm = ({
       {(onAddCategory || onUpdateCategory) && (
         <TouchableButton variant="submit" onPress={handleCreateCategory}>
           <Text
-            style={[
-              styles.createButtonText,
-              {
-                color: theme.onPrimary,
-              },
-            ]}
+            size={18}
+            color={theme.onPrimary}
+            style={styles.createButtonText}
           >
             {onUpdateCategory ? "Update" : "Create"}
           </Text>
@@ -88,7 +86,6 @@ export const CategoryForm = ({
 };
 const styles = StyleSheet.create({
   createButtonText: {
-    fontSize: 16,
     fontWeight: "bold",
   },
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Icons, IconsNameType } from "./atoms";
+import { Icons, IconsNameType } from "../atoms";
 import { useTheme } from "@/context/ThemeContext";
 
 interface HeaderProps {
@@ -11,7 +11,7 @@ interface HeaderProps {
   onRightIconPress?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
+export const Header: React.FC<HeaderProps> = ({
   title,
   leftIcon,
   onLeftIconPress,
@@ -73,5 +73,3 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
 });
-
-export default Header;

@@ -13,8 +13,8 @@ import { categoryKeys } from "./categoryKeys";
 export const useAddCategory = (db: SQLiteDatabase) => {
   const queryClient = useQueryClient();
   return useMutation<number | undefined, Error, CreateCategoryType>({
-    mutationFn: async (params) => {
-      const newCategoryId = await dbInsertCategory(params, db);
+    mutationFn: async (category) => {
+      const newCategoryId = await dbInsertCategory(category, db);
       return newCategoryId;
     },
     onSuccess: () => {

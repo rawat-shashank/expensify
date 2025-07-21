@@ -1,9 +1,8 @@
-import { FlatList, Text, View } from "react-native";
+import { Alert, FlatList, Text, View } from "react-native";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
 import useTransactions from "@/queries/transactions";
-import alert from "@/components/Alert";
 import { TransactionType } from "@/database/transactionSchema";
 import {
   Container,
@@ -15,17 +14,17 @@ import { useTheme } from "@/context/ThemeContext";
 
 const EditTransactionPage = () => {
   const { theme } = useTheme();
-  const { id } = useLocalSearchParams();
   const router = useRouter();
   const db = useSQLiteContext();
 
+  const { id } = useLocalSearchParams();
   const transactionId = typeof id === "string" ? parseInt(id, 10) : 0;
 
   const {
     transactionDetails,
     isPending,
-    deleteTransaction,
     updateTransaction,
+    deleteTransaction,
   } = useTransactions(db, {
     transactionId,
   });
@@ -45,7 +44,7 @@ const EditTransactionPage = () => {
 
   const handleDeleteTransaction = () => {
     if (transactionId) {
-      alert(
+      Alert.alert(
         "Delete Transaction",
         `Are you sure you want to delete the transaction "${transactionDetails?.name}"?`,
         [

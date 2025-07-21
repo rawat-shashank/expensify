@@ -1,12 +1,12 @@
 import { useTheme } from "@/context/ThemeContext";
 import { ReactNode } from "react";
-import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 interface ButtonProps {
   children: ReactNode;
   onPress: () => void;
   variant?: "basic" | "submit";
-  style?: ViewStyle;
+  style?: {};
 }
 
 const TouchableButton = ({

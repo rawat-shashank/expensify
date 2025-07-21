@@ -1,6 +1,5 @@
 import useProfile from "@/queries/useProfile";
 
-import Header from "@/components/Header";
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
@@ -14,8 +13,9 @@ import {
   CustomSheet,
   IconsNameType,
   Text,
+  FloatingActionButton,
+  Header,
 } from "@/components";
-import FloatingActionButton from "@/components/FloatingActionButton";
 
 interface TabProps {
   name: string;

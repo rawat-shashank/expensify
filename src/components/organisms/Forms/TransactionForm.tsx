@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
 
 // ---- hooks ----
-import useAccounts from "@/queries/useAccounts";
+import useAccounts from "@/queries/accounts";
 import useCategories from "@/queries/categories";
 
 // ---- db functions----
@@ -54,7 +54,7 @@ export const TransactionForm = ({
   ];
 
   const db = useSQLiteContext();
-  const { accountsSummary } = useAccounts(db);
+  const { accountSummaryList } = useAccounts(db);
   const { categories } = useCategories(db);
 
   const [name, setName] = useState(transaction?.name || "");
@@ -145,15 +145,16 @@ export const TransactionForm = ({
           <AccountCardList
             activeAccountId={account_id}
             onSelect={setAccountId}
-            accounts={accountsSummary}
+            accounts={accountSummaryList}
             error={errors.account_id}
           />
-          <CategoryPillList
-            categories={categories}
-            activeCategoryId={category_id}
-            onSelect={setCategoryId}
-            error={errors.category_id}
-          />
+          {categories && (
+            <CategoryPillList
+              categories={categories}
+              activeCategoryId={category_id}
+              onSelect={setCategoryId}
+            />
+          )}
         </View>
       </ScrollView>
       {(onAddTransaction || onUpdateTransaction) && (

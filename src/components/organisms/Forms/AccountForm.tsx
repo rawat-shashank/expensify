@@ -1,29 +1,34 @@
-import { Switch, Text, View, StyleSheet } from "react-native";
+import { useState } from "react";
+import { Switch, View, StyleSheet } from "react-native";
+
+import { useTheme } from "@/context/ThemeContext";
+
 import {
   AccountCardTypeEnum,
   AccountType,
   CreateAccountType,
 } from "@/database/accountsSchema";
-import { useState } from "react";
 
-import { useTheme } from "@/context/ThemeContext";
 import {
   InputField,
   TouchableButton,
   PillSelector,
   CurrencyInput,
+  Text,
 } from "../../atoms/";
 import { Picker } from "@/components/molecules";
 
-const AccountForm = ({
-  account,
-  onAddAccount,
-  onUpdateAccount,
-}: {
+interface AccountFormProps {
   account?: AccountType;
   onAddAccount?: (newAccount: CreateAccountType) => Promise<void>;
   onUpdateAccount?: (newAccount: AccountType) => Promise<void>;
-}) => {
+}
+
+export const AccountForm = ({
+  account,
+  onAddAccount,
+  onUpdateAccount,
+}: AccountFormProps) => {
   const { theme } = useTheme();
   const accountCardOptions: AccountCardTypeEnum[] = [
     AccountCardTypeEnum.CASH,
@@ -36,7 +41,7 @@ const AccountForm = ({
   const [amount, setAmount] = useState(account?.amount.toString() || "");
   const [isDisable, setIsDisable] = useState<boolean>(false);
   const [cardType, setCardType] = useState<AccountCardTypeEnum>(
-    AccountCardTypeEnum.CASH,
+    account?.cardType || AccountCardTypeEnum.CASH,
   );
   const [color, setColor] = useState(account?.color || "");
 
@@ -84,7 +89,7 @@ const AccountForm = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingVertical: 16 }}>
       <View style={{ flex: 1, gap: 16 }}>
         <PillSelector
           options={accountCardOptions}
@@ -116,7 +121,7 @@ const AccountForm = ({
         <Picker variant="color" value={color} onSelect={setColor} />
 
         <View style={styles.switchContainer}>
-          <Text style={[styles.label, { color: theme.onSurface }]}>
+          <Text color={theme.onSurface} style={styles.label}>
             Exclude Account:
           </Text>
           <Switch value={isDisable} onValueChange={setIsDisable} />
@@ -125,12 +130,9 @@ const AccountForm = ({
       {(onAddAccount || onUpdateAccount) && (
         <TouchableButton variant="submit" onPress={handleCreateAccount}>
           <Text
-            style={[
-              styles.createButtonText,
-              {
-                color: theme.onPrimary,
-              },
-            ]}
+            size={18}
+            color={theme.onPrimary}
+            style={styles.createButtonText}
           >
             {onUpdateAccount ? "Update" : "Create"}
           </Text>
@@ -142,7 +144,6 @@ const AccountForm = ({
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 16,
     marginBottom: 5,
   },
   switchContainer: {
@@ -152,9 +153,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   createButtonText: {
-    fontSize: 18,
     fontWeight: "bold",
   },
 });
-
-export default AccountForm;

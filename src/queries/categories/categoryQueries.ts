@@ -15,7 +15,6 @@ export const useGetAllCategories = (db: SQLiteDatabase) => {
   });
 };
 
-// Renamed from getCategoryById mutation to a query, as it's a data fetch
 export const useGetCategoryById = (db: SQLiteDatabase, categoryId: number) => {
   return useQuery<CategoryType | null, Error>({
     queryKey: categoryKeys.details(categoryId),

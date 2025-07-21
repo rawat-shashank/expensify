@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, Animated } from "react-native";
-import { Icons, IconsNameType } from "./atoms";
-import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  ViewStyle,
+} from "react-native";
+
 import { useTheme } from "@/context/ThemeContext";
+
+import { Icons, IconsNameType } from "../atoms";
 
 interface FABProps {
   onPress: () => void;

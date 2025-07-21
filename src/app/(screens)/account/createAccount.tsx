@@ -1,9 +1,9 @@
-import { useTheme } from "@/context/ThemeContext";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
+import { useTheme } from "@/context/ThemeContext";
 import { CreateAccountType } from "@/database/accountsSchema";
-import useAccounts from "@/queries/useAccounts";
+import useAccounts from "@/queries/accounts";
 import { Container, TouchableButton, Icons, AccountForm } from "@/components";
 import { FlatList } from "react-native";
 

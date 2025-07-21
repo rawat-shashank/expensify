@@ -1,17 +1,23 @@
-import { FlatList, ActivityIndicator, View } from "react-native";
-import useAccounts from "@/queries/useAccounts";
+import { useCallback, useRef, useState } from "react";
+import { FlatList, ActivityIndicator, View, Alert } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter } from "expo-router";
-import { AccountSummaryType } from "@/database/accountsSchema";
-import AccountCard from "@/components/AccountCard";
-import alert from "@/components/Alert";
+
+import useAccounts from "@/queries/accounts";
 import useTransactions from "@/queries/transactions";
-import { Container, Text } from "@/components";
-import { useCallback, useRef, useState } from "react";
-import { ColorDotWithRing } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
-import { TransactionListItemOld } from "@/components/Molecules/TransactionListItemOld";
+
+import { AccountSummaryType } from "@/database/accountsSchema";
 import { TransactionDetaillsType } from "@/database/transactionSchema";
+
+import {
+  Container,
+  Text,
+  AccountCard,
+  ColorDotWithRing,
+  IconListItem,
+  TransactionListItem,
+} from "@/components";
 
 const AccountList = () => {
   const { theme } = useTheme();
@@ -21,11 +27,8 @@ const AccountList = () => {
     return <Text>Database not ready.</Text>;
   }
 
-  const {
-    accountsSummary,
-    isLoading: isAccountLoading,
-    deleteAccount,
-  } = useAccounts(db);
+  const { accountSummaryList, isLoading, deleteAccount } = useAccounts(db);
+  console.log("accountSummaryList", accountSummaryList);
 
   const router = useRouter();
 
@@ -56,33 +59,39 @@ const AccountList = () => {
 
   const handleDeleteAccount = (accountId: number) => {
     if (accountId) {
-      alert("Delete Account", `Are you sure you want to delete the account ?`, [
-        {
-          text: "Cancel",
-          style: "cancel",
-          onPress: () => {},
-        },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            await deleteAccount(accountId);
+      Alert.alert(
+        "Delete Account",
+        `Are you sure you want to delete the account ?`,
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+            onPress: () => {},
           },
-        },
-      ]);
+          {
+            text: "Delete",
+            style: "destructive",
+            onPress: async () => {
+              await deleteAccount(accountId);
+            },
+          },
+        ],
+      );
     }
   };
 
   //FIXME: UI need to be updated later
-  const renderAccounts = ({ item }: { item: AccountSummaryType }) => (
-    <AccountCard
-      account={item}
-      handleCardPress={handleCardPress}
-      handleDeleteAccount={handleDeleteAccount}
-    />
-  );
+  const renderAccounts = ({ item }: { item: AccountSummaryType }) => {
+    return (
+      <AccountCard
+        account={item}
+        handleCardPress={handleCardPress}
+        handleDeleteAccount={handleDeleteAccount}
+      />
+    );
+  };
 
-  if (isAccountLoading) {
+  if (isLoading) {
     return <ActivityIndicator size={"large"} />;
   }
 
@@ -101,7 +110,13 @@ const AccountList = () => {
     });
 
     const renderItem = ({ item }: { item: TransactionDetaillsType }) => (
-      <TransactionListItemOld item={item} onPress={handleCardPress} />
+      <IconListItem
+        icon={item.category_icon}
+        color={item.category_color}
+        onPress={() => handleCardPress(item.id)}
+      >
+        <TransactionListItem item={item} />
+      </IconListItem>
     );
 
     return (
@@ -128,10 +143,10 @@ const AccountList = () => {
       data={null}
       ListHeaderComponent={
         <Container>
-          <View>
-            {accountsSummary && accountsSummary.length > 0 ? (
+          <View style={{ display: "flex" }}>
+            {accountSummaryList && accountSummaryList.length > 0 ? (
               <FlatList
-                data={accountsSummary}
+                data={accountSummaryList}
                 renderItem={renderAccounts}
                 keyExtractor={(item) => item.id.toString()}
                 horizontal
@@ -152,27 +167,29 @@ const AccountList = () => {
                 marginVertical: 4,
               }}
             >
-              {accountsSummary.length > 1 &&
-                accountsSummary.map((account, index) => {
-                  return currentVisibleIndex == index ? (
-                    <ColorDotWithRing
-                      key={account.id}
-                      size={16}
-                      color={theme.onSurfaceVariant}
-                    />
-                  ) : (
-                    <ColorDotWithRing
-                      key={account.id}
-                      outline={true}
-                      size={16}
-                      color={theme.onSurfaceVariant}
-                    />
-                  );
-                })}
+              {accountSummaryList.length > 1 &&
+                accountSummaryList.map(
+                  (account: AccountSummaryType, index: number) => {
+                    return currentVisibleIndex == index ? (
+                      <ColorDotWithRing
+                        key={account.id}
+                        size={16}
+                        color={theme.onSurfaceVariant}
+                      />
+                    ) : (
+                      <ColorDotWithRing
+                        key={account.id}
+                        outline={true}
+                        size={16}
+                        color={theme.onSurfaceVariant}
+                      />
+                    );
+                  },
+                )}
             </View>
-            {accountsSummary.length > 0 && (
+            {accountSummaryList.length > 0 && (
               <AccountTransactions
-                accountId={accountsSummary[currentVisibleIndex].id}
+                accountId={accountSummaryList[currentVisibleIndex]?.id}
               />
             )}
           </View>

@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { Text, TouchableOpacity, FlatList } from "react-native";
+import { Text, TouchableOpacity, FlatList, Alert } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 
-import alert from "@/components/Alert";
-import useAccounts from "@/queries/useAccounts";
+import useAccounts from "@/queries/accounts";
 import { AccountType } from "@/database/accountsSchema";
 import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton, Container, Icons, AccountForm } from "@/components";
@@ -13,29 +11,13 @@ const EditAccountPage = ({}: {}) => {
   const { theme } = useTheme();
   const router = useRouter();
   const db = useSQLiteContext();
-  const { getAccountById, updateAccount, deleteAccount } = useAccounts(db);
 
   const { id } = useLocalSearchParams();
-  const accountId = typeof id === "string" ? parseInt(id, 10) : undefined;
-
-  const [loadingAccount, setLoadingAccount] = useState(true);
-  const [currentAccount, setCurrentAccount] = useState<AccountType | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    const loadAccount = async () => {
-      if (accountId) {
-        setLoadingAccount(true);
-        const account = await getAccountById(accountId);
-        if (account) {
-          setCurrentAccount(account);
-        }
-      }
-      setLoadingAccount(false);
-    };
-    loadAccount();
-  }, [accountId, getAccountById]);
+  const accountId = typeof id === "string" ? parseInt(id, 10) : 0;
+  const { accountDetails, isLoading, updateAccount, deleteAccount } =
+    useAccounts(db, {
+      accountId,
+    });
 
   const handleUpdateAccount = async (account: AccountType) => {
     await updateAccount(account);
@@ -43,10 +25,10 @@ const EditAccountPage = ({}: {}) => {
   };
 
   const handleDeleteAccount = async () => {
-    if (currentAccount?.id) {
-      alert(
+    if (accountDetails?.id) {
+      Alert.alert(
         "Delete Account",
-        `Are you sure you want to delete the account "${currentAccount.name}"?`,
+        `Are you sure you want to delete the account "${accountDetails.name}"?`,
         [
           {
             text: "Cancel",
@@ -57,11 +39,9 @@ const EditAccountPage = ({}: {}) => {
             text: "Delete",
             style: "destructive",
             onPress: async () => {
-              setLoadingAccount(true);
-              const success = await deleteAccount(currentAccount.id);
-              setLoadingAccount(false);
+              const success = await deleteAccount(accountDetails.id);
               if (success) {
-                router.back();
+                router.push(`/account`);
               }
             },
           },
@@ -70,7 +50,7 @@ const EditAccountPage = ({}: {}) => {
     }
   };
 
-  if (loadingAccount) {
+  if (isLoading) {
     return <Text>Loading category details...</Text>;
   }
 
@@ -109,7 +89,7 @@ const EditAccountPage = ({}: {}) => {
         ListHeaderComponent={
           <Container>
             <AccountForm
-              account={currentAccount}
+              account={accountDetails}
               onUpdateAccount={handleUpdateAccount}
             />
           </Container>

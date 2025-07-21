@@ -18,6 +18,9 @@ export const useAddTransaction = (db: SQLiteDatabase) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: transactionKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: transactionKeys.listPaginated(),
+      });
     },
   });
 };
@@ -31,6 +34,9 @@ export const useUpdateTransaction = (db: SQLiteDatabase) => {
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: transactionKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: transactionKeys.listPaginated(),
+      });
       queryClient.invalidateQueries({
         queryKey: transactionKeys.details(variables.id!),
       });
@@ -47,6 +53,9 @@ export const useDeleteTransaction = (db: SQLiteDatabase) => {
     },
     onSuccess: (_, deletedTransactionId) => {
       queryClient.invalidateQueries({ queryKey: transactionKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: transactionKeys.listPaginated(),
+      });
 
       queryClient.invalidateQueries({
         queryKey: transactionKeys.details(deletedTransactionId),

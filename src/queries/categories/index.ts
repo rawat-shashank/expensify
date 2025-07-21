@@ -17,7 +17,7 @@ export const useCategories = (
     categoryId?: number;
   },
 ) => {
-  // Queries
+  // ---- Queries ----
   const {
     data: categories,
     isLoading: isLoadingCategories,
@@ -32,7 +32,7 @@ export const useCategories = (
     refetch: refetchCategoryDetails,
   } = useGetCategoryById(db, options?.categoryId as number);
 
-  // Mutations
+  // ---- Mutations ----
   const {
     mutateAsync: addCategory,
     isPending: isAddingCategory,
@@ -69,8 +69,8 @@ export const useCategories = (
 
   return {
     // Data
-    categories: categories || [],
-    categoryDetails: categoryDetails || null,
+    categories,
+    categoryDetails,
 
     // Loading States
     isLoading,

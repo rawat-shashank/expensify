@@ -1,13 +1,14 @@
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { BlurView } from "expo-blur";
+
+import { useTheme } from "@/context/ThemeContext";
 import { WINDOW_WIDTH } from "@/constants";
 import {
   AccountCardTypeEnum,
   AccountSummaryType,
 } from "@/database/accountsSchema";
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Icons } from "./atoms";
-import { useTheme } from "@/context/ThemeContext";
-import { BlurView } from "expo-blur";
+import { Icons } from "../atoms";
 
 const AccountCard = ({
   account,
