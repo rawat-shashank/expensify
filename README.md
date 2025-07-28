@@ -1,50 +1,30 @@
-# Welcome to your Expo app 👋
+# Welcome to xpncfy👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**xpncfy** is a modern mobile application built with Expo and React Native, designed to help you effortlessly track and manage your expenses. Keep a clear overview of your spending habits, categorize transactions, and gain insights into your financial health directly from your mobile device.
 
-## Get started
+✨ Features
 
-1. Install dependencies
+- **Intuitive Expense Tracking**: Easily record your daily expenses.
+- **Local Data Storage**: Securely store your financial data on your device. Data never leaves you device.
+- **Dynamic Navigation**: Seamless user experience powered by Expo Router.
 
-   ```bash
-   npm install
-   ```
+🛠️ Installation
 
-2. Start the app
+To use xpncfy on your Android device, follow these simple steps:
 
-   ```bash
-   npx expo start
-   ```
+- **Get the latest stable APK**: Download the latest stable APK file from the project's releases/assets page (replace your-organization with your actual GitHub organization or username).
+- **Install the APK**: Locate the downloaded APK file on your device and tap it to install. You might need to enable "Install from Unknown Sources" in your device settings if prompted.
+- **Start using xpncfy!** Once installed, open the app and begin managing your expenses.
 
-In the output, you'll find options to open the app in a
+📱 Usage
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Once the app is running, you can start adding your expenses, categorizing them, and viewing your spending summaries.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+📄 License
+This project is licensed under the MIT License - see the LICENSE.md file for details.
 
-## Get a fresh project
+✉️ Contact
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Your Name/Handle - [theBoringDev](https://github.com/rawat-shashank/)
+- Project Link: [xpncfy](https://github.com/rawat-shashank/expensify)
+- Issues Link: [xpncfy -> Issues](https://github.com/rawat-shashank/expensify/issues)
