@@ -14,10 +14,17 @@ export const TransactionListItem = ({
 
   return (
     <View style={styles.itemContainer}>
-      <View>
-        <Text color={theme.onSurface} style={styles.title}>
-          {item.name}
-        </Text>
+      <View
+        style={{
+          flex: 1,
+          maxWidth: "75%",
+        }}
+      >
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <Text size={14} color={theme.onSurface} style={styles.title}>
+            {item.name}
+          </Text>
+        </View>
 
         <View
           style={{
@@ -28,33 +35,33 @@ export const TransactionListItem = ({
             justifyContent: "flex-start",
           }}
         >
-          <Text size={13} color={theme.onSurfaceVariant}>
+          <Text size={12} color={theme.onSurfaceVariant}>
             {item.account_name}
           </Text>
-          <Text size={13} color={theme.onSurfaceVariant}>
+          <Text size={14} color={theme.onSurfaceVariant}>
             •
           </Text>
 
-          <Text size={13} color={theme.onSurfaceVariant}>
+          <Text size={12} color={theme.onSurfaceVariant}>
             {time.toLocaleDateString("en-GB", {
               weekday: "short",
               day: "2-digit",
               month: "short",
             })}
           </Text>
-          <Text size={13} color={theme.onSurfaceVariant}>
+          <Text size={14} color={theme.onSurfaceVariant}>
             •
           </Text>
-          <Text size={13} color={theme.onSurfaceVariant}>
+          <Text size={12} color={theme.onSurfaceVariant}>
             {time.toLocaleTimeString("en-GB", {
               timeStyle: "short",
             })}
           </Text>
         </View>
       </View>
-      <View>
+      <View style={{}}>
         <Text
-          size={18}
+          size={16}
           style={styles.amount}
           color={item.type === "income" ? "green" : theme.error}
         >
@@ -67,7 +74,6 @@ export const TransactionListItem = ({
 
 const styles = StyleSheet.create({
   itemContainer: {
-    display: "flex",
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -78,6 +84,8 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   title: {
+    flexShrink: 1,
+    flexWrap: "wrap",
     fontWeight: "bold",
     marginBottom: 5,
   },

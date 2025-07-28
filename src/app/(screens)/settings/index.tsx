@@ -1,4 +1,5 @@
 import { Container } from "@/components";
+import { useTheme } from "@/context/ThemeContext";
 import { Href, Stack, useRouter } from "expo-router";
 import React from "react";
 import {
@@ -28,6 +29,7 @@ const settingsData: SettingItem[] = [
 ];
 
 export default function SettingsMenuScreen() {
+  const { theme } = useTheme();
   const router = useRouter();
   const renderSettingItem = ({ item }: { item: SettingItem }) => (
     <TouchableOpacity
@@ -56,13 +58,16 @@ export default function SettingsMenuScreen() {
       <FlatList
         renderItem={null}
         data={null}
+        contentContainerStyle={{
+          backgroundColor: theme.background,
+          paddingVertical: 16,
+        }}
         ListHeaderComponent={
           <Container>
             <FlatList
               data={settingsData}
               renderItem={renderSettingItem}
               keyExtractor={(item) => item.id}
-              contentContainerStyle={styles.listContent}
               ItemSeparatorComponent={() => <View style={styles.separator} />}
             />
           </Container>
@@ -73,24 +78,6 @@ export default function SettingsMenuScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f0f2f5", // Light background color
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: "bold",
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 10,
-    backgroundColor: "white", // Header background
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#ccc",
-  },
-  listContent: {
-    paddingHorizontal: 15,
-    paddingTop: 10,
-  },
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -99,7 +86,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 10, // Slightly rounded corners for list items
-    marginBottom: 8, // Space between items
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.08,
@@ -121,7 +107,6 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   separator: {
-    height: 1,
     backgroundColor: "#e0e0e0",
     marginVertical: 4, // More subtle separator due to item padding
     // Removed to allow itemContainer's marginBottom to work better

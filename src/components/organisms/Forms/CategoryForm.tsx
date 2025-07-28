@@ -52,7 +52,7 @@ export const CategoryForm = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingVertical: 16 }}>
       <View style={{ flex: 1, gap: 16 }}>
         <InputField
           value={name}

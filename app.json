@@ -1,28 +1,22 @@
 {
   "expo": {
-    "name": "expensify",
-    "slug": "expensify",
+    "name": "xpncfy",
+    "displayName": "xpncfy",
+    "slug": "xpncfy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "expensify",
+    "scheme": "xpncfy",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.expensify"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "package": "com.theBoringDev.xpncfy",
+      "versionCode": 100
     },
     "plugins": [
       "expo-router",

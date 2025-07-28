@@ -18,6 +18,7 @@ import {
   IconListItem,
   TransactionListItem,
 } from "@/components";
+import { WINDOW_WIDTH } from "@/constants";
 
 const AccountList = () => {
   const { theme } = useTheme();
@@ -28,7 +29,6 @@ const AccountList = () => {
   }
 
   const { accountSummaryList, isLoading, deleteAccount } = useAccounts(db);
-  console.log("accountSummaryList", accountSummaryList);
 
   const router = useRouter();
 
@@ -79,6 +79,10 @@ const AccountList = () => {
       );
     }
   };
+
+  const ItemSeparator = () => (
+    <View style={{ width: 16 }} /> // An empty view with desired width
+  );
 
   //FIXME: UI need to be updated later
   const renderAccounts = ({ item }: { item: AccountSummaryType }) => {
@@ -143,7 +147,7 @@ const AccountList = () => {
       data={null}
       ListHeaderComponent={
         <Container>
-          <View style={{ display: "flex" }}>
+          <View>
             {accountSummaryList && accountSummaryList.length > 0 ? (
               <FlatList
                 data={accountSummaryList}
@@ -153,6 +157,7 @@ const AccountList = () => {
                 showsHorizontalScrollIndicator={false}
                 onViewableItemsChanged={onViewableItemsChanged}
                 viewabilityConfig={viewabilityConfig}
+                ItemSeparatorComponent={ItemSeparator}
               />
             ) : (
               <Text style={{ color: theme.onSurface }}>

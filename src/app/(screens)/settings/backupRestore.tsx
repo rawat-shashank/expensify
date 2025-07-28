@@ -258,7 +258,7 @@ const ExportDataComponent: React.FC = () => {
         renderItem={null}
         data={null}
         ListHeaderComponent={
-          <Container>
+          <Container paddingVertical={16}>
             <Text style={styles.title}>Backup and Restore Data</Text>
 
             {/* Backup Section */}

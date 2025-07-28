@@ -5,9 +5,14 @@ import { StyleSheet, View } from "react-native";
 interface Props {
   children: React.ReactNode;
   style?: any;
+  paddingVertical?: number;
 }
 
-export const Container: React.FC<Props> = ({ children, style }) => {
+export const Container: React.FC<Props> = ({
+  children,
+  style,
+  paddingVertical = 0,
+}) => {
   const { theme } = useTheme();
 
   return (
@@ -17,6 +22,7 @@ export const Container: React.FC<Props> = ({ children, style }) => {
         style,
         {
           backgroundColor: theme.background,
+          paddingVertical,
         },
       ]}
     >

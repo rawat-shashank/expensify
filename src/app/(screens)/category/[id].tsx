@@ -98,9 +98,6 @@ const EditCategoryForm = () => {
       <FlatList
         renderItem={null}
         data={null}
-        contentContainerStyle={{
-          paddingVertical: 16,
-        }}
         ListHeaderComponent={
           <Container>
             <CategoryForm
