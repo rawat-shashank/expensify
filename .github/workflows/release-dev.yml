@@ -10,8 +10,6 @@ jobs:
   build_and_prerelease:
     name: Build Dev Android APK and Prerelease
     runs-on: ubuntu-latest
-    env:
-      JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
 
     permissions:
       contents: write
@@ -38,7 +36,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
 
       # --- Android Build Specific Steps ---
 
