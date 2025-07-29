@@ -1,0 +1,72 @@
+# .github/workflows/release-dev.yml
+name: Dev Release APK
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build_and_prerelease:
+    name: Build Dev Android APK and Prerelease
+    runs-on: ubuntu-latest
+    env:
+      JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Setup Java and Android SDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      # --- Android Build Specific Steps ---
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/my-release-key.keystore
+          echo "storeFile=my-release-key.keystore" > android/gradle.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/gradle.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/gradle.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/gradle.properties
+        working-directory: ./android
+
+      - name: Configure Gradle Environment
+        run: |
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
+          chmod +x gradlew
+        working-directory: ./android
+
+      - name: Build Android Release APK
+        run: ./gradlew assembleRelease
+        working-directory: ./android
+
+      # --- Semantic Release Steps ---
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # When triggered by a branch push, semantic-release automatically
+          # detects the branch from GITHUB_REF_NAME. No need to explicitly set SEMANTIC_RELEASE_COMMIT_REF
+          # as 'dev' branch configuration in .releaserc.json will be used.
+        run: npx semantic-release
