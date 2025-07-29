@@ -1,0 +1,92 @@
+name: Release APK
+
+on:
+  push:
+    tags:
+      - 'V[0-9]+.[0-9]+.[0-9]+' # For stable production releases (e.g., V1.0.0)
+      - 'v[0-9]+.[0-9]+.[0-9]+.dev*' # For dev builds (e.g., v1.0.0.dev, v1.0.0.dev.1)
+      - 'v[0-9]+.[0-9]+.[0-9]+-[a-zA-Z0-9]+.[0-9]+' # For prereleases like v1.0.0-beta.1 (if using prerelease branch for this)
+
+jobs:
+  build_and_release:
+    name: Build Android APK and Release
+    runs-on: ubuntu-latest
+    env:
+      JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Setup Java and Android SDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      # --- Android Build Specific Steps ---
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/app/my-release-key.keystore
+          echo "storeFile=my-release-key.keystore" > android/gradle.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/gradle.properties
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/gradle.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/gradle.properties
+        working-directory: ./android
+
+      - name: Configure Gradle Environment
+        run: |
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $GITHUB_ENV
+          chmod +x gradlew
+        working-directory: ./android
+
+      - name: Build Android Release APK
+        run: ./gradlew assembleRelease
+        working-directory: ./android
+
+      # --- Semantic Release Steps ---
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # semantic-release usually determines the branch from GITHUB_REF_NAME
+          # but when triggered by a tag, GITHUB_REF_NAME will be the tag itself.
+          # We need to explicitly tell semantic-release which branch this tag came from.
+          # We'll use the "SEMANTIC_RELEASE_COMMIT_REF" environment variable for this.
+          # This variable should be set to the *branch* from which the tag was created.
+
+          # Determine the base branch for semantic-release based on the tag prefix
+          TAG_NAME="${{ github.ref_name }}"
+          if [[ "$TAG_NAME" == V* ]]; then
+            # Stable release tag (e.g., V1.0.0) usually originates from 'release' branch
+            # OR we can assume 'main' if 'release' is always merged into main after tagging
+            export SEMANTIC_RELEASE_COMMIT_REF="release" # Or "main" if that's where stable tags are pushed from
+          elif [[ "$TAG_NAME" == v*.dev* ]]; then
+            # Dev release tag (e.g., v1.0.0.dev) originates from 'dev' branch
+            export SEMANTIC_RELEASE_COMMIT_REF="dev"
+          else
+            # Default fallback, might need adjustment based on other prerelease tags
+            export SEMANTIC_RELEASE_COMMIT_REF="main"
+          fi
+
+          echo "Running semantic-release for tag: $TAG_NAME from branch: $SEMANTIC_RELEASE_COMMIT_REF"
+          npx semantic-release

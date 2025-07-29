@@ -7,6 +7,7 @@
 - **Intuitive Expense Tracking**: Easily record your daily expenses.
 - **Local Data Storage**: Securely store your financial data on your device. Data never leaves you device.
 - **Dynamic Navigation**: Seamless user experience powered by Expo Router.
+- **Open souce**: All feature are free to use and open source.
 
 🛠️ Installation
 
