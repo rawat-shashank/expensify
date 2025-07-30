@@ -23,15 +23,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Debug - List root directory contents
-        run: ls -la
-
-      - name: Debug - Print gradle.properties content
-        run: cat gradle.properties || echo "gradle.properties not found in root"
-
-      - name: Debug - List android directory contents
-        run: ls -la android
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -70,6 +61,10 @@ jobs:
           cd android
           ./gradlew clean
           cd ..
+
+      - name: Debug - Print android/gradle.properties content
+        run: cat android/gradle.properties
+        working-directory: ./android
 
       - name: Build Android Release APK
         run: ./gradlew assembleRelease
