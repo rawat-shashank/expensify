@@ -57,7 +57,7 @@ jobs:
         working-directory: ./android
 
       - name: Debug - Print android/gradle.properties content
-        run: cat android/gradle.properties
+        run: cat gradle.properties
         working-directory: ./android
 
       - name: Clean Android build
