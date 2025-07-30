@@ -56,14 +56,12 @@ jobs:
           chmod +x gradlew
         working-directory: ./android
 
-      - name: Clean Android build
-        run: |
-          cd android
-          ./gradlew clean
-          cd ..
-
       - name: Debug - Print android/gradle.properties content
         run: cat android/gradle.properties
+        working-directory: ./android
+
+      - name: Clean Android build
+        run: ./gradlew clean
         working-directory: ./android
 
       - name: Build Android Release APK
