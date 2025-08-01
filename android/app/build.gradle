@@ -94,6 +94,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 100
         versionName "1.0.0"
+        setProperty("archivesBaseName", "xpncfy-${versionName}")
     }
     signingConfigs {
         debug {
