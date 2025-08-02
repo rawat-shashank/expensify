@@ -1,3 +1,4 @@
+import { SPACINGS } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
 import { ReactNode } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
@@ -45,8 +46,8 @@ const TouchableButton = ({
 
 const styles = StyleSheet.create({
   submitButton: {
-    paddingVertical: 15,
-    borderRadius: 32,
+    paddingVertical: SPACINGS.md,
+    borderRadius: SPACINGS.xl,
     alignItems: "center",
   },
 });

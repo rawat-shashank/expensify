@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { Icons, IconsNameType } from "../atoms";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, Icons, IconsNameType } from "../atoms";
 import { useTheme } from "@/context/ThemeContext";
+import { FONT_SIZES } from "@/constants";
+import { SPACINGS } from "@/constants/sizes";
 
 interface HeaderProps {
   title: string;
@@ -25,17 +27,14 @@ export const Header: React.FC<HeaderProps> = ({
       <View style={styles.leftSection}>
         {leftIcon && (
           <TouchableOpacity onPress={onLeftIconPress}>
-            <Icons name={leftIcon} size={28} color={theme.onSurface} />
+            <Icons
+              name={leftIcon}
+              size={FONT_SIZES.h3}
+              color={theme.onSurface}
+            />
           </TouchableOpacity>
         )}
-        <Text
-          style={[
-            styles.title,
-            {
-              color: theme.onSurface,
-            },
-          ]}
-        >
+        <Text size={FONT_SIZES.h4} color={theme.onSurface} style={styles.title}>
           {title}
         </Text>
       </View>
@@ -44,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
         <TouchableOpacity onPress={onRightIconPress}>
           <Icons
             name={rightIcon}
-            size={28}
+            size={FONT_SIZES.h3}
             color={theme.onSurface}
             variant="circularBackground"
             backgroundColor={theme.tertiaryContainer}
@@ -60,16 +59,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingBottom: 8,
-    paddingHorizontal: 16,
+    paddingBottom: SPACINGS.xs,
+    paddingHorizontal: SPACINGS.md,
   },
   leftSection: {
     flexDirection: "row",
     alignItems: "flex-end",
   },
   title: {
-    fontSize: 22,
     fontWeight: "bold",
-    marginLeft: 16,
+    marginLeft: SPACINGS.md,
   },
 });

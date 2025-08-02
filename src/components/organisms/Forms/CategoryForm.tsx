@@ -5,6 +5,7 @@ import { View, StyleSheet } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 import { Text, InputField, IconsNameType, TouchableButton } from "../../atoms";
 import { Picker } from "@/components/molecules";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 interface CategoryFormProps {
   category?: CategoryType;
@@ -52,8 +53,8 @@ export const CategoryForm = ({
   };
 
   return (
-    <View style={{ flex: 1, paddingVertical: 16 }}>
-      <View style={{ flex: 1, gap: 16 }}>
+    <View style={{ flex: 1, paddingVertical: SPACINGS.md }}>
+      <View style={{ flex: 1, gap: SPACINGS.md }}>
         <InputField
           value={name}
           onUpdate={setName}
@@ -73,7 +74,7 @@ export const CategoryForm = ({
       {(onAddCategory || onUpdateCategory) && (
         <TouchableButton variant="submit" onPress={handleCreateCategory}>
           <Text
-            size={18}
+            size={FONT_SIZES.subheading}
             color={theme.onPrimary}
             style={styles.createButtonText}
           >

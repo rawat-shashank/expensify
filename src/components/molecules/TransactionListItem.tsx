@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useTheme } from "@/context/ThemeContext";
 import { TransactionDetaillsType } from "@/database/transactionSchema";
 import { Text } from "../atoms";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 export const TransactionListItem = ({
   item,
@@ -21,7 +22,11 @@ export const TransactionListItem = ({
         }}
       >
         <View style={{ display: "flex", flexDirection: "row" }}>
-          <Text size={14} color={theme.onSurface} style={styles.title}>
+          <Text
+            size={FONT_SIZES.small}
+            color={theme.onSurface}
+            style={styles.title}
+          >
             {item.name}
           </Text>
         </View>
@@ -30,36 +35,36 @@ export const TransactionListItem = ({
           style={{
             display: "flex",
             flexDirection: "row",
-            gap: 4,
+            gap: SPACINGS.tiny,
             alignItems: "center",
             justifyContent: "flex-start",
           }}
         >
-          <Text size={12} color={theme.onSurfaceVariant}>
+          <Text size={FONT_SIZES.caption} color={theme.onSurfaceVariant}>
             {item.account_name}
           </Text>
-          <Text size={14} color={theme.onSurfaceVariant}>
+          <Text size={FONT_SIZES.small} color={theme.onSurfaceVariant}>
             •
           </Text>
 
-          <Text size={12} color={theme.onSurfaceVariant}>
+          <Text size={FONT_SIZES.caption} color={theme.onSurfaceVariant}>
             {time.toLocaleDateString("en-GB", {
               weekday: "short",
               day: "2-digit",
               month: "short",
             })}
           </Text>
-          <Text size={14} color={theme.onSurfaceVariant}>
+          <Text size={FONT_SIZES.small} color={theme.onSurfaceVariant}>
             •
           </Text>
-          <Text size={12} color={theme.onSurfaceVariant}>
+          <Text size={FONT_SIZES.caption} color={theme.onSurfaceVariant}>
             {time.toLocaleTimeString("en-GB", {
               timeStyle: "short",
             })}
           </Text>
         </View>
       </View>
-      <View style={{}}>
+      <View>
         <Text
           size={16}
           style={styles.amount}
@@ -78,16 +83,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    gap: 16,
+    paddingVertical: SPACINGS.sm,
   },
   title: {
     flexShrink: 1,
     flexWrap: "wrap",
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: SPACINGS.tiny,
   },
   amount: {
     fontWeight: "bold",

@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 import { Icons, IconsNameType } from "../atoms";
 import { TouchableButton } from "../atoms";
 import { ReactNode } from "react";
+import { FONT_SIZES } from "@/constants";
+import { SPACINGS } from "@/constants/sizes";
 
 interface IconListItemProps {
   icon: IconsNameType;
@@ -22,7 +24,7 @@ export const IconListItem = ({
         name={icon}
         variant="circularBackground"
         backgroundColor={color}
-        size={20}
+        size={FONT_SIZES.h5}
       />
       {children}
     </TouchableButton>
@@ -34,6 +36,6 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
+    gap: SPACINGS.md,
   },
 });

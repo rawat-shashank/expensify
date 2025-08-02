@@ -13,7 +13,9 @@ import {
   IconListItem,
   SummaryCard,
   TransactionListItem,
+  ItemSeparator,
 } from "@/components";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 export default function HomeScreen() {
   const { theme } = useTheme();
@@ -54,6 +56,7 @@ export default function HomeScreen() {
         data={transactions}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
+        ItemSeparatorComponent={ItemSeparator}
         onEndReached={() => {
           if (hasNextPage) {
             fetchNextPage();
@@ -64,16 +67,20 @@ export default function HomeScreen() {
         refreshing={false}
         ListHeaderComponent={
           <>
-            <Text color={theme.onSurface} style={styles.title}>
+            <Text
+              size={FONT_SIZES.h5}
+              color={theme.onSurface}
+              style={styles.title}
+            >
               {profileData?.name}
             </Text>
-            <Text size={13} color={theme.onSurface}>
+            <Text size={FONT_SIZES.small} color={theme.onSurface}>
               Welcome Back!
             </Text>
             <SummaryCard summaryCardDetails={summaryCard} />
             <Text
               color={theme.onSurface}
-              size={18}
+              size={FONT_SIZES.subheading}
               style={styles.latestTransactionsTitle}
             >
               Latest Transactions
@@ -92,11 +99,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: SPACINGS.xxs,
   },
   latestTransactionsTitle: {
     fontWeight: "bold",
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: SPACINGS.sm,
+    marginBottom: SPACINGS.xxs,
   },
 });

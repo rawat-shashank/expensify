@@ -1,3 +1,4 @@
+import { SPACINGS } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
 import { StyleSheet, View } from "react-native";
 
@@ -12,6 +13,6 @@ const styles = StyleSheet.create({
   separator: {
     borderBottomWidth: 1,
     backgroundColor: "transparent",
-    marginLeft: 48,
+    marginLeft: SPACINGS.xxl,
   },
 });

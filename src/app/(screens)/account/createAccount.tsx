@@ -6,6 +6,7 @@ import { CreateAccountType } from "@/database/accountsSchema";
 import useAccounts from "@/queries/accounts";
 import { Container, TouchableButton, Icons, AccountForm } from "@/components";
 import { FlatList } from "react-native";
+import { SPACINGS } from "@/constants/sizes";
 
 const CreateAccount = () => {
   const { theme } = useTheme();
@@ -31,7 +32,7 @@ const CreateAccount = () => {
             <TouchableButton
               onPress={() => router.back()}
               style={{
-                paddingRight: 16,
+                paddingRight: SPACINGS.md,
               }}
             >
               <Icons name="arrow-back" color={theme.onSurface} />

@@ -1,4 +1,5 @@
 import { WINDOW_WIDTH } from "@/constants";
+import { SPACINGS } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -175,8 +176,8 @@ const styles = StyleSheet.create({
   sheetBase: {
     position: "absolute",
     backgroundColor: "white",
-    paddingVertical: 16,
-    paddingHorizontal: 8,
+    paddingVertical: SPACINGS.md,
+    paddingHorizontal: SPACINGS.xs,
     overflow: "hidden",
   },
 });

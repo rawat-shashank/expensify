@@ -17,8 +17,9 @@ import {
   ColorDotWithRing,
   IconListItem,
   TransactionListItem,
+  ItemSeparator,
 } from "@/components";
-import { WINDOW_WIDTH } from "@/constants";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 const AccountList = () => {
   const { theme } = useTheme();
@@ -80,9 +81,7 @@ const AccountList = () => {
     }
   };
 
-  const ItemSeparator = () => (
-    <View style={{ width: 16 }} /> // An empty view with desired width
-  );
+  const AccountSeparator = () => <View style={{ width: SPACINGS.md }} />;
 
   //FIXME: UI need to be updated later
   const renderAccounts = ({ item }: { item: AccountSummaryType }) => {
@@ -129,6 +128,7 @@ const AccountList = () => {
           data={transactions}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
+          ItemSeparatorComponent={ItemSeparator}
           onEndReached={() => {
             if (hasNextPage) {
               fetchNextPage();
@@ -157,7 +157,7 @@ const AccountList = () => {
                 showsHorizontalScrollIndicator={false}
                 onViewableItemsChanged={onViewableItemsChanged}
                 viewabilityConfig={viewabilityConfig}
-                ItemSeparatorComponent={ItemSeparator}
+                ItemSeparatorComponent={AccountSeparator}
               />
             ) : (
               <Text style={{ color: theme.onSurface }}>
@@ -168,8 +168,8 @@ const AccountList = () => {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                gap: 4,
-                marginVertical: 4,
+                gap: SPACINGS.tiny,
+                marginVertical: SPACINGS.xxs,
               }}
             >
               {accountSummaryList.length > 1 &&
@@ -178,14 +178,14 @@ const AccountList = () => {
                     return currentVisibleIndex == index ? (
                       <ColorDotWithRing
                         key={account.id}
-                        size={16}
+                        size={FONT_SIZES.body}
                         color={theme.onSurfaceVariant}
                       />
                     ) : (
                       <ColorDotWithRing
                         key={account.id}
                         outline={true}
-                        size={16}
+                        size={FONT_SIZES.body}
                         color={theme.onSurfaceVariant}
                       />
                     );

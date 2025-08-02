@@ -1,5 +1,10 @@
-import { View } from "react-native";
+import { Container, Text } from "@/components";
+import { FONT_SIZES } from "@/constants";
 
 export default function Overview() {
-  return <View />;
+  return (
+    <Container>
+      <Text size={FONT_SIZES.h1}> Coming soon </Text>
+    </Container>
+  );
 }

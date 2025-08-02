@@ -3,7 +3,7 @@ import useProfile from "@/queries/useProfile";
 import { Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
 import {
@@ -16,6 +16,8 @@ import {
   FloatingActionButton,
   Header,
 } from "@/components";
+import { FONT_SIZES } from "@/constants";
+import { SPACINGS } from "@/constants/sizes";
 
 interface TabProps {
   name: string;
@@ -139,15 +141,15 @@ export default function TabLayout() {
                     elevation: 0,
                   },
                   tabBarLabelStyle: {
-                    fontSize: 14,
+                    fontSize: FONT_SIZES.small,
                   },
                   tabBarIconStyle: {
-                    marginVertical: 8,
+                    marginVertical: SPACINGS.xs,
                   },
                   tabBarIcon: ({}) => (
                     <Icons
                       name={tab.icon}
-                      size={24}
+                      size={FONT_SIZES.h4}
                       color={
                         activeTabIndex === index
                           ? theme.onSurface
@@ -173,31 +175,30 @@ export default function TabLayout() {
         </View>
       </View>
       <CustomSheet isVisible={isBottomSheetVisible} onClose={closeBottomSheet}>
-        <View>
-          {
-            <Text color={theme.onSurface} style={styles.label}>
-              Profile
+        <View
+          style={{
+            display: "flex",
+            gap: SPACINGS.md,
+            marginTop: SPACINGS.md,
+          }}
+        >
+          <Text
+            size={FONT_SIZES.subheading}
+            color={theme.onSurface}
+            style={styles.label}
+          >
+            Profile
+          </Text>
+          <InputField
+            value={profileName}
+            placeholder={`Enter Profile Name`}
+            onUpdate={setProfileName}
+          />
+          <TouchableButton variant="submit" onPress={handleProfileSubmit}>
+            <Text color={theme.onPrimary} style={{ fontWeight: "bold" }}>
+              Submit
             </Text>
-          }
-          <>
-            <InputField
-              value={profileName}
-              style={styles.input}
-              placeholder={`Enter Profile Name`}
-              onUpdate={setProfileName}
-            />
-            <TouchableOpacity
-              onPress={handleProfileSubmit}
-              style={[
-                styles.closeButton,
-                {
-                  backgroundColor: theme.secondaryContainer,
-                },
-              ]}
-            >
-              <Text style={{ color: theme.onSecondaryContainer }}>Submit</Text>
-            </TouchableOpacity>
-          </>
+          </TouchableButton>
         </View>
       </CustomSheet>
       <CustomSheet
@@ -210,15 +211,19 @@ export default function TabLayout() {
             style={{
               display: "flex",
               flexDirection: "row",
-              gap: 16,
+              gap: SPACINGS.md,
               alignItems: "center",
-              margin: 8,
+              margin: SPACINGS.xs,
             }}
           >
-            <Icons name="wallet-outline" color={theme.primary} />
+            <Icons
+              size={FONT_SIZES.h4}
+              name="wallet-outline"
+              color={theme.primary}
+            />
             <Text
+              size={FONT_SIZES.h5}
               style={{
-                fontSize: 18,
                 color: theme.primary,
                 fontWeight: "bold",
               }}
@@ -231,19 +236,23 @@ export default function TabLayout() {
             style={{
               display: "flex",
               flexDirection: "row",
-              gap: 8,
-              marginVertical: 8,
+              gap: SPACINGS.xs,
+              marginVertical: SPACINGS.xs,
               alignItems: "center",
               backgroundColor: theme.secondaryContainer,
-              borderRadius: 24,
-              padding: 12,
+              borderRadius: SPACINGS.lg,
+              padding: SPACINGS.sm,
             }}
             onPress={() => {
               closeCustomSheet();
               router.push("/settings");
             }}
           >
-            <Icons name="settings" color={theme.primary} size={18} />
+            <Icons
+              name="settings"
+              color={theme.primary}
+              size={FONT_SIZES.subheading}
+            />
             <Text
               style={{
                 color: theme.onSecondaryContainer,
@@ -260,24 +269,17 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 16,
-    marginBottom: 8,
+    fontWeight: "bold",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-  },
-  closeButton: {
-    padding: 10,
-    alignItems: "center",
-    borderRadius: 5,
+    borderRadius: SPACINGS.sm,
+    padding: SPACINGS.sm,
+    marginBottom: SPACINGS.md,
   },
   fabContainer: {
     position: "absolute",
-    right: 20,
+    right: SPACINGS.lg,
     bottom: 90,
   },
 });

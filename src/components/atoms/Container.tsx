@@ -1,3 +1,4 @@
+import { SPACINGS } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
 import React from "react";
 import { StyleSheet, View } from "react-native";
@@ -34,6 +35,6 @@ export const Container: React.FC<Props> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: SPACINGS.md,
   },
 });

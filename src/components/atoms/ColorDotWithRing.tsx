@@ -1,9 +1,10 @@
 import { View } from "react-native";
 
 import { useTheme } from "@/context/ThemeContext";
+import { FONT_SIZES } from "@/constants";
 
 export const ColorDotWithRing = ({
-  size = 24,
+  size = FONT_SIZES.h4,
   color,
   outline = false,
 }: {

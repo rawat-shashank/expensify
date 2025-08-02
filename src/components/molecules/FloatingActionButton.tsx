@@ -9,6 +9,7 @@ import {
 import { useTheme } from "@/context/ThemeContext";
 
 import { Icons, IconsNameType } from "../atoms";
+import { FONT_SIZES } from "@/constants";
 
 interface FABProps {
   onPress: () => void;
@@ -24,7 +25,7 @@ const FloatingActionButton = ({
   iconName = "plus",
   iconColor,
   buttonColor,
-  iconSize = 28,
+  iconSize = FONT_SIZES.h4,
   style,
 }: FABProps) => {
   const { theme } = useTheme();
@@ -66,6 +67,7 @@ const FloatingActionButton = ({
           width: iconScale,
           height: iconScale,
           borderRadius: iconborder,
+          shadowColor: theme.shadow,
         },
         animatedStyle,
         style,
@@ -94,7 +96,6 @@ const FloatingActionButton = ({
 const styles = StyleSheet.create({
   container: {
     elevation: 5,
-    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,

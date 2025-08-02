@@ -17,6 +17,7 @@ import {
   Text,
 } from "../../atoms/";
 import { Picker } from "@/components/molecules";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 interface AccountFormProps {
   account?: AccountType;
@@ -90,7 +91,7 @@ export const AccountForm = ({
 
   return (
     <View style={{ flex: 1, paddingVertical: 16 }}>
-      <View style={{ flex: 1, gap: 16 }}>
+      <View style={{ flex: 1, gap: SPACINGS.md }}>
         <PillSelector
           options={accountCardOptions}
           selected={cardType}
@@ -121,16 +122,14 @@ export const AccountForm = ({
         <Picker variant="color" value={color} onSelect={setColor} />
 
         <View style={styles.switchContainer}>
-          <Text color={theme.onSurface} style={styles.label}>
-            Exclude Account:
-          </Text>
+          <Text color={theme.onSurface}>Exclude Account:</Text>
           <Switch value={isDisable} onValueChange={setIsDisable} />
         </View>
       </View>
       {(onAddAccount || onUpdateAccount) && (
         <TouchableButton variant="submit" onPress={handleCreateAccount}>
           <Text
-            size={18}
+            size={FONT_SIZES.subheading}
             color={theme.onPrimary}
             style={styles.createButtonText}
           >
@@ -143,14 +142,11 @@ export const AccountForm = ({
 };
 
 const styles = StyleSheet.create({
-  label: {
-    marginBottom: 5,
-  },
   switchContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 15,
+    marginBottom: SPACINGS.md,
   },
   createButtonText: {
     fontWeight: "bold",

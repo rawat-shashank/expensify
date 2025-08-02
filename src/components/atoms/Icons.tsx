@@ -2,6 +2,7 @@ import React from "react";
 import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, StyleSheet } from "react-native";
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
+import { FONT_SIZES } from "@/constants";
 
 type IconsNameType =
   | keyof typeof Entypo.glyphMap
@@ -46,7 +47,7 @@ interface IconProps {
 
 const Icons: React.FC<IconProps> = ({
   name = "home",
-  size = 24,
+  size = FONT_SIZES.h4,
   color = "black",
   style,
   variant = "default",
@@ -89,7 +90,7 @@ const Icons: React.FC<IconProps> = ({
               width: size * 2.8,
               height: size * 1.5,
               borderRadius: (size * 1.5) / 2,
-              backgroundColor: backgroundColor,
+              backgroundColor,
             },
             style,
           ]}

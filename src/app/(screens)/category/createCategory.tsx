@@ -6,6 +6,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { CreateCategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/categories";
 import { CategoryForm, Container, Icons, TouchableButton } from "@/components";
+import { SPACINGS } from "@/constants/sizes";
 
 const CreateCategory = ({}: {}) => {
   const { theme } = useTheme();
@@ -27,7 +28,7 @@ const CreateCategory = ({}: {}) => {
             <TouchableButton
               onPress={() => router.back()}
               style={{
-                paddingRight: 16,
+                paddingRight: SPACINGS.md,
               }}
             >
               <Icons name="arrow-back" color={theme.onSurface} />

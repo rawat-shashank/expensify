@@ -3,6 +3,7 @@ import { useTheme } from "@/context/ThemeContext";
 
 import { SummaryCardType } from "@/database/generalSchema";
 import { Text } from "../atoms";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 export const SummaryCard = ({
   summaryCardDetails,
@@ -16,20 +17,24 @@ export const SummaryCard = ({
     <View
       style={{
         backgroundColor: theme.tertiaryContainer,
-        borderRadius: 16,
-        paddingHorizontal: 8,
-        paddingVertical: 16,
-        gap: 32,
-        marginVertical: 16,
+        borderRadius: SPACINGS.md,
+        paddingHorizontal: SPACINGS.md,
+        paddingVertical: SPACINGS.md,
+        marginVertical: SPACINGS.md,
+        gap: SPACINGS.xl,
       }}
     >
-      <View>
+      <View style={{ display: "flex", gap: SPACINGS.xs }}>
         <Text color={theme.onTertiaryContainer}>Total Balance</Text>
-        <Text color={theme.onTertiaryContainer} size={24}>
+        <Text
+          color={theme.onTertiaryContainer}
+          size={FONT_SIZES.h3}
+          style={{ fontWeight: "bold" }}
+        >
           £{current_balance}
         </Text>
       </View>
-      <View style={{ display: "flex", gap: 8 }}>
+      <View style={{ display: "flex", gap: SPACINGS.xs }}>
         <Text>Total</Text>
         <View
           style={{
@@ -39,19 +44,25 @@ export const SummaryCard = ({
           }}
         >
           <View style={{ flexGrow: 1 }}>
-            <Text size={12} color={theme.onTertiaryContainer}>
+            <Text size={FONT_SIZES.caption} color={theme.onTertiaryContainer}>
               Income
             </Text>
-            <Text size={16} color={theme.onTertiaryContainer}>
+            <Text
+              size={FONT_SIZES.subheading}
+              color={theme.onTertiaryContainer}
+            >
               £{total_income}
             </Text>
           </View>
 
           <View style={{ flexGrow: 1 }}>
-            <Text size={12} color={theme.onTertiaryContainer}>
+            <Text size={FONT_SIZES.caption} color={theme.onTertiaryContainer}>
               Expense
             </Text>
-            <Text size={16} color={theme.onTertiaryContainer}>
+            <Text
+              size={FONT_SIZES.subheading}
+              color={theme.onTertiaryContainer}
+            >
               £{total_expense}
             </Text>
           </View>
