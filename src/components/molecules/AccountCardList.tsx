@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
 import { useTheme } from "@/context/ThemeContext";
 import { Icons, IconsNameType, TouchableButton, Text } from "../atoms";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 interface AccountCardProps {
   accounts: AccountType[];
@@ -26,7 +27,7 @@ export const AccountCardList = ({
       <Text
         color={theme.tertiary}
         style={{
-          marginBottom: 16,
+          marginBottom: SPACINGS.md,
           fontWeight: "bold",
         }}
       >
@@ -46,7 +47,7 @@ export const AccountCardList = ({
           style={[
             styles.accountCardBase,
             {
-              borderRadius: 16,
+              borderRadius: SPACINGS.md,
               borderColor: theme.secondaryContainer,
               backgroundColor: theme.background,
               borderBottomWidth: 2,
@@ -98,7 +99,7 @@ export const AccountCardList = ({
                   borderRightWidth: activeAccountId === item.id ? 2 : 1,
                   borderBottomWidth: 2,
                   borderTopWidth: activeAccountId === item.id ? 2 : 1,
-                  borderRadius: 16,
+                  borderRadius: SPACINGS.md,
                 },
               ]}
             >
@@ -120,7 +121,7 @@ export const AccountCardList = ({
               </View>
               <View>
                 <Text color={theme.onSurface}>{item.name}</Text>
-                <Text size={12} color={theme.onSurface}>
+                <Text size={FONT_SIZES.caption} color={theme.onSurface}>
                   {item.accountName}
                 </Text>
               </View>
@@ -137,14 +138,14 @@ export const AccountCardList = ({
 const styles = StyleSheet.create({
   accountListContentContainer: {
     flexDirection: "row",
-    gap: 8,
+    gap: SPACINGS.xs,
   },
   accountCardBase: {
     width: 128,
-    padding: 16,
     minHeight: 144,
+    padding: SPACINGS.md,
     display: "flex",
     justifyContent: "space-between",
-    gap: 32,
+    gap: SPACINGS.xl,
   },
 });

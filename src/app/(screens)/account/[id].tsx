@@ -6,6 +6,7 @@ import useAccounts from "@/queries/accounts";
 import { AccountType } from "@/database/accountsSchema";
 import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton, Container, Icons, AccountForm } from "@/components";
+import { SPACINGS } from "@/constants/sizes";
 
 const EditAccountPage = ({}: {}) => {
   const { theme } = useTheme();
@@ -66,7 +67,7 @@ const EditAccountPage = ({}: {}) => {
             <TouchableButton
               onPress={() => router.back()}
               style={{
-                paddingRight: 16,
+                paddingRight: SPACINGS.md,
               }}
             >
               <Icons name="arrow-back" color={theme.onSurface} />

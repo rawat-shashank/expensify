@@ -6,6 +6,7 @@ import DateTimePicker, {
 
 import { useTheme } from "@/context/ThemeContext";
 import { Text, Icons, TouchableButton } from "../atoms";
+import { SPACINGS } from "@/constants/sizes";
 
 interface DateTimeInputProps {
   value: string;
@@ -51,7 +52,7 @@ export const DateTimeInput = ({
       {label && (
         <Text
           color={theme.tertiary}
-          style={{ fontWeight: "bold", marginBottom: 16 }}
+          style={{ fontWeight: "bold", marginBottom: SPACINGS.md }}
         >
           {label}
         </Text>
@@ -60,7 +61,7 @@ export const DateTimeInput = ({
         style={{
           flexDirection: "row",
           justifyContent: "flex-start",
-          paddingHorizontal: 16,
+          paddingHorizontal: SPACINGS.md,
         }}
       >
         <TouchableButton
@@ -68,7 +69,7 @@ export const DateTimeInput = ({
           onPress={showDatepicker}
         >
           <Icons name="calendar" color={theme.onSurface} />
-          <Text color={theme.onSurface} style={styles.DateTimeText}>
+          <Text color={theme.onSurface}>
             {date.toLocaleDateString("en-GB", {
               year: "numeric",
               month: "2-digit",
@@ -81,7 +82,7 @@ export const DateTimeInput = ({
           onPress={showTimepicker}
         >
           <Icons name="clock-outline" color={theme.onSurface} />
-          <Text color={theme.onSurface} style={styles.DateTimeText}>
+          <Text color={theme.onSurface}>
             {date.toLocaleTimeString("en-GB", {
               timeStyle: "short",
             })}
@@ -107,9 +108,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
-  },
-  DateTimeText: {
-    fontSize: 16,
+    gap: SPACINGS.sm,
   },
 });

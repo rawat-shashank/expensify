@@ -2,6 +2,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { Text } from "../atoms";
+import { SPACINGS } from "@/constants/sizes";
 
 interface PillSelectorProps<T extends string> {
   options: T[];
@@ -52,17 +53,12 @@ const styles = StyleSheet.create({
   pillContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    marginTop: 5,
-    gap: 16,
+    marginTop: SPACINGS.tiny,
+    gap: SPACINGS.md,
   },
   typeButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 32,
-  },
-  activeTypeButton: {},
-  typeButtonText: {
-    fontSize: 16,
-    textTransform: "capitalize",
+    paddingVertical: SPACINGS.xs,
+    paddingHorizontal: SPACINGS.md,
+    borderRadius: SPACINGS.xl,
   },
 });

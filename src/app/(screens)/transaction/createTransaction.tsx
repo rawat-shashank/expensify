@@ -11,6 +11,7 @@ import {
   TouchableButton,
   Container,
 } from "@/components";
+import { SPACINGS } from "@/constants/sizes";
 
 const CreateTransaction = () => {
   const { theme } = useTheme();
@@ -36,7 +37,7 @@ const CreateTransaction = () => {
             <TouchableButton
               onPress={() => router.back()}
               style={{
-                paddingRight: 16,
+                paddingRight: SPACINGS.md,
               }}
             >
               <Icons name="arrow-back" color={theme.onSurface} />

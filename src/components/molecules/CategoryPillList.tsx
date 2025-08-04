@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { CategoryType } from "@/database/categoriesSchema";
 import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton, Icons, Text } from "../atoms";
+import { SPACINGS } from "@/constants/sizes";
 
 interface CategoryPillListProps {
   categories: CategoryType[];
@@ -24,7 +25,7 @@ export const CategoryPillList = ({
       <Text
         color={theme.tertiary}
         style={{
-          marginBottom: 16,
+          marginBottom: SPACINGS.md,
           fontWeight: "bold",
         }}
       >
@@ -45,7 +46,7 @@ export const CategoryPillList = ({
             styles.pillButtonBase,
             {
               backgroundColor: theme.background,
-              borderColor: theme.secondaryContainer,
+              borderColor: theme.onSurfaceDisabled,
             },
           ]}
         >
@@ -97,20 +98,19 @@ export const CategoryPillList = ({
 
 const styles = StyleSheet.create({
   pillListContentContainer: {
-    flexDirection: "row", // Arrange items in a row
-    flexWrap: "wrap", // Allow items to wrap to the next line
-    gap: 8, // Spacing between items
-    // Add any necessary padding or margin for the overall container
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: SPACINGS.xs,
   },
   pillButtonBase: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 32,
+    paddingVertical: SPACINGS.xs,
+    paddingHorizontal: SPACINGS.md,
+    borderRadius: SPACINGS.xl,
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 8,
+    gap: SPACINGS.xs,
     borderWidth: 1,
   },
 });

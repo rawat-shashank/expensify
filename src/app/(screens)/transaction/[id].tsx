@@ -11,6 +11,7 @@ import {
   TouchableButton,
 } from "@/components";
 import { useTheme } from "@/context/ThemeContext";
+import { SPACINGS } from "@/constants/sizes";
 
 const EditTransactionPage = () => {
   const { theme } = useTheme();
@@ -85,7 +86,7 @@ const EditTransactionPage = () => {
             <TouchableButton
               onPress={() => router.back()}
               style={{
-                paddingRight: 16,
+                paddingRight: SPACINGS.md,
               }}
             >
               <Icons name="arrow-back" color={theme.onSurface} />

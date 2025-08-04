@@ -3,6 +3,7 @@ import { TextInput, View, StyleSheet } from "react-native";
 
 import { useTheme } from "@/context/ThemeContext";
 import { Text } from "../atoms";
+import { SPACINGS } from "@/constants/sizes";
 
 // Define the properties (props) for the CurrencyInput component.
 interface CurrencyInputProps {
@@ -86,7 +87,10 @@ const CurrencyInput = ({
   return (
     <View>
       <TextInput
-        style={[styles.input, { color: theme.onSurface }]}
+        style={[
+          styles.input,
+          { color: theme.onSurface, borderColor: theme.onSurface },
+        ]}
         keyboardType="numeric"
         value={internalValue}
         onChangeText={handleChangeText}
@@ -103,10 +107,9 @@ const CurrencyInput = ({
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 16,
-    padding: 16,
-    fontSize: 16,
+    borderRadius: SPACINGS.md,
+    padding: SPACINGS.md,
+    fontSize: SPACINGS.md,
   },
 });
 

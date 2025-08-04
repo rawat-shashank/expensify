@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Text } from "./Text";
 import { FONT_SIZES } from "@/constants";
+import { SPACINGS } from "@/constants/sizes";
 
 export interface InputFieldProps {
   value: string;
@@ -42,7 +43,11 @@ export const InputField = ({
   return (
     <View>
       <TextInput
-        style={[styles.input, style, { color: theme.onSurface }]}
+        style={[
+          styles.input,
+          style,
+          { color: theme.onSurface, borderColor: theme.onSurface },
+        ]}
         value={value}
         onChangeText={onChange}
         placeholder={placeholder}
@@ -51,7 +56,7 @@ export const InputField = ({
       />
       {error && (
         <Text
-          size={FONT_SIZES.xs}
+          size={FONT_SIZES.small}
           style={{
             color: theme.error,
           }}
@@ -66,9 +71,8 @@ export const InputField = ({
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 16,
-    padding: 16,
-    fontSize: 16,
+    borderRadius: SPACINGS.md,
+    padding: SPACINGS.md,
+    fontSize: SPACINGS.md,
   },
 });

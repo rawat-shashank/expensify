@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
@@ -27,6 +27,7 @@ import {
   AccountCardList,
   CategoryPillList,
 } from "../../molecules";
+import { SPACINGS } from "@/constants/sizes";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
@@ -47,6 +48,7 @@ export const TransactionForm = ({
   onUpdateTransaction,
 }: TransactionFormProps) => {
   const { theme } = useTheme();
+
   // TODO: Add Transaction type for Transfer
   const transactionTypeOptions: TransactionTypeEnum[] = [
     TransactionTypeEnum.EXPENSE,
@@ -111,12 +113,12 @@ export const TransactionForm = ({
   };
 
   return (
-    <View style={{ flex: 1, paddingVertical: 16 }}>
+    <View style={{ flex: 1, paddingVertical: SPACINGS.md }}>
       <ScrollView
-        style={{ marginBottom: 16 }}
+        style={{ marginBottom: SPACINGS.md }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={{ flex: 1, gap: 16 }}>
+        <View style={{ flex: 1, gap: SPACINGS.md }}>
           <PillSelector
             options={transactionTypeOptions}
             selected={type}
@@ -159,7 +161,7 @@ export const TransactionForm = ({
       </ScrollView>
       {(onAddTransaction || onUpdateTransaction) && (
         <TouchableButton variant="submit" onPress={handleCreateTransaction}>
-          <Text color={theme.onPrimary} style={styles.createButtonText}>
+          <Text color={theme.onPrimary} style={{ fontWeight: "bold" }}>
             {onUpdateTransaction ? "Update" : "Create"}
           </Text>
         </TouchableButton>
@@ -167,9 +169,3 @@ export const TransactionForm = ({
     </View>
   );
 };
-const styles = StyleSheet.create({
-  createButtonText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-});

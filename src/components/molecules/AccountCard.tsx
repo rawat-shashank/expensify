@@ -9,6 +9,7 @@ import {
 } from "@/database/accountsSchema";
 import { Icons, Text } from "../atoms";
 import { WINDOW_WIDTH } from "@/constants";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 const AccountCard = ({
   account,
@@ -25,7 +26,7 @@ const AccountCard = ({
     <TouchableOpacity
       onPress={() => handleCardPress(account.id)}
       style={{
-        width: WINDOW_WIDTH - 32,
+        width: WINDOW_WIDTH - SPACINGS.xl,
       }}
     >
       <BlurView
@@ -35,10 +36,7 @@ const AccountCard = ({
         style={[
           styles.card,
           {
-            paddingHorizontal: 16,
-            overflow: "hidden",
             borderColor: theme.onBackground,
-            borderWidth: 2,
             backgroundColor: account.color,
           },
         ]}
@@ -48,7 +46,7 @@ const AccountCard = ({
             style={{
               display: "flex",
               flexDirection: "row",
-              gap: 16,
+              gap: SPACINGS.md,
               alignItems: "center",
             }}
           >
@@ -63,35 +61,36 @@ const AccountCard = ({
             )}
             <View style={styles.names}>
               <Text style={styles.cardTitle}>{account.accountName}</Text>
-              <Text size={12}>{account.name}</Text>
+              <Text size={FONT_SIZES.caption}>{account.name}</Text>
             </View>
           </View>
           <TouchableOpacity onPress={() => handleDeleteAccount(account.id)}>
             <Icons name="delete" />
           </TouchableOpacity>
         </View>
-        <View style={{ marginVertical: 12 }}>
-          <Text style={styles.cardSubTitle}>Total Balance</Text>
-          <Text style={styles.amount}>£{account.current_balance}</Text>
+        <View>
+          <Text size={FONT_SIZES.caption}>Total Balance</Text>
+          <Text size={FONT_SIZES.h4} style={styles.amount}>
+            £{account.current_balance}
+          </Text>
         </View>
         <View
           style={{
             display: "flex",
             flexDirection: "row",
-            gap: 16,
+            gap: SPACINGS.md,
             justifyContent: "space-between",
           }}
         >
           <View
             style={{
               flexGrow: 1,
-              marginBottom: 8,
+              marginBottom: SPACINGS.xs,
             }}
           >
-            <Text style={styles.cardSubTitle}>Income</Text>
+            <Text size={FONT_SIZES.caption}>Income</Text>
             <Text
-              color="green"
-              size={24}
+              size={FONT_SIZES.subheading}
               style={{
                 fontWeight: "bold",
               }}
@@ -100,10 +99,9 @@ const AccountCard = ({
             </Text>
           </View>
           <View style={{ flexGrow: 1 }}>
-            <Text style={styles.cardSubTitle}>Expenses</Text>
+            <Text size={FONT_SIZES.caption}>Expenses</Text>
             <Text
-              color="red"
-              size={24}
+              size={FONT_SIZES.subheading}
               style={{
                 fontWeight: "bold",
               }}
@@ -119,18 +117,21 @@ const AccountCard = ({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 16,
+    borderWidth: 2,
+    borderRadius: SPACINGS.md,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+    padding: SPACINGS.md,
+    overflow: "hidden",
+    display: "flex",
+    gap: SPACINGS.md,
   },
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
-    paddingTop: 16,
   },
   names: {
     display: "flex",
@@ -139,19 +140,8 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontWeight: "bold",
   },
-  cardSubTitle: {
-    fontSize: 12,
-  },
   amount: {
-    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 8,
-  },
-  income: {
-    color: "green",
-  },
-  expense: {
-    color: "red",
   },
 });
 
