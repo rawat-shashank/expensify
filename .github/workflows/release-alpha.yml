@@ -1,19 +1,19 @@
-name: Dev Release APK
+name: Dev Alpha Build APK
 
+# Trigger the workflow on a pull request that targets the 'dev' branch.
+# This ensures that a testable APK is always available for review.
 on:
-  push:
+  pull_request:
     branches:
       - dev
 
 jobs:
-  build_and_prerelease:
-    name: Build Dev Android APK and Prerelease
+  build_alpha:
+    name: Build Alpha Android APK on PR
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
-      issues: write
-      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -60,11 +60,10 @@ jobs:
         run: ./gradlew assembleRelease
         working-directory: ./android
 
-      # --- Semantic Release Steps ---
-      - name: Run semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # When triggered by a branch push, semantic-release automatically
-          # detects the branch from GITHUB_REF_NAME. No need to explicitly set SEMANTIC_RELEASE_COMMIT_REF
-          # as 'dev' branch configuration in .releaserc.json will be used.
-        run: npx semantic-release
+      # --- Upload Artifact Step ---
+      - name: Upload Android APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-alpha-pr-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-day: 5
