@@ -35,7 +35,7 @@ export const SummaryCard = ({
         </Text>
       </View>
       <View style={{ display: "flex", gap: SPACINGS.xs }}>
-        <Text>Total</Text>
+        <Text color={theme.onTertiaryContainer}>Total</Text>
         <View
           style={{
             display: "flex",

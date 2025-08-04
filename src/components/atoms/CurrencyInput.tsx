@@ -87,7 +87,10 @@ const CurrencyInput = ({
   return (
     <View>
       <TextInput
-        style={[styles.input, { color: theme.onSurface }]}
+        style={[
+          styles.input,
+          { color: theme.onSurface, borderColor: theme.onSurface },
+        ]}
         keyboardType="numeric"
         value={internalValue}
         onChangeText={handleChangeText}

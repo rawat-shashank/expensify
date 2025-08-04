@@ -193,6 +193,7 @@ export default function TabLayout() {
             value={profileName}
             placeholder={`Enter Profile Name`}
             onUpdate={setProfileName}
+            style={{ borderColor: theme.onSurface }}
           />
           <TouchableButton variant="submit" onPress={handleProfileSubmit}>
             <Text color={theme.onPrimary} style={{ fontWeight: "bold" }}>
@@ -223,8 +224,8 @@ export default function TabLayout() {
             />
             <Text
               size={FONT_SIZES.h5}
+              color={theme.primary}
               style={{
-                color: theme.primary,
                 fontWeight: "bold",
               }}
             >
@@ -250,16 +251,10 @@ export default function TabLayout() {
           >
             <Icons
               name="settings"
-              color={theme.primary}
+              color={theme.onSecondaryContainer}
               size={FONT_SIZES.subheading}
             />
-            <Text
-              style={{
-                color: theme.onSecondaryContainer,
-              }}
-            >
-              Settings
-            </Text>
+            <Text color={theme.onSecondaryContainer}>Settings</Text>
           </TouchableButton>
         </View>
       </CustomSheet>

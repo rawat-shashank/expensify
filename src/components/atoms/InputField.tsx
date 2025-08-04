@@ -43,7 +43,11 @@ export const InputField = ({
   return (
     <View>
       <TextInput
-        style={[styles.input, style, { color: theme.onSurface }]}
+        style={[
+          styles.input,
+          style,
+          { color: theme.onSurface, borderColor: theme.onSurface },
+        ]}
         value={value}
         onChangeText={onChange}
         placeholder={placeholder}
