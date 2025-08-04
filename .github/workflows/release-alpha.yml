@@ -66,4 +66,4 @@ jobs:
         with:
           name: dev-alpha-pr-apk
           path: android/app/build/outputs/apk/release/xpncfy.apk
-          retention-day: 5
+          retention-days: 5
