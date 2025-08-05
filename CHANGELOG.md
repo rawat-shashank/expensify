@@ -1,3 +1,10 @@
+# [1.0.0-dev.4](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.3...v1.0.0-dev.4) (2025-08-05)
+
+
+### Bug Fixes
+
+* release name update ([b0609a6](https://github.com/rawat-shashank/expensify/commit/b0609a634dfa0f76d0305032221dcc2f89d00ebb))
+
 # [1.0.0-dev.3](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.2...v1.0.0-dev.3) (2025-08-04)
 
 
