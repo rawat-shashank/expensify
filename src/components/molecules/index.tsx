@@ -8,6 +8,7 @@ import { IconListItem } from "./IconListItem";
 import { Picker } from "./Picker";
 import { SummaryCard } from "./SummaryCard";
 import { TransactionListItem } from "./TransactionListItem";
+import { MenuList } from "./MenuList";
 
 export {
   CategoryListItem,
@@ -20,4 +21,5 @@ export {
   CategoryPillList,
   AccountCard,
   FloatingActionButton,
+  MenuList,
 };

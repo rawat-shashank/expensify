@@ -68,7 +68,7 @@ const EditCategoryForm = () => {
   }
 
   return (
-    <>
+    <Container>
       <Stack.Screen
         options={{
           title: "Update Category",
@@ -100,15 +100,13 @@ const EditCategoryForm = () => {
         renderItem={null}
         data={null}
         ListHeaderComponent={
-          <Container>
-            <CategoryForm
-              category={categoryDetails}
-              onUpdateCategory={handleUpdateCategory}
-            />
-          </Container>
+          <CategoryForm
+            category={categoryDetails}
+            onUpdateCategory={handleUpdateCategory}
+          />
         }
       />
-    </>
+    </Container>
   );
 };
 

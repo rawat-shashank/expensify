@@ -90,8 +90,8 @@ export const AccountForm = ({
   };
 
   return (
-    <View style={{ flex: 1, paddingVertical: 16 }}>
-      <View style={{ flex: 1, gap: SPACINGS.md }}>
+    <View>
+      <View style={{ gap: SPACINGS.md }}>
         <PillSelector
           options={accountCardOptions}
           selected={cardType}

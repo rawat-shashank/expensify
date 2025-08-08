@@ -14,12 +14,16 @@ if (Platform.OS !== "web") {
 
 import { useBackupRestoreData } from "@/queries/useBackupRestoreData"; // Adjust path as needed
 import { BackupRestoreType } from "@/database/exportsSchema";
-import { Container } from "@/components";
-import { Stack } from "expo-router";
+import { Container, Icons, TouchableButton } from "@/components";
+import { Stack, useRouter } from "expo-router";
 import { FlatList } from "react-native-gesture-handler";
+import { useTheme } from "@/context/ThemeContext";
+import { SPACINGS } from "@/constants/sizes";
 
 const ExportDataComponent: React.FC = () => {
+  const { theme } = useTheme();
   const db = useSQLiteContext();
+  const router = useRouter();
   const {
     exportedData,
     isExporting,
@@ -252,7 +256,27 @@ const ExportDataComponent: React.FC = () => {
 
   return (
     <>
-      <Stack.Screen options={{ title: "Settings" }} />
+      <Stack.Screen
+        options={{
+          title: "Settings",
+          headerStyle: {
+            backgroundColor: theme.background,
+          },
+          headerTitleStyle: {
+            color: theme.onSurface,
+          },
+          headerLeft: () => (
+            <TouchableButton
+              onPress={() => router.back()}
+              style={{
+                paddingRight: SPACINGS.md,
+              }}
+            >
+              <Icons name="arrow-back" color={theme.onSurface} />
+            </TouchableButton>
+          ),
+        }}
+      />
 
       <FlatList
         renderItem={null}

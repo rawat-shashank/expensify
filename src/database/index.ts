@@ -1,18 +1,29 @@
 import { SQLiteDatabase } from "expo-sqlite";
-import { createAccountsTable } from "./accountsSchema";
-import { createProfileTable } from "./profileSchema";
-import { createCategoriesTable } from "./categoriesSchema";
-import { createTransactionTable } from "./transactionSchema";
+import { migrations, LATEST_DATABASE_VERSION } from "./migrations/";
 
-const initializeDatabase = async (db: SQLiteDatabase): Promise<void> => {
+const setupDatabase = async (db: SQLiteDatabase): Promise<void> => {
   try {
-    await createAccountsTable(db);
-    await createProfileTable(db);
-    await createCategoriesTable(db);
-    await createTransactionTable(db);
+    const { user_version: currentVersion } = await db.getFirstAsync(
+      "PRAGMA user_version",
+    );
+
+    if (currentVersion < LATEST_DATABASE_VERSION) {
+      console.log(
+        `Migrating from version ${currentVersion} to ${LATEST_DATABASE_VERSION}...`,
+      );
+
+      for (let i = currentVersion; i < LATEST_DATABASE_VERSION; i++) {
+        const migration = migrations[i];
+        await migration(db);
+      }
+
+      await db.execAsync(`PRAGMA user_version = ${LATEST_DATABASE_VERSION};`);
+    }
+
+    console.log(`Database is up to date (version ${LATEST_DATABASE_VERSION}).`);
   } catch (error: any) {
-    console.error("Error initializing database", error.message);
-    throw error;
+    console.log(`Error setting up database: ${error.message}`);
+    console.error("Database setup error:", error);
   }
 };
 
@@ -20,9 +31,11 @@ const resetDatabase = async (db: SQLiteDatabase): Promise<void> => {
   await db.withTransactionAsync(async () => {
     // Drop existing table if it exists
     await db.execAsync("DROP TABLE IF EXISTS accounts;");
+    await db.execAsync("DROP TABLE IF EXISTS profiles;");
     await db.execAsync("DROP TABLE IF EXISTS transactions;");
     await db.execAsync("DROP TABLE IF EXISTS categories;");
+    await db.execAsync(`PRAGMA user_version = 0;`);
   });
 };
 
-export { initializeDatabase, resetDatabase };
+export { setupDatabase, resetDatabase };

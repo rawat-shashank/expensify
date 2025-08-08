@@ -15,16 +15,6 @@ interface CategoryType extends CreateCategoryType {
 
 // --- SQL Queries ---
 
-const SQL_CREATE_CATEGORIES_TABLE = `
-  CREATE TABLE IF NOT EXISTS categories (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    desc TEXT NOT NULL,
-    icon TEXT NOT NULL,
-    color TEXT NOT NULL
-  );
-`;
-
 const SQL_GET_ALL_CATEGORIES = `
   SELECT * FROM categories ORDER BY name ASC;
 `;
@@ -49,10 +39,6 @@ const SQL_DELETE_ACCOUNT = `
 `;
 
 // ---- Database Operations ----
-
-const createCategoriesTable = async (db: SQLiteDatabase): Promise<void> => {
-  await db.execAsync(SQL_CREATE_CATEGORIES_TABLE);
-};
 
 const getAllCategories = async (
   db: SQLiteDatabase,
@@ -88,13 +74,6 @@ const updateCategory = async (
   db: SQLiteDatabase,
 ): Promise<boolean> => {
   const { name, desc, icon = "", color = "", id } = category;
-  console.log({
-    name,
-    desc,
-    icon,
-    color,
-    id,
-  });
   const result = await db.runAsync(SQL_UPDATE_ACCOUNT, [
     name,
     desc,
@@ -102,7 +81,6 @@ const updateCategory = async (
     color,
     id,
   ]);
-  console.log("result", result);
   return result.changes > 0;
 };
 
@@ -117,7 +95,6 @@ const deleteCategory = async (
 export {
   CreateCategoryType,
   CategoryType,
-  createCategoriesTable,
   getAllCategories,
   insertCategory,
   getCategoryById,

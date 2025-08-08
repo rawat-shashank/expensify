@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 
 import { useTheme } from "@/context/ThemeContext";
-import { Text } from "../atoms";
 import { SPACINGS } from "@/constants/sizes";
+import { Text } from "./Text";
 
 // Define the properties (props) for the CurrencyInput component.
 interface CurrencyInputProps {

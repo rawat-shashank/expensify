@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet, ScrollView } from "react-native";
 
 import { useTheme } from "@/context/ThemeContext";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
@@ -12,7 +12,9 @@ import {
   CustomSheet,
   ColorPicker,
   Text,
+  Container,
 } from "../atoms";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
 const ICON_SIZE_IN_PICKER = 40;
@@ -72,7 +74,7 @@ export const Picker = ({
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingVertical: 10,
+          paddingVertical: SPACINGS.xs,
         }}
         onPress={() => setIsVisible(true)}
       >
@@ -80,7 +82,7 @@ export const Picker = ({
           style={{
             display: "flex",
             flexDirection: "row",
-            gap: 16,
+            gap: SPACINGS.md,
             alignItems: "center",
           }}
         >
@@ -94,15 +96,10 @@ export const Picker = ({
           )}
 
           <View>
-            <Text style={{ color: theme.onSurface }}>
+            <Text color={theme.onSurface}>
               {label || (variant === "color" ? "Pick Color" : "Pick Icon")}
             </Text>
-            <Text
-              style={{
-                fontSize: 12,
-                color: theme.onSurfaceVariant,
-              }}
-            >
+            <Text size={FONT_SIZES.caption} color={theme.onSurfaceVariant}>
               {description ||
                 (variant === "color"
                   ? "Set color for your category"
@@ -112,11 +109,14 @@ export const Picker = ({
         </View>
 
         {variant === "color" ? (
-          <ColorDotWithRing color={value || theme.primary} />
+          <ColorDotWithRing
+            size={FONT_SIZES.h3}
+            color={value || theme.primary}
+          />
         ) : (
           <Icons
             name={(value as IconsNameType) || (defaultIcon as IconsNameType)}
-            size={30}
+            size={FONT_SIZES.h3}
             color={theme.primary}
           />
         )}
@@ -130,29 +130,30 @@ export const Picker = ({
             <Text color={theme.onSurface} style={styles.pickerHeader}>
               Select an Icon
             </Text>
-
-            <FlatList
-              data={ALL_ICON_NAMES}
-              keyExtractor={(item) => item}
-              numColumns={NUM_COLUMNS}
-              renderItem={({ item: iconName }) => (
-                <TouchableButton
-                  style={styles.iconItem}
-                  onPress={() => handleSelectAndClose(iconName)}
-                >
-                  <Icons
-                    name={iconName as IconsNameType}
-                    size={ICON_SIZE_IN_PICKER - 10}
-                    color={
-                      value === iconName
-                        ? theme.primary
-                        : theme.onSurfaceVariant
-                    }
-                  />
-                </TouchableButton>
-              )}
-              contentContainerStyle={styles.iconListContent}
-            />
+            <ScrollView
+              horizontal={false}
+              contentContainerStyle={styles.pillListContentContainer}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+            >
+              {ALL_ICON_NAMES.map((item) => {
+                return (
+                  <TouchableButton
+                    key={item}
+                    onPress={() => handleSelectAndClose(item)}
+                    style={styles.iconItem}
+                  >
+                    <Icons
+                      name={item as IconsNameType}
+                      size={ICON_SIZE_IN_PICKER - 10}
+                      color={
+                        value === item ? theme.primary : theme.onSurfaceVariant
+                      }
+                    />
+                  </TouchableButton>
+                );
+              })}
+            </ScrollView>
           </View>
         )}
       </CustomSheet>
@@ -161,26 +162,20 @@ export const Picker = ({
 };
 
 const styles = StyleSheet.create({
-  iconPickerContainer: {
-    padding: PADDING,
-    paddingTop: 20,
-    height: WINDOW_HEIGHT,
+  pillListContentContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: SPACINGS.xs,
   },
   pickerHeader: {
-    fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 15,
-  },
-  iconListContent: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
   },
   iconItem: {
     width: ICON_SIZE_IN_PICKER,
     height: ICON_SIZE_IN_PICKER,
     justifyContent: "center",
     alignItems: "center",
-    margin: 5,
-    borderRadius: 8,
+    gap: SPACINGS.tiny,
+    borderRadius: SPACINGS.xs,
   },
 });

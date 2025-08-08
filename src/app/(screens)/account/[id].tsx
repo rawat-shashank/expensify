@@ -56,7 +56,7 @@ const EditAccountPage = ({}: {}) => {
   }
 
   return (
-    <>
+    <Container paddingVertical={SPACINGS.md}>
       <Stack.Screen
         options={{
           title: "Update Account",
@@ -88,15 +88,13 @@ const EditAccountPage = ({}: {}) => {
         renderItem={null}
         data={null}
         ListHeaderComponent={
-          <Container>
-            <AccountForm
-              account={accountDetails}
-              onUpdateAccount={handleUpdateAccount}
-            />
-          </Container>
+          <AccountForm
+            account={accountDetails}
+            onUpdateAccount={handleUpdateAccount}
+          />
         }
       />
-    </>
+    </Container>
   );
 };
 

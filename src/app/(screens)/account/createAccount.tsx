@@ -21,7 +21,7 @@ const CreateAccount = () => {
   };
 
   return (
-    <>
+    <Container paddingVertical={SPACINGS.md}>
       <Stack.Screen
         options={{
           title: "Add Account",
@@ -47,13 +47,9 @@ const CreateAccount = () => {
       <FlatList
         renderItem={null}
         data={null}
-        ListHeaderComponent={
-          <Container>
-            <AccountForm onAddAccount={handleAddAccount} />
-          </Container>
-        }
+        ListHeaderComponent={<AccountForm onAddAccount={handleAddAccount} />}
       />
-    </>
+    </Container>
   );
 };
 

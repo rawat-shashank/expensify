@@ -29,7 +29,12 @@ const AccountList = () => {
     return <Text>Database not ready.</Text>;
   }
 
-  const { accountSummaryList, isLoading, deleteAccount } = useAccounts(db);
+  const {
+    accountSummaryList,
+    refetchAccountSummaryList,
+    isLoading,
+    deleteAccount,
+  } = useAccounts(db);
 
   const router = useRouter();
 
@@ -145,6 +150,8 @@ const AccountList = () => {
     <FlatList
       renderItem={null}
       data={null}
+      onRefresh={() => refetchAccountSummaryList()}
+      refreshing={false}
       ListHeaderComponent={
         <Container>
           <View>
@@ -160,9 +167,7 @@ const AccountList = () => {
                 ItemSeparatorComponent={AccountSeparator}
               />
             ) : (
-              <Text style={{ color: theme.onSurface }}>
-                No accounts created yet.
-              </Text>
+              <Text color={theme.onSurface}>No accounts created yet.</Text>
             )}
             <View
               style={{

@@ -20,7 +20,7 @@ const CreateCategory = ({}: {}) => {
   };
 
   return (
-    <>
+    <Container>
       <Stack.Screen
         options={{
           title: "Add Category",
@@ -46,13 +46,9 @@ const CreateCategory = ({}: {}) => {
       <FlatList
         renderItem={null}
         data={null}
-        ListHeaderComponent={
-          <Container>
-            <CategoryForm onAddCategory={onAddCategory} />
-          </Container>
-        }
+        ListHeaderComponent={<CategoryForm onAddCategory={onAddCategory} />}
       />
-    </>
+    </Container>
   );
 };
 

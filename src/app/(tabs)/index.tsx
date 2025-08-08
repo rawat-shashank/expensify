@@ -74,6 +74,7 @@ export default function HomeScreen() {
             >
               {profileData?.name}
             </Text>
+
             <Text size={FONT_SIZES.small} color={theme.onSurface}>
               Welcome Back!
             </Text>
@@ -85,6 +86,9 @@ export default function HomeScreen() {
             >
               Latest Transactions
             </Text>
+            {transactions.length === 0 && (
+              <Text color={theme.onSurface}>No Transactions</Text>
+            )}
           </>
         }
         ListFooterComponent={() =>

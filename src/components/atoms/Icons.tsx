@@ -34,6 +34,14 @@ const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
   "color-palette": { component: Ionicons, name: "color-palette" },
   calendar: { component: Ionicons, name: "calendar" },
   settings: { component: Ionicons, name: "settings-sharp" },
+  hanger: { component: MaterialCommunityIcons, name: "hanger" },
+  airplane: { component: MaterialCommunityIcons, name: "airplane" },
+  "receipt-outline": { component: Ionicons, name: "receipt-outline" },
+  "game-controller": { component: Ionicons, name: "game-controller" },
+  food: { component: Ionicons, name: "fast-food-sharp" },
+  cart: { component: Ionicons, name: "cart" },
+  gift: { component: Ionicons, name: "gift" },
+  cog: { component: Entypo, name: "cog" },
 };
 
 interface IconProps {

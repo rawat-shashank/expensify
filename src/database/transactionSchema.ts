@@ -39,19 +39,6 @@ interface TransactionsGroupedByDateType {
 
 // ---- SQL Queries ----
 
-const SQL_CREATE_TRANSACTION_TABLE = `
-  CREATE TABLE IF NOT EXISTS transactions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    desc TEXT,
-    amount TEXT NOT NULL,
-    time TEXT NOT NULL,
-    account_id INTEGER NOT NULL,
-    category_id INTEGER NOT NULL,
-    type TEXT NOT NULL CHECK (type IN ('expense', 'income', 'transfer'))
-  );  
-`;
-
 const SQL_GET_TRANSACTIONS = `
   SELECT
     t.*,
@@ -102,10 +89,6 @@ const SQL_GET_TRANSACTIONS_GROUPED_BY_DATE = `
 `;
 
 // ---- Database Operations  ----
-
-const createTransactionTable = async (db: SQLiteDatabase): Promise<void> => {
-  await db.execAsync(SQL_CREATE_TRANSACTION_TABLE);
-};
 
 const insertTransaction = async (
   newTransaction: CreateTransactionType,
@@ -164,9 +147,9 @@ const getAllTransactions = async (
 const getGroupedTransactionsByDate = async (
   db: SQLiteDatabase,
   account_id?: number,
-): Promise<trans> => {
+): Promise<TransactionsGroupedByDateType> => {
   const allTransactions = await getAllTransactions(db, account_id || undefined);
-  const grouped: TransactionsGroupedByDate = {};
+  const grouped: TransactionsGroupedByDateType = {};
 
   for (const transaction of allTransactions) {
     const transactionDate = new Date(transaction.time)
@@ -238,7 +221,6 @@ export {
   TransactionType,
   TransactionDetaillsType,
   TransactionsGroupedByDateType,
-  createTransactionTable,
   getAllTransactions,
   insertTransaction,
   getTransactionById,

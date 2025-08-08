@@ -53,8 +53,13 @@ export const CategoryForm = ({
   };
 
   return (
-    <View style={{ flex: 1, paddingVertical: SPACINGS.md }}>
-      <View style={{ flex: 1, gap: SPACINGS.md }}>
+    <View
+      style={{
+        paddingVertical: SPACINGS.md,
+        justifyContent: "space-between",
+      }}
+    >
+      <View style={{ gap: SPACINGS.md }}>
         <InputField
           value={name}
           onUpdate={setName}
@@ -72,7 +77,11 @@ export const CategoryForm = ({
         <Picker variant="color" value={color} onSelect={setColor} />
       </View>
       {(onAddCategory || onUpdateCategory) && (
-        <TouchableButton variant="submit" onPress={handleCreateCategory}>
+        <TouchableButton
+          variant="submit"
+          onPress={handleCreateCategory}
+          style={{ marginTop: SPACINGS.md }}
+        >
           <Text
             size={FONT_SIZES.subheading}
             color={theme.onPrimary}

@@ -1,8 +1,8 @@
-import { useTheme } from "@/context/ThemeContext";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-import { Text } from "../atoms";
+import { useTheme } from "@/context/ThemeContext";
 import { SPACINGS } from "@/constants/sizes";
+import { Text } from "./Text";
 
 interface PillSelectorProps<T extends string> {
   options: T[];

@@ -25,7 +25,7 @@ const CreateTransaction = () => {
   };
 
   return (
-    <>
+    <Container>
       <Stack.Screen
         options={{
           title: "Add Transaction",
@@ -53,12 +53,10 @@ const CreateTransaction = () => {
         renderItem={null}
         data={null}
         ListHeaderComponent={
-          <Container>
-            <TransactionForm onAddTransaction={onAddTransaction} />
-          </Container>
+          <TransactionForm onAddTransaction={onAddTransaction} />
         }
       />
-    </>
+    </Container>
   );
 };
 export default CreateTransaction;

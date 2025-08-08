@@ -1,14 +1,16 @@
-import { Container } from "@/components";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+
+import { Container, Icons, TouchableButton, Text } from "@/components";
+import { SPACINGS } from "@/constants/sizes";
 import { useTheme } from "@/context/ThemeContext";
 import { Href, Stack, useRouter } from "expo-router";
-import React from "react";
+import { Switch } from "react-native-gesture-handler";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+  getAsyncStorageData,
+  storeAsyncStorageData,
+} from "@/utilities/async-storage";
+import { ASYNC_STORAGE_KEYS } from "@/constants/async-storage-keys";
 
 // Define the structure for a settings item
 interface SettingItem {
@@ -29,8 +31,9 @@ const settingsData: SettingItem[] = [
 ];
 
 export default function SettingsMenuScreen() {
-  const { theme } = useTheme();
+  const { theme, isMaterialYou, setIsMaterialYou } = useTheme();
   const router = useRouter();
+
   const renderSettingItem = ({ item }: { item: SettingItem }) => (
     <TouchableOpacity
       style={styles.itemContainer}
@@ -53,8 +56,31 @@ export default function SettingsMenuScreen() {
   );
 
   return (
-    <>
-      <Stack.Screen options={{ title: "Settings" }} />
+    <Container>
+      <Stack.Screen
+        options={{
+          title: "Settings",
+          headerTitleStyle: {
+            color: theme.onSurface,
+          },
+          headerStyle: {
+            backgroundColor: theme.background,
+          },
+          headerLeft: () => (
+            <TouchableButton
+              onPress={() => router.back()}
+              style={{
+                paddingRight: SPACINGS.md,
+              }}
+            >
+              <Icons name="arrow-back" color={theme.onSurface} />
+            </TouchableButton>
+          ),
+        }}
+      />
+      <View>
+        <Switch value={isMaterialYou} onValueChange={setIsMaterialYou} />
+      </View>
       <FlatList
         renderItem={null}
         data={null}
@@ -63,17 +89,15 @@ export default function SettingsMenuScreen() {
           paddingVertical: 16,
         }}
         ListHeaderComponent={
-          <Container>
-            <FlatList
-              data={settingsData}
-              renderItem={renderSettingItem}
-              keyExtractor={(item) => item.id}
-              ItemSeparatorComponent={() => <View style={styles.separator} />}
-            />
-          </Container>
+          <FlatList
+            data={settingsData}
+            renderItem={renderSettingItem}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+          />
         }
       />
-    </>
+    </Container>
   );
 }
 
