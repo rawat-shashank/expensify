@@ -1,13 +1,15 @@
-import { SPACINGS } from "@/constants/sizes";
-import { useTheme } from "@/context/ThemeContext";
 import { ReactNode } from "react";
+
+import { SPACINGS } from "@/constants/sizes";
 import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface ButtonProps {
   children: ReactNode;
   onPress: () => void;
   variant?: "basic" | "submit";
   style?: ViewStyle;
+  disabled?: boolean;
 }
 
 const TouchableButton = ({
@@ -15,12 +17,14 @@ const TouchableButton = ({
   style,
   onPress,
   variant = "basic",
+  disabled = false,
 }: ButtonProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   switch (variant) {
     case "submit":
       return (
         <TouchableOpacity
+          disabled={disabled}
           style={[
             styles.submitButton,
             style,
@@ -38,7 +42,7 @@ const TouchableButton = ({
       break;
   }
   return (
-    <TouchableOpacity style={style} onPress={onPress}>
+    <TouchableOpacity disabled={disabled} style={style} onPress={onPress}>
       {children}
     </TouchableOpacity>
   );

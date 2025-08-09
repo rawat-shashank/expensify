@@ -1,8 +1,8 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
 import { SPACINGS } from "@/constants/sizes";
 import { Text } from "./Text";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface PillSelectorProps<T extends string> {
   options: T[];
@@ -15,7 +15,7 @@ export const PillSelector = <T extends string>({
   selected,
   onSelect,
 }: PillSelectorProps<T>) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   return (
     <View style={styles.pillContainer}>
       {options?.map((option) => (

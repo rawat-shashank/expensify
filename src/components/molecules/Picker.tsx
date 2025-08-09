@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
-import { View, FlatList, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
 import {
   TouchableButton,
@@ -12,16 +11,12 @@ import {
   CustomSheet,
   ColorPicker,
   Text,
-  Container,
 } from "../atoms";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
 const ICON_SIZE_IN_PICKER = 40;
-const PADDING = 8; // Adjust as needed
-const NUM_COLUMNS = Math.floor(
-  (WINDOW_WIDTH - PADDING * 2) / ICON_SIZE_IN_PICKER,
-);
 
 type PickerProps =
   | {
@@ -49,7 +44,7 @@ export const Picker = ({
   description,
   defaultIcon = "star",
 }: PickerProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSelectAndClose = (selectedValue: string | IconsNameType) => {
@@ -126,7 +121,7 @@ export const Picker = ({
         {variant === "color" ? (
           <ColorPicker onSelect={handleSelectAndClose} />
         ) : (
-          <View style={styles.iconPickerContainer}>
+          <View>
             <Text color={theme.onSurface} style={styles.pickerHeader}>
               Select an Icon
             </Text>

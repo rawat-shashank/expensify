@@ -42,6 +42,10 @@ const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
   cart: { component: Ionicons, name: "cart" },
   gift: { component: Ionicons, name: "gift" },
   cog: { component: Entypo, name: "cog" },
+  download: { component: MaterialCommunityIcons, name: "download" },
+  restore: { component: MaterialCommunityIcons, name: "restore" },
+  share: { component: Ionicons, name: "share-social" },
+  "delete-alert": { component: MaterialCommunityIcons, name: "delete-alert" },
 };
 
 interface IconProps {

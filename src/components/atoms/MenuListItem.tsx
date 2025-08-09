@@ -1,10 +1,10 @@
-import { useTheme } from "@/context/ThemeContext";
-import { usePathname, useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 
 import { TouchableButton } from "./TouchableButtons";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { Icons, IconsNameType } from "./Icons";
 import { Text } from "./Text";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export const MenuListItem = ({
   item,
@@ -19,7 +19,7 @@ export const MenuListItem = ({
   closeCustomSheet: () => void;
   active: boolean;
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
 
   return (
@@ -28,7 +28,6 @@ export const MenuListItem = ({
         display: "flex",
         flexDirection: "row",
         gap: SPACINGS.xs,
-        marginVertical: SPACINGS.xs,
         alignItems: "center",
         backgroundColor: active ? theme.tertiaryContainer : "",
         borderRadius: SPACINGS.lg,

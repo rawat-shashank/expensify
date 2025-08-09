@@ -1,7 +1,10 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
-const INSERT_DEFAULT_USER_DATA =
-  "INSERT INTO profiles (id, name, currency) VALUES (1, 'User', 'GBP');";
+import { storeAsyncStorageData } from "@/utilities/async-storage";
+import { ASYNC_STORAGE_KEYS, DEFAULT_USER_DATA } from "@/constants";
+
+// const INSERT_DEFAULT_USER_DATA =
+//   "INSERT INTO profiles (id, name, currency) VALUES (1, 'User', 'GBP');";
 
 const INSERT_CATEGORY = `
   INSERT INTO categories (name, desc, icon, color )
@@ -32,7 +35,10 @@ export async function migrateToVersion2(db: SQLiteDatabase) {
 
   return db.withTransactionAsync(async () => {
     // 1. insert user profile
-    await db.runAsync(INSERT_DEFAULT_USER_DATA);
+    await storeAsyncStorageData(
+      ASYNC_STORAGE_KEYS.USER_ACCOUNT,
+      DEFAULT_USER_DATA,
+    );
 
     // 2. insert default categories
     for (const category of categoriesToInsert) {

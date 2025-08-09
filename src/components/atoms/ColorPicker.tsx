@@ -1,9 +1,9 @@
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { ColorDotWithRing } from "./ColorDotWithRing";
 import { Text } from "./Text";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export const ColorPicker = ({
   onSelect,
@@ -35,7 +35,7 @@ export const ColorPicker = ({
   // Blue spectrum (180-240 degrees in HSL, roughly)
   const blueColors = generateColors(190, 240, 6);
 
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
 
   return (
     <View>

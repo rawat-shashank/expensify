@@ -2,9 +2,9 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
 import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
-import { useTheme } from "@/context/ThemeContext";
 import { Icons, IconsNameType, TouchableButton, Text } from "../atoms";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface AccountCardProps {
   accounts: AccountType[];
@@ -19,7 +19,7 @@ export const AccountCardList = ({
   onSelect,
   error,
 }: AccountCardProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
 
   return (

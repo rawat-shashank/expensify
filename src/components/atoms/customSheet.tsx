@@ -1,7 +1,7 @@
+import { useEffect, useState, useRef } from "react";
+
 import { WINDOW_WIDTH } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
-import { useTheme } from "@/context/ThemeContext";
-import { useEffect, useState, useRef } from "react";
 import {
   Modal,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   Easing,
   View,
 } from "react-native";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export type SheetDirection = "bottom" | "left";
 
@@ -28,7 +29,7 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
   children,
   direction = "bottom",
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const slideAnim = useState(new Animated.Value(0))[0];
   const [contentHeight, setContentHeight] = useState(0);
   const [contentWidth, setContentWidth] = useState(0);

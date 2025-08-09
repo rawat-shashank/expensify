@@ -2,9 +2,9 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
 import { CategoryType } from "@/database/categoriesSchema";
-import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton, Icons, Text } from "../atoms";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface CategoryPillListProps {
   categories: CategoryType[];
@@ -17,7 +17,7 @@ export const CategoryPillList = ({
   activeCategoryId,
   onSelect,
 }: CategoryPillListProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
 
   return (

@@ -2,10 +2,10 @@ import { CreateCategoryType, CategoryType } from "@/database/categoriesSchema";
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
 import { Text, InputField, IconsNameType, TouchableButton } from "../../atoms";
 import { Picker } from "@/components/molecules";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface CategoryFormProps {
   category?: CategoryType;
@@ -22,7 +22,7 @@ export const CategoryForm = ({
   onAddCategory,
   onUpdateCategory,
 }: CategoryFormProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
 
   const [name, setName] = useState(category?.name || "");
   const [desc, setDesc] = useState(category?.desc || "");

@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { BlurView } from "expo-blur";
 
-import { useTheme } from "@/context/ThemeContext";
 import {
   AccountCardTypeEnum,
   AccountSummaryType,
@@ -10,6 +9,7 @@ import {
 import { Icons, Text } from "../atoms";
 import { WINDOW_WIDTH } from "@/constants";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const AccountCard = ({
   account,
@@ -20,7 +20,7 @@ const AccountCard = ({
   handleCardPress: (id: number) => void;
   handleDeleteAccount: (id: number) => void;
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
 
   return (
     <TouchableOpacity

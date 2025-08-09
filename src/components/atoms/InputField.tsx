@@ -1,5 +1,3 @@
-import { useTheme } from "@/context/ThemeContext";
-import { floatTwoDecFromString } from "@/utilities/helpers";
 import {
   View,
   StyleSheet,
@@ -7,9 +5,12 @@ import {
   KeyboardTypeOptions,
   TextStyle,
 } from "react-native";
+
+import { floatTwoDecFromString } from "@/utilities/helpers";
 import { Text } from "./Text";
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export interface InputFieldProps {
   value: string;
@@ -28,7 +29,7 @@ export const InputField = ({
   style,
   keyboardType = "default",
 }: InputFieldProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const onChange = (value: string) => {
     if (!onUpdate) {
       return;

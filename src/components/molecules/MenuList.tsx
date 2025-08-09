@@ -1,4 +1,4 @@
-import { Href, usePathname, useSegments } from "expo-router";
+import { Href, useSegments } from "expo-router";
 import { FlatList } from "react-native";
 import { IconsNameType, MenuListItem } from "../atoms";
 
@@ -11,7 +11,7 @@ export const MenuList = ({
     title: string;
     name: string;
     href: Href;
-  };
+  }[];
   onPress: () => void;
 }) => {
   const segments = useSegments();

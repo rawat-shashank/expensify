@@ -1,5 +1,3 @@
-import { ASYNC_STORAGE_KEYS } from "@/constants/async-storage-keys";
-import { storeAsyncStorageData } from "@/utilities/async-storage";
 import { SQLiteDatabase } from "expo-sqlite";
 
 const SQL_CREATE_ACCOUNTS_TABLE = `
@@ -37,22 +35,10 @@ const SQL_CREATE_TRANSACTION_TABLE = `
   );  
 `;
 
-const SQL_CREATE_PROFILE_TABLE = `
-    CREATE TABLE IF NOT EXISTS profiles (
-      id INTEGER PRIMARY KEY CHECK (id = 1),
-      name TEXT NOT NULL,
-      currency TEXT NOT NULL CHECK (LENGTH(currency) = 3)
-    );
-  `;
-
 export async function migrateToVersion1(db: SQLiteDatabase) {
-  // 1. write on async storage
-  await storeAsyncStorageData(ASYNC_STORAGE_KEYS.MATERIAL_YOU, true);
-
   // 2. write on database
   return db.withTransactionAsync(async () => {
     await db.execAsync(SQL_CREATE_ACCOUNTS_TABLE);
-    await db.execAsync(SQL_CREATE_PROFILE_TABLE);
     await db.execAsync(SQL_CREATE_CATEGORIES_TABLE);
     await db.execAsync(SQL_CREATE_TRANSACTION_TABLE);
   });

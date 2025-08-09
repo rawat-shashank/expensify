@@ -4,12 +4,12 @@ import { useSQLiteContext } from "expo-sqlite";
 
 import useAccounts from "@/queries/accounts";
 import { AccountType } from "@/database/accountsSchema";
-import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton, Container, Icons, AccountForm } from "@/components";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const EditAccountPage = ({}: {}) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
   const db = useSQLiteContext();
 

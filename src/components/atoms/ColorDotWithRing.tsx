@@ -1,7 +1,7 @@
 import { View } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
 import { FONT_SIZES } from "@/constants";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export const ColorDotWithRing = ({
   size = FONT_SIZES.h4,
@@ -12,7 +12,7 @@ export const ColorDotWithRing = ({
   color: string;
   outline?: boolean;
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   return (
     <View
       style={{

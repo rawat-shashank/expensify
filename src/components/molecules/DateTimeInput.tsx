@@ -4,9 +4,9 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 
-import { useTheme } from "@/context/ThemeContext";
 import { Text, Icons, TouchableButton } from "../atoms";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface DateTimeInputProps {
   value: string;
@@ -19,7 +19,7 @@ export const DateTimeInput = ({
   label,
   onChange,
 }: DateTimeInputProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const [date, setDate] = useState(new Date(value));
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState<"date" | "time">("date");

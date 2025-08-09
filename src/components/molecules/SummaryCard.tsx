@@ -1,16 +1,16 @@
 import { View } from "react-native";
-import { useTheme } from "@/context/ThemeContext";
 
 import { SummaryCardType } from "@/database/generalSchema";
 import { Text } from "../atoms";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export const SummaryCard = ({
   summaryCardDetails,
 }: {
   summaryCardDetails: SummaryCardType;
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const { current_balance, total_income, total_expense } = summaryCardDetails;
 
   return (

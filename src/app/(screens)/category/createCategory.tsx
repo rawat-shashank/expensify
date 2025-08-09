@@ -2,14 +2,14 @@ import { FlatList } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
-import { useTheme } from "@/context/ThemeContext";
 import { CreateCategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/categories";
 import { CategoryForm, Container, Icons, TouchableButton } from "@/components";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const CreateCategory = ({}: {}) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
   const db = useSQLiteContext();
   const { addCategory } = useCategories(db);

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
 import { SPACINGS } from "@/constants/sizes";
 import { Text } from "./Text";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 // Define the properties (props) for the CurrencyInput component.
 interface CurrencyInputProps {
@@ -21,7 +21,7 @@ const CurrencyInput = ({
   onUpdate,
   error,
 }: CurrencyInputProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const [internalValue, setInternalValue] = useState(
     value ? String(value) : "",
   );

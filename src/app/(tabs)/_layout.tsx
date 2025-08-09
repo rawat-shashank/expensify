@@ -1,11 +1,10 @@
-import useProfile from "@/queries/useProfile";
-
 import { Href, Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTheme } from "@/context/ThemeContext";
+
+import useProfile from "@/queries/useProfile";
 import {
   Icons,
   InputField,
@@ -16,10 +15,10 @@ import {
   FloatingActionButton,
   Header,
   MenuList,
-  ItemSeparator,
 } from "@/components";
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface TabProps {
   name: string;
@@ -29,11 +28,14 @@ interface TabProps {
 }
 
 export default function TabLayout() {
-  const { theme } = useTheme();
+  const { theme, userAccountData, setUserAccountData } = useUserAccount();
   const router = useRouter();
-  const db = useSQLiteContext();
-  const { profileData, saveProfile } = useProfile(db);
-  const [profileName, setProfileName] = useState(profileData?.name || "");
+  const [profileName, setProfileName] = useState(userAccountData.name || "");
+  useEffect(() => {
+    if (userAccountData) {
+      setProfileName(userAccountData.name);
+    }
+  }, [userAccountData]);
 
   const insets = useSafeAreaInsets();
 
@@ -73,12 +75,6 @@ export default function TabLayout() {
     setActiveIndex(index === -1 ? 0 : index);
   }, [pathname, tabs]);
 
-  useEffect(() => {
-    if (profileData) {
-      setProfileName(profileData.name);
-    }
-  }, [profileData]);
-
   const handleProfileTabPress = () => {
     setBottomSheetVisible(true);
   };
@@ -96,7 +92,7 @@ export default function TabLayout() {
   };
 
   const handleProfileSubmit = async () => {
-    await saveProfile(profileName, profileData?.currency || "GBP");
+    await setUserAccountData({ ...userAccountData, name: profileName });
     setBottomSheetVisible(false);
   };
 
@@ -264,6 +260,7 @@ export default function TabLayout() {
               borderBottomWidth: 1,
               borderColor: theme.surfaceDisabled,
               backgroundColor: "transparent",
+              marginVertical: 4,
             }}
           />
           <TouchableButton
@@ -271,7 +268,6 @@ export default function TabLayout() {
               display: "flex",
               flexDirection: "row",
               gap: SPACINGS.xs,
-              marginVertical: SPACINGS.xs,
               alignItems: "center",
               borderRadius: SPACINGS.lg,
               padding: SPACINGS.sm,

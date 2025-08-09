@@ -11,11 +11,11 @@ import {
   Icons,
   TouchableButton,
 } from "@/components";
-import { useTheme } from "@/context/ThemeContext";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const EditCategoryForm = () => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
   const db = useSQLiteContext();
 

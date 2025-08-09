@@ -3,7 +3,7 @@ import { migrations, LATEST_DATABASE_VERSION } from "./migrations/";
 
 const setupDatabase = async (db: SQLiteDatabase): Promise<void> => {
   try {
-    const { user_version: currentVersion } = await db.getFirstAsync(
+    const { user_version: currentVersion } = await db.getFirstAsync<any>(
       "PRAGMA user_version",
     );
 
@@ -33,6 +33,16 @@ const resetDatabase = async (db: SQLiteDatabase): Promise<void> => {
     await db.execAsync("DROP TABLE IF EXISTS accounts;");
     await db.execAsync("DROP TABLE IF EXISTS transactions;");
     await db.execAsync("DROP TABLE IF EXISTS categories;");
+
+    // Reset the auto-increment sequence for each table
+    await db.execAsync("DELETE FROM sqlite_sequence WHERE name = 'accounts';");
+    await db.execAsync(
+      "DELETE FROM sqlite_sequence WHERE name = 'transactions';",
+    );
+    await db.execAsync(
+      "DELETE FROM sqlite_sequence WHERE name = 'categories';",
+    );
+
     await db.execAsync(`PRAGMA user_version = 0;`);
   });
 };

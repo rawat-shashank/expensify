@@ -1,4 +1,13 @@
 export enum ASYNC_STORAGE_KEYS {
-  MATERIAL_YOU = "materialYou",
-  USERNAME = "userName",
+  USER_ACCOUNT = "userAccount",
 }
+
+export interface UserAccountData {
+  name: string;
+  materialYou: boolean;
+}
+
+export const DEFAULT_USER_DATA = {
+  name: "User",
+  materialYou: true,
+};
