@@ -4,12 +4,12 @@ import { useSQLiteContext } from "expo-sqlite";
 
 import useAccounts from "@/queries/accounts";
 import { AccountType } from "@/database/accountsSchema";
-import { useTheme } from "@/context/ThemeContext";
 import { TouchableButton, Container, Icons, AccountForm } from "@/components";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const EditAccountPage = ({}: {}) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
   const db = useSQLiteContext();
 
@@ -56,7 +56,7 @@ const EditAccountPage = ({}: {}) => {
   }
 
   return (
-    <>
+    <Container paddingVertical={SPACINGS.md}>
       <Stack.Screen
         options={{
           title: "Update Account",
@@ -88,15 +88,13 @@ const EditAccountPage = ({}: {}) => {
         renderItem={null}
         data={null}
         ListHeaderComponent={
-          <Container>
-            <AccountForm
-              account={accountDetails}
-              onUpdateAccount={handleUpdateAccount}
-            />
-          </Container>
+          <AccountForm
+            account={accountDetails}
+            onUpdateAccount={handleUpdateAccount}
+          />
         }
       />
-    </>
+    </Container>
   );
 };
 

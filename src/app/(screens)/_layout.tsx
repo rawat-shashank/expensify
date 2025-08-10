@@ -1,10 +1,8 @@
-import { useTheme } from "@/context/ThemeContext";
 import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function AppLayout() {
-  const { theme } = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
@@ -14,14 +12,7 @@ export default function AppLayout() {
         paddingBottom: insets.bottom,
       }}
     >
-      <Stack
-        screenOptions={{
-          headerShown: true,
-          headerTitleStyle: {
-            color: theme.onSurface,
-          },
-        }}
-      />
+      <Stack />
     </SafeAreaView>
   );
 }

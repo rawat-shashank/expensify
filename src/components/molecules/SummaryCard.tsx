@@ -1,16 +1,16 @@
 import { View } from "react-native";
-import { useTheme } from "@/context/ThemeContext";
 
 import { SummaryCardType } from "@/database/generalSchema";
 import { Text } from "../atoms";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export const SummaryCard = ({
   summaryCardDetails,
 }: {
   summaryCardDetails: SummaryCardType;
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const { current_balance, total_income, total_expense } = summaryCardDetails;
 
   return (
@@ -25,17 +25,21 @@ export const SummaryCard = ({
       }}
     >
       <View style={{ display: "flex", gap: SPACINGS.xs }}>
-        <Text color={theme.onTertiaryContainer}>Total Balance</Text>
+        <Text size={FONT_SIZES.small} color={theme.onTertiaryContainer}>
+          Total Balance
+        </Text>
         <Text
           color={theme.onTertiaryContainer}
-          size={FONT_SIZES.h3}
+          size={FONT_SIZES.h2}
           style={{ fontWeight: "bold" }}
         >
           £{current_balance}
         </Text>
       </View>
       <View style={{ display: "flex", gap: SPACINGS.xs }}>
-        <Text color={theme.onTertiaryContainer}>Total</Text>
+        <Text size={FONT_SIZES.small} color={theme.onTertiaryContainer}>
+          Total
+        </Text>
         <View
           style={{
             display: "flex",
@@ -50,6 +54,7 @@ export const SummaryCard = ({
             <Text
               size={FONT_SIZES.subheading}
               color={theme.onTertiaryContainer}
+              style={{ fontWeight: "bold" }}
             >
               £{total_income}
             </Text>
@@ -62,6 +67,7 @@ export const SummaryCard = ({
             <Text
               size={FONT_SIZES.subheading}
               color={theme.onTertiaryContainer}
+              style={{ fontWeight: "bold" }}
             >
               £{total_expense}
             </Text>

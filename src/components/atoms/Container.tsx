@@ -1,5 +1,5 @@
 import { SPACINGS } from "@/constants/sizes";
-import { useTheme } from "@/context/ThemeContext";
+import { useUserAccount } from "@/context/UserAccountContext";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -14,7 +14,7 @@ export const Container: React.FC<Props> = ({
   style,
   paddingVertical = 0,
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
 
   return (
     <View

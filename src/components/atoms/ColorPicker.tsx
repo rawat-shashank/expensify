@@ -1,5 +1,9 @@
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { ColorDotWithRing } from "../atoms";
+
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { ColorDotWithRing } from "./ColorDotWithRing";
+import { Text } from "./Text";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export const ColorPicker = ({
   onSelect,
@@ -31,48 +35,59 @@ export const ColorPicker = ({
   // Blue spectrum (180-240 degrees in HSL, roughly)
   const blueColors = generateColors(190, 240, 6);
 
+  const { theme } = useUserAccount();
+
   return (
-    <View
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <View style={styles.row}>
-        {redColors.map((color, index) => (
-          <TouchableOpacity
-            key={`red-${index}`}
-            style={styles.colorBox}
-            onPress={() => setSelectedColor(color)}
-          >
-            <ColorDotWithRing color={color} size={32} />
-          </TouchableOpacity>
-        ))}
-      </View>
+    <View>
+      <Text
+        size={FONT_SIZES.subheading}
+        color={theme.onSurface}
+        style={styles.pickerHeader}
+      >
+        Select a Color
+      </Text>
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View style={styles.row}>
+          {redColors.map((color, index) => (
+            <TouchableOpacity
+              key={`red-${index}`}
+              style={styles.colorBox}
+              onPress={() => setSelectedColor(color)}
+            >
+              <ColorDotWithRing color={color} size={32} />
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      <View style={styles.row}>
-        {greenColors.map((color, index) => (
-          <TouchableOpacity
-            key={`green-${index}`}
-            style={styles.colorBox}
-            onPress={() => setSelectedColor(color)}
-          >
-            <ColorDotWithRing color={color} size={32} />
-          </TouchableOpacity>
-        ))}
-      </View>
+        <View style={styles.row}>
+          {greenColors.map((color, index) => (
+            <TouchableOpacity
+              key={`green-${index}`}
+              style={styles.colorBox}
+              onPress={() => setSelectedColor(color)}
+            >
+              <ColorDotWithRing color={color} size={32} />
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      <View style={styles.row}>
-        {blueColors.map((color, index) => (
-          <TouchableOpacity
-            key={`blue-${index}`}
-            style={styles.colorBox}
-            onPress={() => setSelectedColor(color)}
-          >
-            <ColorDotWithRing color={color} size={32} />
-          </TouchableOpacity>
-        ))}
+        <View style={styles.row}>
+          {blueColors.map((color, index) => (
+            <TouchableOpacity
+              key={`blue-${index}`}
+              style={styles.colorBox}
+              onPress={() => setSelectedColor(color)}
+            >
+              <ColorDotWithRing color={color} size={32} />
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -89,6 +104,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
+  },
+  pickerHeader: {
+    fontWeight: "bold",
+    marginBottom: SPACINGS.md,
   },
   header: {
     fontSize: 20,

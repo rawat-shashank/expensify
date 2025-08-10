@@ -1,7 +1,6 @@
 import { ScrollView, View } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
-import { useTheme } from "@/context/ThemeContext";
 
 // ---- hooks ----
 import useAccounts from "@/queries/accounts";
@@ -28,6 +27,7 @@ import {
   CategoryPillList,
 } from "../../molecules";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
@@ -47,7 +47,7 @@ export const TransactionForm = ({
   onAddTransaction,
   onUpdateTransaction,
 }: TransactionFormProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
 
   // TODO: Add Transaction type for Transfer
   const transactionTypeOptions: TransactionTypeEnum[] = [

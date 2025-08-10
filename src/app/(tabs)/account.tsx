@@ -5,7 +5,6 @@ import { useRouter } from "expo-router";
 
 import useAccounts from "@/queries/accounts";
 import useTransactions from "@/queries/transactions";
-import { useTheme } from "@/context/ThemeContext";
 
 import { AccountSummaryType } from "@/database/accountsSchema";
 import { TransactionDetaillsType } from "@/database/transactionSchema";
@@ -20,16 +19,22 @@ import {
   ItemSeparator,
 } from "@/components";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const AccountList = () => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
 
   const db = useSQLiteContext();
   if (!db) {
     return <Text>Database not ready.</Text>;
   }
 
-  const { accountSummaryList, isLoading, deleteAccount } = useAccounts(db);
+  const {
+    accountSummaryList,
+    refetchAccountSummaryList,
+    isLoading,
+    deleteAccount,
+  } = useAccounts(db);
 
   const router = useRouter();
 
@@ -145,6 +150,8 @@ const AccountList = () => {
     <FlatList
       renderItem={null}
       data={null}
+      onRefresh={() => refetchAccountSummaryList()}
+      refreshing={false}
       ListHeaderComponent={
         <Container>
           <View>
@@ -160,9 +167,7 @@ const AccountList = () => {
                 ItemSeparatorComponent={AccountSeparator}
               />
             ) : (
-              <Text style={{ color: theme.onSurface }}>
-                No accounts created yet.
-              </Text>
+              <Text color={theme.onSurface}>No accounts created yet.</Text>
             )}
             <View
               style={{

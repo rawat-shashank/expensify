@@ -1,11 +1,10 @@
-import useProfile from "@/queries/useProfile";
-
-import { Tabs, usePathname, useRouter } from "expo-router";
+import { Href, Tabs, usePathname, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTheme } from "@/context/ThemeContext";
+
+import useProfile from "@/queries/useProfile";
 import {
   Icons,
   InputField,
@@ -15,44 +14,66 @@ import {
   Text,
   FloatingActionButton,
   Header,
+  MenuList,
 } from "@/components";
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface TabProps {
   name: string;
   title: string;
   icon: IconsNameType;
+  href: Href;
 }
 
 export default function TabLayout() {
-  const { theme } = useTheme();
+  const { theme, userAccountData, setUserAccountData } = useUserAccount();
   const router = useRouter();
-  const db = useSQLiteContext();
-  const { profileData, saveProfile } = useProfile(db);
-  const [profileName, setProfileName] = useState(profileData?.name || "");
+  const [profileName, setProfileName] = useState(userAccountData.name || "");
+  useEffect(() => {
+    if (userAccountData) {
+      setProfileName(userAccountData.name);
+    }
+  }, [userAccountData]);
 
   const insets = useSafeAreaInsets();
 
   const tabs: TabProps[] = [
-    { name: "index", title: "Home", icon: "home" },
-    { name: "account", title: "Account", icon: "credit-card" },
-    { name: "category", title: "Category", icon: "archive" },
-    { name: "overview", title: "Overview", icon: "area-graph" },
+    { name: "index", title: "Home", icon: "home", href: "/(tabs)" },
+    {
+      name: "account",
+      title: "Account",
+      icon: "credit-card",
+      href: "/(tabs)/account",
+    },
+    {
+      name: "category",
+      title: "Category",
+      icon: "archive",
+      href: "/(tabs)/category",
+    },
+    {
+      name: "overview",
+      title: "Overview",
+      icon: "area-graph",
+      href: "/(tabs)/overview",
+    },
   ];
 
   //checks the current path for current title on header
   const pathname = usePathname();
+
   const index = tabs.findIndex((tab) => tab.name == pathname.slice(1));
   const [activeTabIndex, setActiveIndex] = useState(index === -1 ? 0 : index);
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [isCustomSheetVisible, setCustomSheetVisible] = useState(false);
 
   useEffect(() => {
-    if (profileData) {
-      setProfileName(profileData.name);
-    }
-  }, [profileData]);
+    const currentTabName = pathname?.slice(1);
+    const index = tabs.findIndex((tab) => tab.name === currentTabName);
+    setActiveIndex(index === -1 ? 0 : index);
+  }, [pathname, tabs]);
 
   const handleProfileTabPress = () => {
     setBottomSheetVisible(true);
@@ -71,7 +92,7 @@ export default function TabLayout() {
   };
 
   const handleProfileSubmit = async () => {
-    await saveProfile(profileName, profileData?.currency || "GBP");
+    await setUserAccountData({ ...userAccountData, name: profileName });
     setBottomSheetVisible(false);
   };
 
@@ -232,15 +253,22 @@ export default function TabLayout() {
               Expensify
             </Text>
           </View>
+          <MenuList menuListItems={tabs} onPress={closeCustomSheet} />
 
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderColor: theme.surfaceDisabled,
+              backgroundColor: "transparent",
+              marginVertical: 4,
+            }}
+          />
           <TouchableButton
             style={{
               display: "flex",
               flexDirection: "row",
               gap: SPACINGS.xs,
-              marginVertical: SPACINGS.xs,
               alignItems: "center",
-              backgroundColor: theme.secondaryContainer,
               borderRadius: SPACINGS.lg,
               padding: SPACINGS.sm,
             }}

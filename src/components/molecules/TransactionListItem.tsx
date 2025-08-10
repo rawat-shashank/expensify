@@ -1,16 +1,16 @@
 import { StyleSheet, View } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
 import { TransactionDetaillsType } from "@/database/transactionSchema";
 import { Text } from "../atoms";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export const TransactionListItem = ({
   item,
 }: {
   item: TransactionDetaillsType;
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const time = new Date(item.time);
 
   return (

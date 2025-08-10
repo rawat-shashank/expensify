@@ -11,11 +11,11 @@ import {
   Icons,
   TouchableButton,
 } from "@/components";
-import { useTheme } from "@/context/ThemeContext";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const EditCategoryForm = () => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
   const db = useSQLiteContext();
 
@@ -68,7 +68,7 @@ const EditCategoryForm = () => {
   }
 
   return (
-    <>
+    <Container>
       <Stack.Screen
         options={{
           title: "Update Category",
@@ -100,15 +100,13 @@ const EditCategoryForm = () => {
         renderItem={null}
         data={null}
         ListHeaderComponent={
-          <Container>
-            <CategoryForm
-              category={categoryDetails}
-              onUpdateCategory={handleUpdateCategory}
-            />
-          </Container>
+          <CategoryForm
+            category={categoryDetails}
+            onUpdateCategory={handleUpdateCategory}
+          />
         }
       />
-    </>
+    </Container>
   );
 };
 

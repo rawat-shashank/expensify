@@ -1,15 +1,15 @@
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
-import { useTheme } from "@/context/ThemeContext";
 import { CreateAccountType } from "@/database/accountsSchema";
 import useAccounts from "@/queries/accounts";
 import { Container, TouchableButton, Icons, AccountForm } from "@/components";
 import { FlatList } from "react-native";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const CreateAccount = () => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const db = useSQLiteContext();
   const router = useRouter();
 
@@ -21,7 +21,7 @@ const CreateAccount = () => {
   };
 
   return (
-    <>
+    <Container paddingVertical={SPACINGS.md}>
       <Stack.Screen
         options={{
           title: "Add Account",
@@ -47,13 +47,9 @@ const CreateAccount = () => {
       <FlatList
         renderItem={null}
         data={null}
-        ListHeaderComponent={
-          <Container>
-            <AccountForm onAddAccount={handleAddAccount} />
-          </Container>
-        }
+        ListHeaderComponent={<AccountForm onAddAccount={handleAddAccount} />}
       />
-    </>
+    </Container>
   );
 };
 

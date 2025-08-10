@@ -6,7 +6,6 @@ import { TransactionDetaillsType } from "@/database/transactionSchema";
 import { useSummaryCard } from "@/queries/useGeneral"; // Assuming this still exists and is needed
 import useProfile from "@/queries/useProfile"; // Assuming this still exists and is needed
 import useTransactions from "@/queries/transactions"; // Your combined transactions hook
-import { useTheme } from "@/context/ThemeContext";
 import {
   Text,
   Container,
@@ -16,9 +15,10 @@ import {
   ItemSeparator,
 } from "@/components";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 export default function HomeScreen() {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const db = useSQLiteContext();
   const { profileData } = useProfile(db);
   const { summaryCard, isLoading: isLoadingSummaryCard } = useSummaryCard(db);
@@ -74,6 +74,7 @@ export default function HomeScreen() {
             >
               {profileData?.name}
             </Text>
+
             <Text size={FONT_SIZES.small} color={theme.onSurface}>
               Welcome Back!
             </Text>
@@ -85,6 +86,9 @@ export default function HomeScreen() {
             >
               Latest Transactions
             </Text>
+            {transactions.length === 0 && (
+              <Text color={theme.onSurface}>No Transactions</Text>
+            )}
           </>
         }
         ListFooterComponent={() =>

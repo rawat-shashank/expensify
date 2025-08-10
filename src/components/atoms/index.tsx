@@ -9,6 +9,7 @@ import { CustomSheet } from "./customSheet";
 import { ColorPicker } from "./ColorPicker";
 import { PillSelector } from "./PillSelector";
 import CurrencyInput from "./CurrencyInput";
+import { MenuListItem } from "./MenuListItem";
 
 export {
   IconsNameType,
@@ -24,4 +25,5 @@ export {
   ColorPicker,
   PillSelector,
   CurrencyInput,
+  MenuListItem,
 };

@@ -3,14 +3,14 @@ import { Text } from "../atoms";
 import { CategoryType } from "@/database/categoriesSchema";
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
-import { useTheme } from "@/context/ThemeContext";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface CategoryListItemProps {
   item: CategoryType;
 }
 
 export const CategoryListItem = ({ item }: CategoryListItemProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   return (
     <View style={styles.card}>
       <Text size={FONT_SIZES.body} color={theme.onSurface}>

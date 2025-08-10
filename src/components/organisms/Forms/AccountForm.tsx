@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Switch, View, StyleSheet } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
-
 import {
   AccountCardTypeEnum,
   AccountType,
@@ -18,6 +16,7 @@ import {
 } from "../../atoms/";
 import { Picker } from "@/components/molecules";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface AccountFormProps {
   account?: AccountType;
@@ -30,7 +29,7 @@ export const AccountForm = ({
   onAddAccount,
   onUpdateAccount,
 }: AccountFormProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const accountCardOptions: AccountCardTypeEnum[] = [
     AccountCardTypeEnum.CASH,
     AccountCardTypeEnum.WALLET,
@@ -90,8 +89,8 @@ export const AccountForm = ({
   };
 
   return (
-    <View style={{ flex: 1, paddingVertical: 16 }}>
-      <View style={{ flex: 1, gap: SPACINGS.md }}>
+    <View>
+      <View style={{ gap: SPACINGS.md }}>
         <PillSelector
           options={accountCardOptions}
           selected={cardType}

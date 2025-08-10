@@ -6,10 +6,9 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
-
 import { Icons, IconsNameType } from "../atoms";
 import { FONT_SIZES } from "@/constants";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface FABProps {
   onPress: () => void;
@@ -28,7 +27,7 @@ const FloatingActionButton = ({
   iconSize = FONT_SIZES.h4,
   style,
 }: FABProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const iconScale = 2 * iconSize;
   const iconborder = iconSize / 2;
   const [animation] = useState(new Animated.Value(1));

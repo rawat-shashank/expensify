@@ -10,13 +10,15 @@ interface SummaryCardType {
 // --- SQL Queries ---
 const SQL_SUMMARY_CARD = `
   SELECT
-    (SELECT SUM(CAST(amount AS REAL)) FROM accounts) AS opening_balance,
-    SUM(CASE WHEN type = 'income' THEN CAST(amount AS REAL) ELSE 0 END) AS total_income,
-    SUM(CASE WHEN type = 'expense' THEN CAST(amount AS REAL) ELSE 0 END) AS total_expense,
-    (
-      (SELECT SUM(CAST(amount AS REAL)) FROM accounts) +
-      SUM(CASE WHEN type = 'income' THEN CAST(amount AS REAL) ELSE 0 END) -
-      SUM(CASE WHEN type = 'expense' THEN CAST(amount AS REAL) ELSE 0 END)
+    COALESCE((SELECT SUM(CAST(amount AS REAL)) FROM accounts), 0) AS opening_balance,
+    COALESCE(SUM(CASE WHEN type = 'income' THEN CAST(amount AS REAL) ELSE 0 END), 0) AS total_income,
+    COALESCE(SUM(CASE WHEN type = 'expense' THEN CAST(amount AS REAL) ELSE 0 END), 0) AS total_expense,
+    COALESCE(
+      (
+        (SELECT SUM(CAST(amount AS REAL)) FROM accounts) +
+        SUM(CASE WHEN type = 'income' THEN CAST(amount AS REAL) ELSE 0 END) -
+        SUM(CASE WHEN type = 'expense' THEN CAST(amount AS REAL) ELSE 0 END)
+      ), 0
     ) AS current_balance
   FROM
     transactions;

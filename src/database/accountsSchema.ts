@@ -28,18 +28,6 @@ interface AccountSummaryType extends AccountType {
 
 // ---- SQL Queries ----
 
-const SQL_CREATE_ACCOUNTS_TABLE = `
-  CREATE TABLE IF NOT EXISTS accounts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    accountName TEXT NOT NULL,
-    amount TEXT NOT NULL,
-    cardType TEXT NOT NULL CHECK (cardType IN ('cash', 'wallet', 'bank')),
-    color TEXT NOT NULL,
-    isActive INTEGER DEFAULT 1 NOT NULL
-    );
-`;
-
 const SQL_GET_ALL_ACCOUNTS = `
   SELECT * FROM accounts;"
 `;
@@ -90,14 +78,6 @@ const SQL_GET_ACCOUNT_SUMMARY_LIST = `
 `;
 
 // ---- Database Operations ----
-
-/**
- * Creates the 'accounts' table for expo-sqlite, if table not exisits
- *  @param db SQLite database instance
- */
-const createAccountsTable = async (db: SQLiteDatabase): Promise<void> => {
-  await db.execAsync(SQL_CREATE_ACCOUNTS_TABLE);
-};
 
 /**
  * Retrieves all accounts from the database.
@@ -214,7 +194,6 @@ export {
   CreateAccountType,
   AccountType,
   AccountSummaryType,
-  createAccountsTable,
   getAllAccounts,
   insertAccount,
   getAccountById,

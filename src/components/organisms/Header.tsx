@@ -1,9 +1,9 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text, Icons, IconsNameType } from "../atoms";
-import { useTheme } from "@/context/ThemeContext";
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface HeaderProps {
   title: string;
@@ -20,7 +20,7 @@ export const Header: React.FC<HeaderProps> = ({
   rightIcon,
   onRightIconPress,
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
 
   return (
     <View style={styles.header}>

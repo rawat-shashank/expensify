@@ -19,21 +19,23 @@ const CategoryList = () => {
   }
 
   const router = useRouter();
-  const { categories, isLoading } = useCategories(db);
+  const { categories, refetchCategories, isLoading } = useCategories(db);
 
   const handleCardPress = (categoryId: number) => {
     router.push(`/category/${categoryId}`);
   };
 
-  const renderItem = ({ item }: { item: CategoryType }) => (
-    <IconListItem
-      icon={item.icon}
-      color={item.color}
-      onPress={() => handleCardPress(item.id)}
-    >
-      <CategoryListItem item={item} />
-    </IconListItem>
-  );
+  const renderItem = ({ item }: { item: CategoryType }) => {
+    return (
+      <IconListItem
+        icon={item.icon}
+        color={item.color}
+        onPress={() => handleCardPress(item.id)}
+      >
+        <CategoryListItem item={item} />
+      </IconListItem>
+    );
+  };
 
   if (isLoading) {
     return <ActivityIndicator size={"large"} />;
@@ -43,6 +45,8 @@ const CategoryList = () => {
     <FlatList
       renderItem={null}
       data={null}
+      onRefresh={() => refetchCategories()}
+      refreshing={false}
       ListHeaderComponent={
         <Container>
           {categories && categories.length > 0 ? (

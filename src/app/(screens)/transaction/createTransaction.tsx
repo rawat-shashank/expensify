@@ -2,7 +2,6 @@ import { FlatList } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 
-import { useTheme } from "@/context/ThemeContext";
 import { CreateTransactionType } from "@/database/transactionSchema";
 import useTransactions from "@/queries/transactions";
 import {
@@ -12,9 +11,10 @@ import {
   Container,
 } from "@/components";
 import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const CreateTransaction = () => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const router = useRouter();
   const db = useSQLiteContext();
   const { addTransaction } = useTransactions(db);
@@ -25,7 +25,7 @@ const CreateTransaction = () => {
   };
 
   return (
-    <>
+    <Container>
       <Stack.Screen
         options={{
           title: "Add Transaction",
@@ -53,12 +53,10 @@ const CreateTransaction = () => {
         renderItem={null}
         data={null}
         ListHeaderComponent={
-          <Container>
-            <TransactionForm onAddTransaction={onAddTransaction} />
-          </Container>
+          <TransactionForm onAddTransaction={onAddTransaction} />
         }
       />
-    </>
+    </Container>
   );
 };
 export default CreateTransaction;

@@ -1,8 +1,7 @@
 import { Fragment, useState } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 
-import { useTheme } from "@/context/ThemeContext";
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
+import { WINDOW_WIDTH } from "@/constants";
 import {
   TouchableButton,
   Icons,
@@ -13,13 +12,12 @@ import {
   ColorPicker,
   Text,
 } from "../atoms";
+import { FONT_SIZES, SPACINGS, WINDOW_HEIGHT } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
 const ICON_SIZE_IN_PICKER = 40;
-const PADDING = 8; // Adjust as needed
-const NUM_COLUMNS = Math.floor(
-  (WINDOW_WIDTH - PADDING * 2) / ICON_SIZE_IN_PICKER,
-);
+const ICONS_PER_PAGE = 100;
 
 type PickerProps =
   | {
@@ -47,8 +45,12 @@ export const Picker = ({
   description,
   defaultIcon = "star",
 }: PickerProps) => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
   const [isVisible, setIsVisible] = useState(false);
+  const [displayedIcons, setDisplayedIcons] = useState(
+    ALL_ICON_NAMES.slice(0, ICONS_PER_PAGE),
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSelectAndClose = (selectedValue: string | IconsNameType) => {
     if (variant === "color") {
@@ -64,6 +66,33 @@ export const Picker = ({
   const displayIconName =
     variant === "icon" ? value || defaultIcon : "color-palette";
 
+  const loadMoreIcons = () => {
+    if (isLoading || displayedIcons.length >= ALL_ICON_NAMES.length) {
+      return;
+    }
+
+    setIsLoading(true);
+    const nextIconsLength = displayedIcons.length + ICONS_PER_PAGE;
+    // We can remove the setTimeout since this is local data and doesn't need to mimic a network request.
+    setDisplayedIcons(ALL_ICON_NAMES.slice(0, nextIconsLength));
+    setIsLoading(false);
+  };
+
+  const renderIconItem = ({ item }: { item: string }) => {
+    return (
+      <TouchableButton
+        onPress={() => handleSelectAndClose(item)}
+        style={styles.iconItem}
+      >
+        <Icons
+          name={item as IconsNameType}
+          size={ICON_SIZE_IN_PICKER - 10}
+          color={value === item ? theme.primary : theme.onSurfaceVariant}
+        />
+      </TouchableButton>
+    );
+  };
+
   return (
     <Fragment>
       <TouchableButton
@@ -72,7 +101,7 @@ export const Picker = ({
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingVertical: 10,
+          paddingVertical: SPACINGS.xs,
         }}
         onPress={() => setIsVisible(true)}
       >
@@ -80,29 +109,21 @@ export const Picker = ({
           style={{
             display: "flex",
             flexDirection: "row",
-            gap: 16,
+            gap: SPACINGS.md,
             alignItems: "center",
           }}
         >
           {variant === "color" ? (
             <Icons name="color-palette" color={theme.primary} />
           ) : (
-            <Icons
-              name={displayIconName as IconsNameType}
-              color={theme.primary}
-            />
+            <Icons name="home" color={theme.primary} />
           )}
 
           <View>
-            <Text style={{ color: theme.onSurface }}>
+            <Text color={theme.onSurface}>
               {label || (variant === "color" ? "Pick Color" : "Pick Icon")}
             </Text>
-            <Text
-              style={{
-                fontSize: 12,
-                color: theme.onSurfaceVariant,
-              }}
-            >
+            <Text size={FONT_SIZES.caption} color={theme.onSurfaceVariant}>
               {description ||
                 (variant === "color"
                   ? "Set color for your category"
@@ -112,11 +133,14 @@ export const Picker = ({
         </View>
 
         {variant === "color" ? (
-          <ColorDotWithRing color={value || theme.primary} />
+          <ColorDotWithRing
+            size={FONT_SIZES.h3}
+            color={value || theme.primary}
+          />
         ) : (
           <Icons
             name={(value as IconsNameType) || (defaultIcon as IconsNameType)}
-            size={30}
+            size={FONT_SIZES.h3}
             color={theme.primary}
           />
         )}
@@ -126,32 +150,22 @@ export const Picker = ({
         {variant === "color" ? (
           <ColorPicker onSelect={handleSelectAndClose} />
         ) : (
-          <View style={styles.iconPickerContainer}>
-            <Text color={theme.onSurface} style={styles.pickerHeader}>
+          <View>
+            <Text
+              size={FONT_SIZES.h5}
+              color={theme.onSurface}
+              style={styles.pickerHeader}
+            >
               Select an Icon
             </Text>
-
             <FlatList
-              data={ALL_ICON_NAMES}
+              data={displayedIcons}
+              renderItem={renderIconItem}
               keyExtractor={(item) => item}
-              numColumns={NUM_COLUMNS}
-              renderItem={({ item: iconName }) => (
-                <TouchableButton
-                  style={styles.iconItem}
-                  onPress={() => handleSelectAndClose(iconName)}
-                >
-                  <Icons
-                    name={iconName as IconsNameType}
-                    size={ICON_SIZE_IN_PICKER - 10}
-                    color={
-                      value === iconName
-                        ? theme.primary
-                        : theme.onSurfaceVariant
-                    }
-                  />
-                </TouchableButton>
-              )}
-              contentContainerStyle={styles.iconListContent}
+              numColumns={Math.floor(WINDOW_WIDTH / ICON_SIZE_IN_PICKER)}
+              contentContainerStyle={styles.pillListContentContainer}
+              onEndReached={loadMoreIcons}
+              onEndReachedThreshold={0.5}
             />
           </View>
         )}
@@ -161,26 +175,20 @@ export const Picker = ({
 };
 
 const styles = StyleSheet.create({
-  iconPickerContainer: {
-    padding: PADDING,
-    paddingTop: 20,
-    height: WINDOW_HEIGHT,
+  pillListContentContainer: {
+    paddingVertical: SPACINGS.sm,
+    gap: SPACINGS.xs,
+    justifyContent: "center",
   },
   pickerHeader: {
-    fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 15,
-  },
-  iconListContent: {
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    marginVertical: SPACINGS.tiny,
   },
   iconItem: {
     width: ICON_SIZE_IN_PICKER,
     height: ICON_SIZE_IN_PICKER,
     justifyContent: "center",
     alignItems: "center",
-    margin: 5,
-    borderRadius: 8,
+    borderRadius: SPACINGS.xs,
   },
 });

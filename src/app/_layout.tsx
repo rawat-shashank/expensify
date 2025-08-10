@@ -1,13 +1,17 @@
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
-import { initializeDatabase, resetDatabase } from "@/database";
+import { setupDatabase } from "@/database";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/queries/queryClient";
-import { ThemeProvider, useTheme } from "@/context/ThemeContext";
+import {
+  UserAccountProvider,
+  useUserAccount,
+} from "@/context/UserAccountContext";
 
 const App = () => {
-  const { theme } = useTheme();
+  const { theme } = useUserAccount();
+
   return (
     <Stack
       screenOptions={{
@@ -25,18 +29,18 @@ const App = () => {
 export default function RootLayout() {
   return (
     <GestureHandlerRootView>
-      <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
-          <SQLiteProvider
-            databaseName="expensify.db"
-            // @NOTE: this assetSource databse is read only
-            //assetSource={{ assetId: require("../assets/expensify.db") }}
-            onInit={initializeDatabase}
-          >
+      <QueryClientProvider client={queryClient}>
+        <SQLiteProvider
+          databaseName="expensify.db"
+          // @NOTE: this assetSource databse is read only
+          //assetSource={{ assetId: require("../assets/expensify.db") }}
+          onInit={setupDatabase}
+        >
+          <UserAccountProvider>
             <App />
-          </SQLiteProvider>
-        </QueryClientProvider>
-      </ThemeProvider>
+          </UserAccountProvider>
+        </SQLiteProvider>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   );
 }
