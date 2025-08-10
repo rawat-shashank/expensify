@@ -1,3 +1,17 @@
+# [1.0.0-dev.5](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.4...v1.0.0-dev.5) (2025-08-10)
+
+
+### Bug Fixes
+
+* style update for cards ([f56734b](https://github.com/rawat-shashank/expensify/commit/f56734b4cfe89ff31f669b55b1d34ddefcf83e7f))
+
+
+### Features
+
+* material you support, and app initilization default values ([32e8580](https://github.com/rawat-shashank/expensify/commit/32e858007e06c973279dcd628de8e4493520237d))
+* setting page re-write, updated context for user account from theme ([4b664bf](https://github.com/rawat-shashank/expensify/commit/4b664bf00fb9bb2df8479f425260cf942f9cceb0))
+* updated icon, picker and customsheet components ([61dbab8](https://github.com/rawat-shashank/expensify/commit/61dbab86c06d1be3ec4976cab462403d1548c301))
+
 # [1.0.0-dev.4](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.3...v1.0.0-dev.4) (2025-08-05)
 
 
