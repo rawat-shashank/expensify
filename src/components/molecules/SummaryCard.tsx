@@ -25,17 +25,21 @@ export const SummaryCard = ({
       }}
     >
       <View style={{ display: "flex", gap: SPACINGS.xs }}>
-        <Text color={theme.onTertiaryContainer}>Total Balance</Text>
+        <Text size={FONT_SIZES.small} color={theme.onTertiaryContainer}>
+          Total Balance
+        </Text>
         <Text
           color={theme.onTertiaryContainer}
-          size={FONT_SIZES.h3}
+          size={FONT_SIZES.h2}
           style={{ fontWeight: "bold" }}
         >
           £{current_balance}
         </Text>
       </View>
       <View style={{ display: "flex", gap: SPACINGS.xs }}>
-        <Text color={theme.onTertiaryContainer}>Total</Text>
+        <Text size={FONT_SIZES.small} color={theme.onTertiaryContainer}>
+          Total
+        </Text>
         <View
           style={{
             display: "flex",
@@ -50,6 +54,7 @@ export const SummaryCard = ({
             <Text
               size={FONT_SIZES.subheading}
               color={theme.onTertiaryContainer}
+              style={{ fontWeight: "bold" }}
             >
               £{total_income}
             </Text>
@@ -62,6 +67,7 @@ export const SummaryCard = ({
             <Text
               size={FONT_SIZES.subheading}
               color={theme.onTertiaryContainer}
+              style={{ fontWeight: "bold" }}
             >
               £{total_expense}
             </Text>

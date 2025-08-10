@@ -26,6 +26,9 @@ const AccountCard = ({
     <TouchableOpacity
       onPress={() => handleCardPress(account.id)}
       style={{
+        borderColor: account.color,
+        borderWidth: 2,
+        borderRadius: SPACINGS.md,
         width: WINDOW_WIDTH - SPACINGS.xl,
       }}
     >
@@ -33,13 +36,7 @@ const AccountCard = ({
         intensity={60}
         tint="light"
         experimentalBlurMethod="dimezisBlurView"
-        style={[
-          styles.card,
-          {
-            borderColor: theme.onBackground,
-            backgroundColor: account.color,
-          },
-        ]}
+        style={styles.card}
       >
         <View style={styles.cardHeader}>
           <View
@@ -51,16 +48,18 @@ const AccountCard = ({
             }}
           >
             {account.cardType === AccountCardTypeEnum.BANK && (
-              <Icons name="bank" />
+              <Icons name="bank" color={theme.onSurface} />
             )}
             {account.cardType === AccountCardTypeEnum.WALLET && (
-              <Icons name="wallet-outline" />
+              <Icons name="wallet-outline" color={theme.onSurface} />
             )}
             {account.cardType === AccountCardTypeEnum.CASH && (
-              <Icons name="cash-outline" color={theme.onPrimary} />
+              <Icons name="cash-outline" color={theme.onSurface} />
             )}
             <View style={styles.names}>
-              <Text style={styles.cardTitle}>{account.accountName}</Text>
+              <Text size={FONT_SIZES.small} style={styles.cardTitle}>
+                {account.accountName}
+              </Text>
               <Text size={FONT_SIZES.caption}>{account.name}</Text>
             </View>
           </View>
@@ -69,8 +68,8 @@ const AccountCard = ({
           </TouchableOpacity>
         </View>
         <View>
-          <Text size={FONT_SIZES.caption}>Total Balance</Text>
-          <Text size={FONT_SIZES.h4} style={styles.amount}>
+          <Text size={FONT_SIZES.small}>Total Balance</Text>
+          <Text size={FONT_SIZES.h2} style={styles.amount}>
             £{account.current_balance}
           </Text>
         </View>
@@ -117,7 +116,6 @@ const AccountCard = ({
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 2,
     borderRadius: SPACINGS.md,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -127,6 +125,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     display: "flex",
     gap: SPACINGS.md,
+    backgroundColor: "transparent",
   },
   cardHeader: {
     flexDirection: "row",

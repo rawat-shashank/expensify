@@ -58,7 +58,6 @@ export function UserAccountProvider({ children }: UserAccountProviderProps) {
         const userStoredAccount = await getAsyncStorageData(
           ASYNC_STORAGE_KEYS.USER_ACCOUNT,
         );
-        console.log(userStoredAccount);
 
         if (userAccountData) {
           setUserAccountData(userStoredAccount);
