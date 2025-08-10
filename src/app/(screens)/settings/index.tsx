@@ -202,7 +202,6 @@ const Settings = () => {
             navigation.dispatch(
               StackActions.replace("(tabs)", { screen: "HomeScreen" }),
             );
-            Alert.alert("Reset Successful");
           },
         },
       ],
@@ -272,7 +271,7 @@ const Settings = () => {
                 gap: 8,
               }}
             >
-              <Icons name="download" color={theme.secondary} />
+              <Icons name="progress-download" color={theme.secondary} />
               <Text color={theme.secondary}>Backup</Text>
             </TouchableButton>
             <TouchableButton

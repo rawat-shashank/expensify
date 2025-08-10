@@ -22,7 +22,6 @@ const FONT_SIZES = {
   h2: 32,
   h1: 36,
 };
-
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const PAGE_SIZE = 20;

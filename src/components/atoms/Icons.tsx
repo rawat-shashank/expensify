@@ -4,49 +4,36 @@ import { View, StyleSheet } from "react-native";
 import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
 import { FONT_SIZES } from "@/constants";
 
+// Define the icon type mapping in order of preference
+const iconTypeMapping = {
+  Entypo,
+  Ionicons,
+  MaterialCommunityIcons,
+};
+
+// Create a union type of all available icon names
 type IconsNameType =
   | keyof typeof Entypo.glyphMap
   | keyof typeof Ionicons.glyphMap
   | keyof typeof MaterialCommunityIcons.glyphMap;
 
-type IconMappingValue = {
-  component: React.ComponentType<any>;
-  name: IconsNameType;
-};
-
-const ICON_NAME_MAPPING: { [key: string]: IconMappingValue } = {
-  plus: { component: Entypo, name: "plus" },
-  menu: { component: Ionicons, name: "menu" },
-  "person-circle-outline": {
-    component: Ionicons,
-    name: "person-circle-outline",
+// Dynamically generate the icon mapping, prioritizing based on the order in iconTypeMapping
+const ICON_NAME_MAPPING = Object.entries(iconTypeMapping).reduce(
+  (acc, [key, component]) => {
+    const iconNames = Object.keys(component.glyphMap);
+    iconNames.forEach((name) => {
+      // Only add the icon if it doesn't already exist in the mapping
+      if (!acc[name]) {
+        acc[name] = {
+          component: component as any,
+          name: name as any,
+        };
+      }
+    });
+    return acc;
   },
-  home: { component: Entypo, name: "home" },
-  "credit-card": { component: Entypo, name: "credit-card" },
-  archive: { component: Entypo, name: "archive" },
-  "area-graph": { component: Entypo, name: "area-graph" },
-  "cash-outline": { component: Ionicons, name: "cash-outline" },
-  "wallet-outline": { component: Ionicons, name: "wallet-outline" },
-  bank: { component: MaterialCommunityIcons, name: "bank" },
-  delete: { component: MaterialCommunityIcons, name: "delete-outline" },
-  "clock-outline": { component: MaterialCommunityIcons, name: "clock-outline" },
-  "arrow-back": { component: Ionicons, name: "arrow-back" },
-  "color-palette": { component: Ionicons, name: "color-palette" },
-  calendar: { component: Ionicons, name: "calendar" },
-  settings: { component: Ionicons, name: "settings-sharp" },
-  hanger: { component: MaterialCommunityIcons, name: "hanger" },
-  airplane: { component: MaterialCommunityIcons, name: "airplane" },
-  "receipt-outline": { component: Ionicons, name: "receipt-outline" },
-  "game-controller": { component: Ionicons, name: "game-controller" },
-  food: { component: Ionicons, name: "fast-food-sharp" },
-  cart: { component: Ionicons, name: "cart" },
-  gift: { component: Ionicons, name: "gift" },
-  cog: { component: Entypo, name: "cog" },
-  download: { component: MaterialCommunityIcons, name: "download" },
-  restore: { component: MaterialCommunityIcons, name: "restore" },
-  share: { component: Ionicons, name: "share-social" },
-  "delete-alert": { component: MaterialCommunityIcons, name: "delete-alert" },
-};
+  {} as Record<string, { component: React.ComponentType<any>; name: string }>,
+);
 
 interface IconProps {
   name: IconsNameType;
@@ -58,14 +45,14 @@ interface IconProps {
 }
 
 const Icons: React.FC<IconProps> = ({
-  name = "home",
+  name,
   size = FONT_SIZES.h4,
   color = "black",
   style,
   variant = "default",
   backgroundColor = "transparent",
 }) => {
-  const iconDefinition = ICON_NAME_MAPPING[name];
+  const iconDefinition = ICON_NAME_MAPPING[name as string];
 
   if (!iconDefinition) {
     console.warn(`Icon "${name}" not found in ICON_NAME_MAPPING`);

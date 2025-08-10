@@ -14,23 +14,59 @@ const INSERT_CATEGORY = `
 export async function migrateToVersion2(db: SQLiteDatabase) {
   const categoriesToInsert = [
     {
+      name: "Housing",
+      desc: "Household expenses",
+      icon: "home",
+      color: "hsl(0, 50%, 50%)",
+    },
+    {
       name: "Bills",
-      desc: "",
+      desc: "Monthly bills",
       icon: "receipt-outline",
       color: "hsl(12, 100%, 50%)",
     },
-    { name: "Clothes", desc: "", icon: "hanger", color: "hsl(24, 100%, 50%)" },
+    {
+      name: "Clothes",
+      desc: "Clothing expenses",
+      icon: "hanger",
+      color: "hsl(24, 100%, 50%)",
+    },
     {
       name: "Entertainment",
-      desc: "",
+      desc: "Entertainment and fun related expenses",
       icon: "game-controller",
       color: "hsl(36, 100%, 50%)",
     },
-    { name: "Food", desc: "", icon: "food", color: "hsl(48, 100%, 50%)" },
-    { name: "Gifts", desc: "", icon: "gift", color: "hsl(60, 100%, 50%)" },
-    { name: "Groceries", desc: "", icon: "cart", color: "hsl(72, 100%, 50%)" },
-    { name: "Travel", desc: "", icon: "airplane", color: "hsl(84, 100%, 50%)" },
-    { name: "Other", desc: "", icon: "cog", color: "hsl(96, 100%, 50%)" },
+    {
+      name: "Food",
+      desc: "Dinning out expenses",
+      icon: "food",
+      color: "hsl(48, 100%, 50%)",
+    },
+    {
+      name: "Gifts",
+      desc: "Gifting expenses",
+      icon: "gift",
+      color: "hsl(60, 100%, 50%)",
+    },
+    {
+      name: "Groceries",
+      desc: "Everyday groceries expenses",
+      icon: "cart",
+      color: "hsl(72, 100%, 50%)",
+    },
+    {
+      name: "Travel",
+      desc: "Travel expenses",
+      icon: "airplane",
+      color: "hsl(84, 100%, 50%)",
+    },
+    {
+      name: "Other",
+      desc: "Other random expenses",
+      icon: "cog",
+      color: "hsl(96, 100%, 50%)",
+    },
   ];
 
   return db.withTransactionAsync(async () => {

@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from "@/constants";
+import { WINDOW_WIDTH } from "@/constants";
 import {
   TouchableButton,
   Icons,
@@ -12,11 +12,12 @@ import {
   ColorPicker,
   Text,
 } from "../atoms";
-import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { FONT_SIZES, SPACINGS, WINDOW_HEIGHT } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
 const ICON_SIZE_IN_PICKER = 40;
+const ICONS_PER_PAGE = 100;
 
 type PickerProps =
   | {
@@ -46,6 +47,10 @@ export const Picker = ({
 }: PickerProps) => {
   const { theme } = useUserAccount();
   const [isVisible, setIsVisible] = useState(false);
+  const [displayedIcons, setDisplayedIcons] = useState(
+    ALL_ICON_NAMES.slice(0, ICONS_PER_PAGE),
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSelectAndClose = (selectedValue: string | IconsNameType) => {
     if (variant === "color") {
@@ -60,6 +65,33 @@ export const Picker = ({
 
   const displayIconName =
     variant === "icon" ? value || defaultIcon : "color-palette";
+
+  const loadMoreIcons = () => {
+    if (isLoading || displayedIcons.length >= ALL_ICON_NAMES.length) {
+      return;
+    }
+
+    setIsLoading(true);
+    const nextIconsLength = displayedIcons.length + ICONS_PER_PAGE;
+    // We can remove the setTimeout since this is local data and doesn't need to mimic a network request.
+    setDisplayedIcons(ALL_ICON_NAMES.slice(0, nextIconsLength));
+    setIsLoading(false);
+  };
+
+  const renderIconItem = ({ item }: { item: string }) => {
+    return (
+      <TouchableButton
+        onPress={() => handleSelectAndClose(item)}
+        style={styles.iconItem}
+      >
+        <Icons
+          name={item as IconsNameType}
+          size={ICON_SIZE_IN_PICKER - 10}
+          color={value === item ? theme.primary : theme.onSurfaceVariant}
+        />
+      </TouchableButton>
+    );
+  };
 
   return (
     <Fragment>
@@ -84,10 +116,7 @@ export const Picker = ({
           {variant === "color" ? (
             <Icons name="color-palette" color={theme.primary} />
           ) : (
-            <Icons
-              name={displayIconName as IconsNameType}
-              color={theme.primary}
-            />
+            <Icons name="home" color={theme.primary} />
           )}
 
           <View>
@@ -122,33 +151,22 @@ export const Picker = ({
           <ColorPicker onSelect={handleSelectAndClose} />
         ) : (
           <View>
-            <Text color={theme.onSurface} style={styles.pickerHeader}>
+            <Text
+              size={FONT_SIZES.h5}
+              color={theme.onSurface}
+              style={styles.pickerHeader}
+            >
               Select an Icon
             </Text>
-            <ScrollView
-              horizontal={false}
+            <FlatList
+              data={displayedIcons}
+              renderItem={renderIconItem}
+              keyExtractor={(item) => item}
+              numColumns={Math.floor(WINDOW_WIDTH / ICON_SIZE_IN_PICKER)}
               contentContainerStyle={styles.pillListContentContainer}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-            >
-              {ALL_ICON_NAMES.map((item) => {
-                return (
-                  <TouchableButton
-                    key={item}
-                    onPress={() => handleSelectAndClose(item)}
-                    style={styles.iconItem}
-                  >
-                    <Icons
-                      name={item as IconsNameType}
-                      size={ICON_SIZE_IN_PICKER - 10}
-                      color={
-                        value === item ? theme.primary : theme.onSurfaceVariant
-                      }
-                    />
-                  </TouchableButton>
-                );
-              })}
-            </ScrollView>
+              onEndReached={loadMoreIcons}
+              onEndReachedThreshold={0.5}
+            />
           </View>
         )}
       </CustomSheet>
@@ -158,19 +176,19 @@ export const Picker = ({
 
 const styles = StyleSheet.create({
   pillListContentContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    paddingVertical: SPACINGS.sm,
     gap: SPACINGS.xs,
+    justifyContent: "center",
   },
   pickerHeader: {
     fontWeight: "bold",
+    marginVertical: SPACINGS.tiny,
   },
   iconItem: {
     width: ICON_SIZE_IN_PICKER,
     height: ICON_SIZE_IN_PICKER,
     justifyContent: "center",
     alignItems: "center",
-    gap: SPACINGS.tiny,
     borderRadius: SPACINGS.xs,
   },
 });
