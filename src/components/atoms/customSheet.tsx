@@ -11,7 +11,6 @@ import {
   View,
 } from "react-native";
 import { useUserAccount } from "@/context/UserAccountContext";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type SheetDirection = "bottom" | "left";
 
@@ -35,7 +34,6 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
   const [contentHeight, setContentHeight] = useState(0);
   const [contentWidth, setContentWidth] = useState(0);
   const isInitialRender = useRef(true);
-  const inset = useSafeAreaInsets();
 
   useEffect(() => {
     if (

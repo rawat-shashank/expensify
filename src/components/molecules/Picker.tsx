@@ -12,7 +12,7 @@ import {
   ColorPicker,
   Text,
 } from "../atoms";
-import { FONT_SIZES, SPACINGS, WINDOW_HEIGHT } from "@/constants/sizes";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
@@ -62,9 +62,6 @@ export const Picker = ({
     }
     setIsVisible(false);
   };
-
-  const displayIconName =
-    variant === "icon" ? value || defaultIcon : "color-palette";
 
   const loadMoreIcons = () => {
     if (isLoading || displayedIcons.length >= ALL_ICON_NAMES.length) {

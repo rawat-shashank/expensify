@@ -9,7 +9,7 @@ import {
   useUserAccount,
 } from "@/context/UserAccountContext";
 
-const App = () => {
+const StackLayout = () => {
   const { theme } = useUserAccount();
 
   return (
@@ -37,7 +37,7 @@ export default function RootLayout() {
           onInit={setupDatabase}
         >
           <UserAccountProvider>
-            <App />
+            <StackLayout />
           </UserAccountProvider>
         </SQLiteProvider>
       </QueryClientProvider>

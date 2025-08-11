@@ -1,7 +1,7 @@
 import React from "react";
 import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, StyleSheet } from "react-native";
-import { ViewStyle } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
+import { View, StyleSheet, ViewStyle } from "react-native";
+
 import { FONT_SIZES } from "@/constants";
 
 // Define the icon type mapping in order of preference
@@ -19,7 +19,7 @@ type IconsNameType =
 
 // Dynamically generate the icon mapping, prioritizing based on the order in iconTypeMapping
 const ICON_NAME_MAPPING = Object.entries(iconTypeMapping).reduce(
-  (acc, [key, component]) => {
+  (acc, [_, component]) => {
     const iconNames = Object.keys(component.glyphMap);
     iconNames.forEach((name) => {
       // Only add the icon if it doesn't already exist in the mapping

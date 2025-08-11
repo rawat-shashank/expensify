@@ -1,10 +1,8 @@
 import { Href, Tabs, usePathname, useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import useProfile from "@/queries/useProfile";
 import {
   Icons,
   InputField,
@@ -92,7 +90,7 @@ export default function TabLayout() {
   };
 
   const handleProfileSubmit = async () => {
-    await setUserAccountData({ ...userAccountData, name: profileName });
+    setUserAccountData({ ...userAccountData, name: profileName });
     setBottomSheetVisible(false);
   };
 
