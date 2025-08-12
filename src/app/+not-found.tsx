@@ -1,7 +1,7 @@
 import { Stack, useRouter } from "expo-router";
 import { Text, TouchableButton } from "@/components";
 
-export default function NotFoundScreen() {
+const NotFoundScreen = () => {
   const router = useRouter();
 
   return (
@@ -12,4 +12,6 @@ export default function NotFoundScreen() {
       </TouchableButton>
     </>
   );
-}
+};
+
+export default NotFoundScreen;

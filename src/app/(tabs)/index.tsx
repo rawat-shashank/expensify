@@ -17,7 +17,7 @@ import {
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
-export default function HomeScreen() {
+const HomeScreen = () => {
   const { theme } = useUserAccount();
   const db = useSQLiteContext();
   const { profileData } = useProfile(db);
@@ -98,7 +98,7 @@ export default function HomeScreen() {
       />
     </Container>
   );
-}
+};
 
 const styles = StyleSheet.create({
   title: {
@@ -111,3 +111,5 @@ const styles = StyleSheet.create({
     marginBottom: SPACINGS.xxs,
   },
 });
+
+export default HomeScreen;
