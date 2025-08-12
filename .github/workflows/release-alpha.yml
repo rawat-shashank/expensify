@@ -56,6 +56,10 @@ jobs:
           chmod +x gradlew
         working-directory: ./android
 
+      - name: Clean Android Release APK
+        run: ./gradlew clean
+        working-directory: ./android
+
       - name: Build Android Release APK
         run: ./gradlew assembleRelease
         working-directory: ./android

@@ -103,6 +103,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+          storeFile file(project.property('storeFile'))
+          storePassword project.property('storePassword')
+          keyAlias project.property('keyAlias')
+          keyPassword project.property('keyPassword')
+        }
     }
     buildTypes {
         debug {
