@@ -1,3 +1,11 @@
+# [1.0.0-dev.6](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.5...v1.0.0-dev.6) (2025-08-12)
+
+
+### Bug Fixes
+
+* dev build issue ([cb9a351](https://github.com/rawat-shashank/expensify/commit/cb9a3519f1c560954a72404a3b12caf250738018))
+* dev build issue ([68b5360](https://github.com/rawat-shashank/expensify/commit/68b53606211a8723576fadf59af40d00a5ca2a78))
+
 # [1.0.0-dev.5](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.4...v1.0.0-dev.5) (2025-08-10)
 
 
