@@ -33,7 +33,6 @@ jobs:
           rm -rf android/.gradle
           rm -rf android/build
           rm -rf node_modules
-          rm -rf yarn.lock package-lock.json
           
       - name: Install JavaScript dependencies
         run: npm ci
