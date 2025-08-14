@@ -71,6 +71,14 @@ jobs:
         run: ./gradlew assembleRelease
         working-directory: ./android
 
+      # --- Upload Artifact Step ---
+      - name: Upload Android APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-pr-apk
+          path: android/app/build/outputs/apk/release/xpncfy-release.apk
+          retention-days: 5
+
       # --- Semantic Release Steps ---
       - name: Run semantic-release
         env:
