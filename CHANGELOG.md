@@ -1,3 +1,10 @@
+# [1.0.0-dev.2](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2025-08-16)
+
+
+### Bug Fixes
+
+* tab navigation issue on router.back is fixed now ([526ec33](https://github.com/rawat-shashank/expensify/commit/526ec333c75f085a7971c888060f9f36693a0ea4))
+
 # 1.0.0-dev.1 (2025-08-14)
 
 
