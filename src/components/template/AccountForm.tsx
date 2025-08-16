@@ -7,16 +7,16 @@ import {
   CreateAccountType,
 } from "@/database/accountsSchema";
 
-import {
-  InputField,
-  TouchableButton,
-  PillSelector,
-  CurrencyInput,
-  Text,
-} from "../../atoms/";
-import { Picker } from "@/components/molecules";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import { TouchableButton, Text } from "@/components/atoms";
+import {
+  PillSelector,
+  CurrencyInput,
+  InputField,
+} from "@/components/molecules";
+import { Picker } from "@/components/organisms";
 
 interface AccountFormProps {
   account?: AccountType;

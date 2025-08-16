@@ -13,21 +13,19 @@ import {
   TransactionTypeEnum,
 } from "@/database/transactionSchema";
 
+import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
+
 // ---- Components import ----
+import { TouchableButton, Text } from "@/components/atoms";
 import {
   InputField,
-  TouchableButton,
-  Text,
   PillSelector,
   CurrencyInput,
-} from "../../atoms";
-import {
   DateTimeInput,
   AccountCardList,
   CategoryPillList,
-} from "../../molecules";
-import { SPACINGS } from "@/constants/sizes";
-import { useUserAccount } from "@/context/UserAccountContext";
+} from "@/components/molecules";
 
 interface TransactionFormProps {
   transaction?: TransactionType;
@@ -128,7 +126,7 @@ export const TransactionForm = ({
           <InputField
             value={name}
             onUpdate={setName}
-            placeholder="Expense name"
+            placeholder={`${type === TransactionTypeEnum.EXPENSE ? "Expense" : "Income"} type`}
             error={errors.name}
           />
           <CurrencyInput

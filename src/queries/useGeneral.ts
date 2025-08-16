@@ -1,9 +1,10 @@
+import { SQLiteDatabase } from "expo-sqlite";
+import { useQuery } from "@tanstack/react-query";
+
 import {
   getSummaryCardDetails as dbGetSummaryCardDetails,
   SummaryCardType,
 } from "@/database/generalSchema";
-import { useQuery } from "@tanstack/react-query";
-import { SQLiteDatabase } from "expo-sqlite";
 
 export const generalKeys = {
   all: ["general"] as const,
@@ -17,7 +18,7 @@ export const useSummaryCard = (db: SQLiteDatabase) => {
     error,
     refetch,
   } = useQuery<SummaryCardType, Error>({
-    queryKey: [generalKeys.summaryCard],
+    queryKey: generalKeys.summaryCard(),
     queryFn: async () => dbGetSummaryCardDetails(db),
   });
 

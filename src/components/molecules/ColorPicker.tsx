@@ -1,9 +1,9 @@
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 
-import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
-import { ColorDotWithRing } from "./ColorDotWithRing";
-import { Text } from "./Text";
 import { useUserAccount } from "@/context/UserAccountContext";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+
+import { ColorDotWithRing, Text } from "@/components/atoms";
 
 export const ColorPicker = ({
   onSelect,

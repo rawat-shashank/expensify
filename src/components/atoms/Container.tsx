@@ -1,7 +1,8 @@
-import { SPACINGS } from "@/constants/sizes";
-import { useUserAccount } from "@/context/UserAccountContext";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+
+import { SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
 
 interface Props {
   children: React.ReactNode;

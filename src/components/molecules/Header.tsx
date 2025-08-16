@@ -1,9 +1,11 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { Text, Icons, IconsNameType } from "../atoms";
+
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import { Text, Icons, IconsNameType } from "@/components/atoms";
 
 interface HeaderProps {
   title: string;

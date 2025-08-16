@@ -1,6 +1,8 @@
 import { Href, useSegments } from "expo-router";
 import { FlatList } from "react-native";
-import { IconsNameType, MenuListItem } from "../atoms";
+
+import { IconsNameType } from "@/components/atoms";
+import { MenuListItem } from "@/components/molecules";
 
 export const MenuList = ({
   menuListItems,

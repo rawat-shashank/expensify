@@ -2,9 +2,10 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
 import { CategoryType } from "@/database/categoriesSchema";
-import { TouchableButton, Icons, Text } from "../atoms";
 import { SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import { TouchableButton, Icons, Text } from "@/components/atoms";
 
 interface CategoryPillListProps {
   categories: CategoryType[];

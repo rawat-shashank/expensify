@@ -6,11 +6,12 @@ import {
   TextStyle,
 } from "react-native";
 
+import { useUserAccount } from "@/context/UserAccountContext";
 import { floatTwoDecFromString } from "@/utilities/helpers";
-import { Text } from "./Text";
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
-import { useUserAccount } from "@/context/UserAccountContext";
+
+import { Text } from "@/components/atoms";
 
 export interface InputFieldProps {
   value: string;

@@ -2,10 +2,12 @@ import { CreateCategoryType, CategoryType } from "@/database/categoriesSchema";
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 
-import { Text, InputField, IconsNameType, TouchableButton } from "../../atoms";
-import { Picker } from "@/components/molecules";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import { Text, IconsNameType, TouchableButton } from "@/components/atoms";
+import { InputField } from "@/components/molecules";
+import { Picker } from "@/components/organisms";
 
 interface CategoryFormProps {
   category?: CategoryType;

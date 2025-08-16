@@ -8,6 +8,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SQLiteDatabase } from "expo-sqlite";
 import { transactionKeys } from "./transactionKeys";
+import { generalKeys } from "../useGeneral";
 
 export const useAddTransaction = (db: SQLiteDatabase) => {
   const queryClient = useQueryClient();
@@ -21,6 +22,7 @@ export const useAddTransaction = (db: SQLiteDatabase) => {
       queryClient.invalidateQueries({
         queryKey: transactionKeys.listPaginated(),
       });
+      queryClient.invalidateQueries({ queryKey: generalKeys.summaryCard() });
     },
   });
 };
@@ -40,6 +42,7 @@ export const useUpdateTransaction = (db: SQLiteDatabase) => {
       queryClient.invalidateQueries({
         queryKey: transactionKeys.details(variables.id!),
       });
+      queryClient.invalidateQueries({ queryKey: generalKeys.summaryCard() });
     },
   });
 };
@@ -56,10 +59,10 @@ export const useDeleteTransaction = (db: SQLiteDatabase) => {
       queryClient.invalidateQueries({
         queryKey: transactionKeys.listPaginated(),
       });
-
       queryClient.invalidateQueries({
         queryKey: transactionKeys.details(deletedTransactionId),
       });
+      queryClient.invalidateQueries({ queryKey: generalKeys.summaryCard() });
     },
   });
 };

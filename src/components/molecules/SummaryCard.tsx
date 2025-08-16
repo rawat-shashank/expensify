@@ -1,9 +1,10 @@
 import { View } from "react-native";
 
 import { SummaryCardType } from "@/database/generalSchema";
-import { Text } from "../atoms";
-import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+
+import { Text } from "@/components/atoms";
 
 export const SummaryCard = ({
   summaryCardDetails,
@@ -26,7 +27,7 @@ export const SummaryCard = ({
     >
       <View style={{ display: "flex", gap: SPACINGS.xs }}>
         <Text size={FONT_SIZES.small} color={theme.onTertiaryContainer}>
-          Total Balance
+          Current Balance
         </Text>
         <Text
           color={theme.onTertiaryContainer}

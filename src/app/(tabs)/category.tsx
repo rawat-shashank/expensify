@@ -11,6 +11,7 @@ import {
 } from "@/components";
 import { CategoryType } from "@/database/categoriesSchema";
 import useCategories from "@/queries/categories";
+import { SPACINGS } from "@/constants";
 
 const CategoryList = () => {
   const db = useSQLiteContext();
@@ -45,10 +46,10 @@ const CategoryList = () => {
     <FlatList
       renderItem={null}
       data={null}
-      onRefresh={() => refetchCategories()}
+      onRefresh={refetchCategories}
       refreshing={false}
       ListHeaderComponent={
-        <Container>
+        <Container paddingVertical={SPACINGS.md}>
           {categories && categories.length > 0 ? (
             <FlatList
               data={categories}

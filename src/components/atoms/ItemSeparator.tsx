@@ -1,6 +1,7 @@
+import { StyleSheet, View } from "react-native";
+
 import { SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
-import { StyleSheet, View } from "react-native";
 
 export const ItemSeparator = () => {
   const { theme } = useUserAccount();
@@ -14,5 +15,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: "transparent",
     marginLeft: SPACINGS.xxl,
+    marginVertical: SPACINGS.tiny,
   },
 });

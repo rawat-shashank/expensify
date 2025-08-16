@@ -18,9 +18,8 @@ import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
 const HomeScreen = () => {
-  const { theme } = useUserAccount();
+  const { theme, userAccountData } = useUserAccount();
   const db = useSQLiteContext();
-  const { profileData } = useProfile(db);
   const { summaryCard, isLoading: isLoadingSummaryCard } = useSummaryCard(db);
 
   const {
@@ -68,16 +67,17 @@ const HomeScreen = () => {
         ListHeaderComponent={
           <>
             <Text
-              size={FONT_SIZES.h5}
+              size={FONT_SIZES.h4}
               color={theme.onSurface}
-              style={styles.title}
+              style={{ marginBottom: SPACINGS.xxs }}
             >
-              {profileData?.name}
+              {userAccountData?.name}
             </Text>
 
             <Text size={FONT_SIZES.small} color={theme.onSurface}>
               Welcome Back!
             </Text>
+
             <SummaryCard summaryCardDetails={summaryCard} />
             <Text
               color={theme.onSurface}
@@ -101,10 +101,6 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontWeight: "bold",
-    marginBottom: SPACINGS.xxs,
-  },
   latestTransactionsTitle: {
     fontWeight: "bold",
     marginTop: SPACINGS.sm,

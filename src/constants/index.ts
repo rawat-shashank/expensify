@@ -1,10 +1,19 @@
-import { colors } from "./colors";
-import { FONT_SIZES, WINDOW_WIDTH, WINDOW_HEIGHT, PAGE_SIZE } from "./sizes";
+import { colors } from "@/constants/colors";
+import {
+  FONT_SIZES,
+  WINDOW_WIDTH,
+  WINDOW_HEIGHT,
+  PAGE_SIZE,
+  ICON_SIZE_IN_PICKER,
+  ICONS_PER_PAGE,
+  SPACINGS,
+} from "@/constants/sizes";
 import {
   ASYNC_STORAGE_KEYS,
   UserAccountData,
   DEFAULT_USER_DATA,
-} from "./async-storage-keys";
+} from "@/constants/async-storage-keys";
+import { TAB_ITEMS } from "@/constants/tabItems";
 
 export {
   FONT_SIZES,
@@ -15,4 +24,8 @@ export {
   ASYNC_STORAGE_KEYS,
   UserAccountData,
   DEFAULT_USER_DATA,
+  ICON_SIZE_IN_PICKER,
+  ICONS_PER_PAGE,
+  TAB_ITEMS,
+  SPACINGS,
 };

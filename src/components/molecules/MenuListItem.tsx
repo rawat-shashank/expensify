@@ -1,10 +1,14 @@
 import { Href, useRouter } from "expo-router";
 
-import { TouchableButton } from "./TouchableButtons";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
-import { Icons, IconsNameType } from "./Icons";
-import { Text } from "./Text";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import {
+  Icons,
+  IconsNameType,
+  TouchableButton,
+  Text,
+} from "@/components/atoms";
 
 export const MenuListItem = ({
   item,
@@ -27,21 +31,22 @@ export const MenuListItem = ({
       style={{
         display: "flex",
         flexDirection: "row",
-        gap: SPACINGS.xs,
+        gap: SPACINGS.md,
         alignItems: "center",
         backgroundColor: active ? theme.tertiaryContainer : "",
-        borderRadius: SPACINGS.lg,
-        padding: SPACINGS.sm,
+        borderRadius: SPACINGS.xl,
+        paddingHorizontal: SPACINGS.sm,
+        paddingVertical: active ? SPACINGS.md : SPACINGS.sm,
       }}
       onPress={() => {
         closeCustomSheet();
-        router.push(item.href);
+        router.navigate(item.href);
       }}
     >
       <Icons
         name={item.icon}
         color={theme.onTertiaryContainer}
-        size={FONT_SIZES.subheading}
+        size={FONT_SIZES.h5}
       />
       <Text color={theme.onTertiaryContainer}>{item.title}</Text>
     </TouchableButton>
