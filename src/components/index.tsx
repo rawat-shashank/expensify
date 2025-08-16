@@ -5,17 +5,12 @@ import {
   IconsNameType,
   TouchableButton,
   Container,
-  InputField,
   ColorDotWithRing,
   CustomSheet,
-  ColorPicker,
-  PillSelector,
-  CurrencyInput,
-} from "./atoms";
+} from "@/components/atoms";
 import {
   CategoryListItem,
   IconListItem,
-  Picker,
   SummaryCard,
   TransactionListItem,
   DateTimeInput,
@@ -23,14 +18,24 @@ import {
   CategoryPillList,
   AccountCard,
   FloatingActionButton,
+  ColorPicker,
+  CurrencyInput,
+  InputField,
+  PillSelector,
+  Header,
+  TabIcon,
+} from "@/components/molecules";
+import {
   MenuList,
-} from "./molecules";
+  Picker,
+  ProfileSheet,
+  DrawerMenu,
+} from "@/components/organisms";
 import {
   AccountForm,
   CategoryForm,
   TransactionForm,
-  Header,
-} from "./organisms";
+} from "@/components/template";
 
 export {
   ItemSeparator,
@@ -60,4 +65,7 @@ export {
   FloatingActionButton,
   Header,
   MenuList,
+  ProfileSheet,
+  DrawerMenu,
+  TabIcon,
 };

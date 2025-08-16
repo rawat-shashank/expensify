@@ -1,9 +1,10 @@
 import { StyleSheet, View } from "react-native";
 
 import { TransactionDetaillsType } from "@/database/transactionSchema";
-import { Text } from "../atoms";
-import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+
+import { Text } from "@/components/atoms";
 
 export const TransactionListItem = ({
   item,

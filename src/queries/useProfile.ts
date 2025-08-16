@@ -36,7 +36,7 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
     data: profileData,
     isLoading,
     error,
-    refetch, // This is the manual refetch function provided by useQuery
+    refetch,
   } = useQuery<ProfileData | undefined, Error>({
     queryKey: profileKeys.details(),
     queryFn: async () => {
@@ -45,14 +45,12 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
     },
   });
 
-  // 2. useMutation for saving profile data
   const { mutateAsync: saveProfileMutation } = useMutation<
     void,
     Error,
     { name: string; currency: string }
   >({
     mutationFn: async ({ name, currency }) => {
-      // The mutation function is responsible for performing the side-effect (saving data)
       await saveProfileData(name, currency, db);
     },
     onSuccess: () => {
@@ -63,7 +61,6 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
     },
   });
 
-  // 3. Wrapper for saveProfile to match your existing API
   const saveProfile = useCallback(
     async (name: string, currency: string) => {
       await saveProfileMutation({ name, currency });
@@ -71,7 +68,6 @@ const useProfile = (db: SQLiteDatabase): UseProfileResult => {
     [saveProfileMutation],
   );
 
-  // 4. Expose refetch as fetchProfile to maintain existing API
   const fetchProfile = useCallback(() => {
     return refetch();
   }, [refetch]);

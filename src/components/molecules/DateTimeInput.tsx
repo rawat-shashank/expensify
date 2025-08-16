@@ -4,9 +4,10 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 
-import { Text, Icons, TouchableButton } from "../atoms";
 import { SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import { Text, Icons, TouchableButton } from "@/components/atoms";
 
 interface DateTimeInputProps {
   value: string;

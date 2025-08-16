@@ -2,9 +2,15 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
 import { AccountCardTypeEnum, AccountType } from "@/database/accountsSchema";
-import { Icons, IconsNameType, TouchableButton, Text } from "../atoms";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import {
+  Icons,
+  IconsNameType,
+  TouchableButton,
+  Text,
+} from "@/components/atoms";
 
 interface AccountCardProps {
   accounts: AccountType[];

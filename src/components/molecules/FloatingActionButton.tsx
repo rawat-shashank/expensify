@@ -6,9 +6,10 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { Icons, IconsNameType } from "../atoms";
 import { FONT_SIZES } from "@/constants";
 import { useUserAccount } from "@/context/UserAccountContext";
+
+import { Icons, IconsNameType } from "@/components/atoms";
 
 interface FABProps {
   onPress: () => void;

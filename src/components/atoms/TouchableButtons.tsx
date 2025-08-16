@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 
 import { SPACINGS } from "@/constants/sizes";
-import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import { useUserAccount } from "@/context/UserAccountContext";
 
 interface ButtonProps {

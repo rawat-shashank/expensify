@@ -1,9 +1,10 @@
 import { StyleSheet } from "react-native";
-import { Icons, IconsNameType } from "../atoms";
-import { TouchableButton } from "../atoms";
 import { ReactNode } from "react";
+
 import { FONT_SIZES } from "@/constants";
 import { SPACINGS } from "@/constants/sizes";
+
+import { Icons, IconsNameType, TouchableButton } from "@/components/atoms";
 
 interface IconListItemProps {
   icon: IconsNameType;
@@ -24,7 +25,7 @@ export const IconListItem = ({
         name={icon}
         variant="circularBackground"
         backgroundColor={color}
-        size={FONT_SIZES.h5}
+        size={FONT_SIZES.h4}
       />
       {children}
     </TouchableButton>

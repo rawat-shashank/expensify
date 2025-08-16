@@ -153,7 +153,7 @@ const AccountList = () => {
       onRefresh={() => refetchAccountSummaryList()}
       refreshing={false}
       ListHeaderComponent={
-        <Container>
+        <Container paddingVertical={SPACINGS.md}>
           <View>
             {accountSummaryList && accountSummaryList.length > 0 ? (
               <FlatList

@@ -25,5 +25,15 @@ const FONT_SIZES = {
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 const PAGE_SIZE = 20;
+const ICON_SIZE_IN_PICKER = 40;
+const ICONS_PER_PAGE = 100;
 
-export { SPACINGS, FONT_SIZES, WINDOW_WIDTH, WINDOW_HEIGHT, PAGE_SIZE };
+export {
+  SPACINGS,
+  FONT_SIZES,
+  WINDOW_WIDTH,
+  WINDOW_HEIGHT,
+  PAGE_SIZE,
+  ICONS_PER_PAGE,
+  ICON_SIZE_IN_PICKER,
+};

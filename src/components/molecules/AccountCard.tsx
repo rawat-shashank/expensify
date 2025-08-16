@@ -6,12 +6,14 @@ import {
   AccountCardTypeEnum,
   AccountSummaryType,
 } from "@/database/accountsSchema";
-import { Icons, Text } from "../atoms";
+
 import { WINDOW_WIDTH } from "@/constants";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
-const AccountCard = ({
+import { Icons, Text } from "@/components/atoms";
+
+export const AccountCard = ({
   account,
   handleCardPress,
   handleDeleteAccount,
@@ -143,5 +145,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-export default AccountCard;

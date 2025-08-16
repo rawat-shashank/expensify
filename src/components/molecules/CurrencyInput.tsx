@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { TextInput, View, StyleSheet } from "react-native";
 
-import { SPACINGS } from "@/constants/sizes";
-import { Text } from "./Text";
 import { useUserAccount } from "@/context/UserAccountContext";
+import { SPACINGS } from "@/constants/sizes";
+
+import { Text } from "@/components/atoms";
 
 // Define the properties (props) for the CurrencyInput component.
 interface CurrencyInputProps {
@@ -15,7 +16,7 @@ interface CurrencyInputProps {
   error?: string;
 }
 
-const CurrencyInput = ({
+export const CurrencyInput = ({
   value,
   placeholder = "0.00",
   onUpdate,
@@ -112,5 +113,3 @@ const styles = StyleSheet.create({
     fontSize: SPACINGS.md,
   },
 });
-
-export default CurrencyInput;

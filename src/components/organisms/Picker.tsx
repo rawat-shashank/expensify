@@ -1,7 +1,10 @@
 import { Fragment, useState } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 
-import { WINDOW_WIDTH } from "@/constants";
+import { WINDOW_WIDTH, ICON_SIZE_IN_PICKER, ICONS_PER_PAGE } from "@/constants";
+import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { useUserAccount } from "@/context/UserAccountContext";
+
 import {
   TouchableButton,
   Icons,
@@ -9,15 +12,11 @@ import {
   ICON_NAME_MAPPING,
   ColorDotWithRing,
   CustomSheet,
-  ColorPicker,
   Text,
-} from "../atoms";
-import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
-import { useUserAccount } from "@/context/UserAccountContext";
+} from "@/components/atoms";
+import { ColorPicker } from "@/components/molecules";
 
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
-const ICON_SIZE_IN_PICKER = 40;
-const ICONS_PER_PAGE = 100;
 
 type PickerProps =
   | {

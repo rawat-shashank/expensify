@@ -1,7 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-
-import { WINDOW_WIDTH } from "@/constants";
-import { SPACINGS, WINDOW_HEIGHT } from "@/constants/sizes";
 import {
   Modal,
   StyleSheet,
@@ -10,6 +7,9 @@ import {
   Easing,
   View,
 } from "react-native";
+
+import { WINDOW_WIDTH } from "@/constants";
+import { SPACINGS, WINDOW_HEIGHT } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
 export type SheetDirection = "bottom" | "left";
