@@ -2,6 +2,8 @@ import React, { ReactNode, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { BlurView } from "expo-blur";
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
+import { Material3Scheme } from "@pchmn/expo-material3-theme";
+
 import { SPACINGS } from "@/constants";
 
 const BLOB_PATHS = [
@@ -20,15 +22,15 @@ const MIN_BLOB_SIZE = 120;
 const MAX_BLOB_SIZE = 160;
 const NUMBER_OF_SHAPES = 20;
 const MAX_OFFSET = 6;
+const NUM_COLUMNS = 6;
+const NUM_ROWS = 4;
 
-const generateShapes = (cardDimensions = { width: 400, height: 200 }) => {
+const generateShapes = () => {
   const shapes = [];
-  const numColumns = Math.floor(cardDimensions.width / BLOB_GRID_SIZE);
-  const numRows = Math.floor(cardDimensions.height / BLOB_GRID_SIZE);
   let shapeCount = 0;
 
-  for (let row = -1; row < numRows; row++) {
-    for (let col = -1; col < numColumns; col++) {
+  for (let row = -1; row < NUM_ROWS; row++) {
+    for (let col = -1; col < NUM_COLUMNS; col++) {
       if (shapeCount >= NUMBER_OF_SHAPES) break;
 
       // Randomize the blob size for this specific blob
@@ -69,14 +71,16 @@ const generateShapes = (cardDimensions = { width: 400, height: 200 }) => {
   return shapes;
 };
 
-const BlurCard = ({
+export const BlurCard = ({
   children,
   backgroundColor,
   colorScheme,
+  theme,
 }: {
   children: ReactNode;
   backgroundColor: string;
   colorScheme: "dark" | "light";
+  theme: Material3Scheme;
 }) => {
   const [blobs, setBlobs] = useState(generateShapes());
 
@@ -101,9 +105,10 @@ const BlurCard = ({
         style={[
           styles.cardContainer,
           {
-            borderColor: backgroundColor,
+            // borderColor: backgroundColor,
             borderWidth: 2,
             borderRadius: SPACINGS.md,
+            backgroundColor: theme.surface,
           },
         ]}
         onLayout={handleLayout}
@@ -146,11 +151,8 @@ const BlurCard = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   cardContainer: {
-    width: "100%",
     height: 200,
     overflow: "hidden",
   },
@@ -161,14 +163,5 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
-  },
-  cardText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-    textAlign: "center",
   },
 });
-
-export default BlurCard;

@@ -9,8 +9,7 @@ import {
 import { FONT_SIZES, SPACINGS, WINDOW_WIDTH } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
-import { Icons, Text } from "@/components/atoms";
-import BlurCard from "../organisms/BlurCard";
+import { Icons, Text, BlurCard } from "@/components/atoms";
 
 export const AccountCard = ({
   account,
@@ -31,7 +30,11 @@ export const AccountCard = ({
       }}
       activeOpacity={1}
     >
-      <BlurCard backgroundColor={account.color} colorScheme={colorScheme}>
+      <BlurCard
+        backgroundColor={account.color}
+        colorScheme={colorScheme}
+        theme={theme}
+      >
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <View
@@ -137,9 +140,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     padding: SPACINGS.md,
     overflow: "hidden",
-    display: "flex",
     gap: SPACINGS.md,
-    backgroundColor: "transparent",
     width: "100%",
   },
   cardHeader: {
