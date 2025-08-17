@@ -65,6 +65,7 @@ export function UserAccountProvider({ children }: UserAccountProviderProps) {
           setUserAccountData(DEFAULT_USER_DATA);
         }
       } catch (e) {
+        console.error(e);
         setUserAccountData(DEFAULT_USER_DATA);
       } finally {
         setIsLoading(false);
@@ -75,7 +76,7 @@ export function UserAccountProvider({ children }: UserAccountProviderProps) {
   }, []);
 
   if (isLoading || !userAccountData) {
-    <ActivityIndicator size="large" />;
+    return <ActivityIndicator size="large" />;
   }
 
   return (

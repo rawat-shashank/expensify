@@ -22,10 +22,10 @@ export const TAB_ITEMS: TabProps[] = [
     icon: "archive",
     href: "/(tabs)/category",
   },
-  {
-    name: "overview",
-    title: "Overview",
-    icon: "area-graph",
-    href: "/(tabs)/overview",
-  },
+  // {
+  //   name: "overview",
+  //   title: "Overview",
+  //   icon: "area-graph",
+  //   href: "/(tabs)/overview",
+  // },
 ];

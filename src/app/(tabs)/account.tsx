@@ -180,7 +180,7 @@ const AccountList = () => {
               {accountSummaryList.length > 1 &&
                 accountSummaryList.map(
                   (account: AccountSummaryType, index: number) => {
-                    return currentVisibleIndex == index ? (
+                    return currentVisibleIndex === index ? (
                       <ColorDotWithRing
                         key={account.id}
                         size={FONT_SIZES.body}

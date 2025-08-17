@@ -4,7 +4,7 @@ export const storeAsyncStorageData = async (key: string, value: any) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
-    throw "could not save your key or value";
+    console.error("could not save your key or value", e);
   }
 };
 
@@ -13,6 +13,7 @@ export const getAsyncStorageData = async (key: string) => {
     const value = await AsyncStorage.getItem(key);
     return value != null ? JSON.parse(value) : null;
   } catch (e) {
+    console.error("could not get your key or value", e);
     return null;
   }
 };

@@ -25,15 +25,12 @@ export function AppTabs({
       const rootState = navigationState;
       const rootRoute = rootState.routes[rootState.index];
 
-      // Check if the current route has a nested state.
       if (rootRoute?.state?.type === "tab") {
         const { routes, index = 0 } = rootRoute.state;
         const activeTabRoute = routes[index];
 
-        // This is the name of the currently active tab.
         const currentTabName = activeTabRoute.name;
 
-        // Now you can use this name for your logic.
         const tabIndex = tabs.findIndex((tab) => tab.name === currentTabName);
         onTabPress(tabIndex === -1 ? 0 : tabIndex);
       }

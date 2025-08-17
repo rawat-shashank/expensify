@@ -15,6 +15,7 @@ const EditAccountPage = ({}: {}) => {
 
   const { id } = useLocalSearchParams();
   const accountId = typeof id === "string" ? parseInt(id, 10) : 0;
+
   const { accountDetails, isLoading, updateAccount, deleteAccount } =
     useAccounts(db, {
       accountId,
