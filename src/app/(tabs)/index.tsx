@@ -3,9 +3,8 @@ import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
 import { TransactionDetaillsType } from "@/database/transactionSchema";
-import { useSummaryCard } from "@/queries/useGeneral"; // Assuming this still exists and is needed
-import useProfile from "@/queries/useProfile"; // Assuming this still exists and is needed
-import useTransactions from "@/queries/transactions"; // Your combined transactions hook
+import { useSummaryCard } from "@/queries/useGeneral";
+import useTransactions from "@/queries/transactions";
 import {
   Text,
   Container,

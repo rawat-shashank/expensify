@@ -7,6 +7,7 @@ import {
   Container,
   ColorDotWithRing,
   CustomSheet,
+  BlurCard,
 } from "@/components/atoms";
 import {
   CategoryListItem,
@@ -68,4 +69,5 @@ export {
   ProfileSheet,
   DrawerMenu,
   TabIcon,
+  BlurCard,
 };

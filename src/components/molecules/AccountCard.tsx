@@ -1,17 +1,15 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { BlurView } from "expo-blur";
 
 import {
   AccountCardTypeEnum,
   AccountSummaryType,
 } from "@/database/accountsSchema";
 
-import { WINDOW_WIDTH } from "@/constants";
-import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { FONT_SIZES, SPACINGS, WINDOW_WIDTH } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
-import { Icons, Text } from "@/components/atoms";
+import { Icons, Text, BlurCard } from "@/components/atoms";
 
 export const AccountCard = ({
   account,
@@ -22,96 +20,113 @@ export const AccountCard = ({
   handleCardPress: (id: number) => void;
   handleDeleteAccount: (id: number) => void;
 }) => {
-  const { theme } = useUserAccount();
+  const { theme, colorScheme } = useUserAccount();
 
   return (
     <TouchableOpacity
       onPress={() => handleCardPress(account.id)}
       style={{
-        borderColor: account.color,
-        borderWidth: 2,
-        borderRadius: SPACINGS.md,
         width: WINDOW_WIDTH - SPACINGS.xl,
       }}
+      activeOpacity={1}
     >
-      <BlurView
-        intensity={60}
-        tint="light"
-        experimentalBlurMethod="dimezisBlurView"
-        style={styles.card}
+      <BlurCard
+        backgroundColor={account.color}
+        colorScheme={colorScheme}
+        theme={theme}
       >
-        <View style={styles.cardHeader}>
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: SPACINGS.md,
+                alignItems: "center",
+              }}
+            >
+              {account.cardType === AccountCardTypeEnum.BANK && (
+                <Icons name="bank" color={theme.onSurface} />
+              )}
+              {account.cardType === AccountCardTypeEnum.WALLET && (
+                <Icons name="wallet-outline" color={theme.onSurface} />
+              )}
+              {account.cardType === AccountCardTypeEnum.CASH && (
+                <Icons name="cash-outline" color={theme.onSurface} />
+              )}
+              <View style={styles.names}>
+                <Text
+                  color={theme.onSurface}
+                  size={FONT_SIZES.small}
+                  style={styles.cardTitle}
+                >
+                  {account.accountName}
+                </Text>
+                <Text color={theme.onSurface} size={FONT_SIZES.caption}>
+                  {account.name}
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity onPress={() => handleDeleteAccount(account.id)}>
+              <Icons color={theme.onSurface} name="delete" />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text color={theme.onSurface} size={FONT_SIZES.small}>
+              Total Balance
+            </Text>
+            <Text
+              color={theme.onSurface}
+              size={FONT_SIZES.h2}
+              style={styles.amount}
+            >
+              £{account.current_balance}
+            </Text>
+          </View>
           <View
             style={{
               display: "flex",
               flexDirection: "row",
               gap: SPACINGS.md,
-              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            {account.cardType === AccountCardTypeEnum.BANK && (
-              <Icons name="bank" color={theme.onSurface} />
-            )}
-            {account.cardType === AccountCardTypeEnum.WALLET && (
-              <Icons name="wallet-outline" color={theme.onSurface} />
-            )}
-            {account.cardType === AccountCardTypeEnum.CASH && (
-              <Icons name="cash-outline" color={theme.onSurface} />
-            )}
-            <View style={styles.names}>
-              <Text size={FONT_SIZES.small} style={styles.cardTitle}>
-                {account.accountName}
+            <View
+              style={{
+                flexGrow: 1,
+                marginBottom: SPACINGS.xs,
+              }}
+            >
+              <Text color={theme.onSurface} size={FONT_SIZES.caption}>
+                Income
               </Text>
-              <Text size={FONT_SIZES.caption}>{account.name}</Text>
+              <Text
+                color={theme.onSurface}
+                size={FONT_SIZES.subheading}
+                style={{
+                  fontWeight: "bold",
+                }}
+              >
+                £{account.total_income}
+              </Text>
+            </View>
+            <View style={{ flexGrow: 1 }}>
+              <Text color={theme.onSurface} size={FONT_SIZES.caption}>
+                Expenses
+              </Text>
+              <Text
+                color={theme.onSurface}
+                size={FONT_SIZES.subheading}
+                style={{
+                  fontWeight: "bold",
+                }}
+              >
+                £{account.total_expense}
+              </Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => handleDeleteAccount(account.id)}>
-            <Icons name="delete" />
-          </TouchableOpacity>
         </View>
-        <View>
-          <Text size={FONT_SIZES.small}>Total Balance</Text>
-          <Text size={FONT_SIZES.h2} style={styles.amount}>
-            £{account.current_balance}
-          </Text>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: SPACINGS.md,
-            justifyContent: "space-between",
-          }}
-        >
-          <View
-            style={{
-              flexGrow: 1,
-              marginBottom: SPACINGS.xs,
-            }}
-          >
-            <Text size={FONT_SIZES.caption}>Income</Text>
-            <Text
-              size={FONT_SIZES.subheading}
-              style={{
-                fontWeight: "bold",
-              }}
-            >
-              £{account.total_income}
-            </Text>
-          </View>
-          <View style={{ flexGrow: 1 }}>
-            <Text size={FONT_SIZES.caption}>Expenses</Text>
-            <Text
-              size={FONT_SIZES.subheading}
-              style={{
-                fontWeight: "bold",
-              }}
-            >
-              £{account.total_expense}
-            </Text>
-          </View>
-        </View>
-      </BlurView>
+      </BlurCard>
     </TouchableOpacity>
   );
 };
@@ -125,9 +140,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     padding: SPACINGS.md,
     overflow: "hidden",
-    display: "flex",
     gap: SPACINGS.md,
-    backgroundColor: "transparent",
+    width: "100%",
   },
   cardHeader: {
     flexDirection: "row",

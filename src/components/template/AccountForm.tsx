@@ -43,7 +43,7 @@ export const AccountForm = ({
   const [cardType, setCardType] = useState<AccountCardTypeEnum>(
     account?.cardType || AccountCardTypeEnum.CASH,
   );
-  const [color, setColor] = useState(account?.color || "");
+  const [color, setColor] = useState(account?.color || "hsl(0, 50%, 50%)");
 
   const [errors, setErrors] = useState<{
     name?: string;

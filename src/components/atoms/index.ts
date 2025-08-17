@@ -5,6 +5,7 @@ import { TouchableButton } from "./TouchableButtons";
 import { Container } from "./Container";
 import { ColorDotWithRing } from "./ColorDotWithRing";
 import { CustomSheet } from "./customSheet";
+import { BlurCard } from "./BlurCard";
 
 export {
   IconsNameType,
@@ -16,4 +17,5 @@ export {
   Container,
   ColorDotWithRing,
   CustomSheet,
+  BlurCard,
 };
