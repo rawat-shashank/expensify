@@ -1,3 +1,15 @@
+# [1.0.0-dev.3](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.2...v1.0.0-dev.3) (2025-08-17)
+
+
+### Bug Fixes
+
+* styling fix for account card ([62e0a3e](https://github.com/rawat-shashank/expensify/commit/62e0a3efdd92ae0e0b4a0ad96dadab9e642f21d3))
+
+
+### Features
+
+* blurview for account card ([a85cf5e](https://github.com/rawat-shashank/expensify/commit/a85cf5edd286600a3e65c411747bf18ca6b9e9e3))
+
 # [1.0.0-dev.2](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.1...v1.0.0-dev.2) (2025-08-16)
 
 
