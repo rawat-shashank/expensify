@@ -48,6 +48,7 @@ const CategoryList = () => {
       data={null}
       onRefresh={refetchCategories}
       refreshing={false}
+      showsVerticalScrollIndicator={false}
       ListHeaderComponent={
         <Container paddingVertical={SPACINGS.md}>
           {categories && categories.length > 0 ? (
