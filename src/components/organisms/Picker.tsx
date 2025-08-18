@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, KeyboardAvoidingView } from "react-native";
 
 import { WINDOW_WIDTH, ICON_SIZE_IN_PICKER, ICONS_PER_PAGE } from "@/constants";
 import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
@@ -14,7 +14,7 @@ import {
   CustomSheet,
   Text,
 } from "@/components/atoms";
-import { ColorPicker } from "@/components/molecules";
+import { ColorPicker, InputField } from "@/components/molecules";
 
 const ALL_ICON_NAMES = Object.keys(ICON_NAME_MAPPING);
 
@@ -46,10 +46,11 @@ export const Picker = ({
 }: PickerProps) => {
   const { theme } = useUserAccount();
   const [isVisible, setIsVisible] = useState(false);
-  const [displayedIcons, setDisplayedIcons] = useState(
-    ALL_ICON_NAMES.slice(0, ICONS_PER_PAGE),
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredIcons = ALL_ICON_NAMES.filter((iconName) =>
+    iconName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSelectAndClose = (selectedValue: string | IconsNameType) => {
     if (variant === "color") {
@@ -59,19 +60,8 @@ export const Picker = ({
         selectedValue as IconsNameType,
       );
     }
+    setSearchQuery("");
     setIsVisible(false);
-  };
-
-  const loadMoreIcons = () => {
-    if (isLoading || displayedIcons.length >= ALL_ICON_NAMES.length) {
-      return;
-    }
-
-    setIsLoading(true);
-    const nextIconsLength = displayedIcons.length + ICONS_PER_PAGE;
-    // We can remove the setTimeout since this is local data and doesn't need to mimic a network request.
-    setDisplayedIcons(ALL_ICON_NAMES.slice(0, nextIconsLength));
-    setIsLoading(false);
   };
 
   const renderIconItem = ({ item }: { item: string }) => {
@@ -146,7 +136,12 @@ export const Picker = ({
         {variant === "color" ? (
           <ColorPicker onSelect={handleSelectAndClose} />
         ) : (
-          <View>
+          <KeyboardAvoidingView
+            style={{
+              flex: 1,
+            }}
+            behavior="height"
+          >
             <Text
               size={FONT_SIZES.h5}
               color={theme.onSurface}
@@ -154,16 +149,21 @@ export const Picker = ({
             >
               Select an Icon
             </Text>
+            <InputField
+              placeholder="Search icons..."
+              onUpdate={(text) => {
+                setSearchQuery(text);
+              }}
+              value={searchQuery}
+            />
             <FlatList
-              data={displayedIcons}
+              data={filteredIcons}
               renderItem={renderIconItem}
               keyExtractor={(item) => item}
               numColumns={Math.floor(WINDOW_WIDTH / ICON_SIZE_IN_PICKER)}
               contentContainerStyle={styles.pillListContentContainer}
-              onEndReached={loadMoreIcons}
-              onEndReachedThreshold={0.5}
             />
-          </View>
+          </KeyboardAvoidingView>
         )}
       </CustomSheet>
     </Fragment>
