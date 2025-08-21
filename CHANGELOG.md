@@ -1,3 +1,15 @@
+# [1.0.0-dev.4](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.3...v1.0.0-dev.4) (2025-08-21)
+
+
+### Bug Fixes
+
+* styling fix for flatlist veritcal scroll ([b3955ae](https://github.com/rawat-shashank/expensify/commit/b3955ae59eaef0fed3f5faa94991e459e8f8258c))
+
+
+### Features
+
+* added search in icon picker ([1f706b2](https://github.com/rawat-shashank/expensify/commit/1f706b25b4dcdcfc2349a20f1194aeb9536f0beb))
+
 # [1.0.0-dev.3](https://github.com/rawat-shashank/expensify/compare/v1.0.0-dev.2...v1.0.0-dev.3) (2025-08-17)
 
 
