@@ -120,7 +120,7 @@ export const CustomSheet: React.FC<CustomSheetProps> = ({
           bottom: 0,
           borderTopLeftRadius: 16,
           borderTopRightRadius: 16,
-          maxHeight: WINDOW_HEIGHT * 0.85,
+          maxHeight: WINDOW_HEIGHT * 0.5,
         }
       : {
           top: 0,

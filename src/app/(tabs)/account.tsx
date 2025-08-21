@@ -152,6 +152,7 @@ const AccountList = () => {
       data={null}
       onRefresh={() => refetchAccountSummaryList()}
       refreshing={false}
+      showsVerticalScrollIndicator={false}
       ListHeaderComponent={
         <Container paddingVertical={SPACINGS.md}>
           <View>
