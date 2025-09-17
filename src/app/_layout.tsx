@@ -20,8 +20,12 @@ const StackLayout = () => {
         },
       }}
     >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />;
-      <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      ;
+      <Stack.Screen
+        name="(screens)"
+        options={{ headerShown: false, animation: "fade_from_bottom" }}
+      />
     </Stack>
   );
 };

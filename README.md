@@ -2,6 +2,19 @@
 
 **xpncfy** is a modern mobile application built with Expo and React Native, designed to help you effortlessly track and manage your expenses. Keep a clear overview of your spending habits, categorize transactions, and gain insights into your financial health directly from your mobile device.
 
+```bash
++-------------------------------------------------------+
+|                                                       |
+|  ██╗  ██╗██████╗ ███╗   ██╗ ██████╗███████╗██╗   ██╗  |
+|  ╚██╗██╔╝██╔══██╗████╗  ██║██╔════╝██╔════╝╚██╗ ██╔╝  |
+|   ╚███╔╝ ██████╔╝██╔██╗ ██║██║     █████╗   ╚████╔╝   |
+|   ██╔██╗ ██╔═══╝ ██║╚██╗██║██║     ██╔══╝    ╚██╔╝    |
+|  ██╔╝ ██╗██║     ██║ ╚████║╚██████╗██║        ██║     |
+|  ╚═╝  ╚═╝╚═╝     ╚═╝  ╚═══╝ ╚═════╝╚═╝        ╚═╝     |
+|                                                       |
++-------------------------------------------------------+
+```
+
 ✨ Features
 
 - **Intuitive Expense Tracking**: Easily record your daily expenses.
