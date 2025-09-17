@@ -18,7 +18,7 @@ import {
   TransactionListItem,
   ItemSeparator,
 } from "@/components";
-import { FONT_SIZES, SPACINGS } from "@/constants/sizes";
+import { FONT_SIZES, SPACINGS, WINDOW_WIDTH } from "@/constants/sizes";
 import { useUserAccount } from "@/context/UserAccountContext";
 
 const AccountList = () => {
@@ -88,7 +88,6 @@ const AccountList = () => {
 
   const AccountSeparator = () => <View style={{ width: SPACINGS.md }} />;
 
-  //FIXME: UI need to be updated later
   const renderAccounts = ({ item }: { item: AccountSummaryType }) => {
     return (
       <AccountCard
@@ -166,6 +165,8 @@ const AccountList = () => {
                 onViewableItemsChanged={onViewableItemsChanged}
                 viewabilityConfig={viewabilityConfig}
                 ItemSeparatorComponent={AccountSeparator}
+                snapToInterval={WINDOW_WIDTH - SPACINGS.md}
+                decelerationRate={"fast"}
               />
             ) : (
               <Text color={theme.onSurface}>No accounts created yet.</Text>
